@@ -1,0 +1,25 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    GameOn - {{object_name}} Create
+{%endblock%}
+
+{%block content%}
+    <h3>{{object_name}} Create:</h3>
+    {%if validation_errors%}
+        Validation errors:
+        <ul class="error">
+            {%for validation_error in validation_errors%}
+                <li>{{validation_error}}</li>
+            {%endfor%}
+        </ul>
+    {%endif%}
+    <form method="post" enctype="multipart/form-data">
+        {%include 'crud_form.html'%}
+        <button type="submit">Create {{object_name}}</button>
+    </form>
+    <br/>
+    <a href="../retrieve/">
+        Return to {{object_name}} list
+    </a>
+{%endblock%}

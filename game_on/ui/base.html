@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>
+            {%block title%}
+                GameOn
+            {%endblock%}
+        </title>
+        <link rel="stylesheet" type="text/css" href="/static/css/all.css" media="all" />
+    </head>
+    <body>
+        <div id="header">
+            <span class="header_text">
+                <a href="/auth/">
+                    Welcome to GameOn!
+                </a>
+            </span>
+            {%if current_user%}
+                <span class="header_user">
+                    <a href="/auth/crud/user/update/{{current_user.uuid}}/">
+                        {{current_user.name}}
+                    </a>
+                    <a href="/logout">
+                        <span class="icon_small icon_logout" title="Logout"></span>
+                    </a>
+                </span>
+            {%endif%}
+        </div>
+
+        {%block content%}
+            Insert content here!
+        {%endblock%}
+    </body>
+</html>

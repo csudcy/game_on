@@ -1,0 +1,13 @@
+.crud_table td, .crud_table th {
+    border: 1px solid black;
+    padding: 0px 5px;
+}
+
+.crud_form label {
+    display: inline-block;
+    width: 70px;
+}
+
+.error li {
+    color: red;
+}

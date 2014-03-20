@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    GameOn - Dashboard
+{%endblock%}
+
+{%block content%}
+    <h3>Games</h3>
+    <ul>
+        {%for game in games%}
+            <li>
+                <h3>{{game.name}}</h3>
+                {{game.description}}
+                <a href="game/setup/{{game.id}}/">
+                    <span class="icon_small icon_create" title="Setup a game of {{game.name}}"></span>
+                </a>
+                <a href="game/matches/{{game.id}}/">
+                    <span class="icon_small icon_retrieve" title="Review matches of {{game.name}}"></span>
+                </a>
+            </li>
+        {%endfor%}
+    </ul>
+
+    <h3>
+        Players
+        <a href="crud/player/retrieve/">
+            <span class="icon_small icon_retrieve" title="Manage Players"></span>
+        </a>
+    </h3>
+    {%if players%}
+        <ul>
+            {%for player in players%}
+                <li>{{player.name}}</li>
+            {%endfor%}
+        </ul>
+    {%else%}
+        You don't have any players yet!
+        <a href="crud/player/create/">
+            <span class="icon_small icon_create" title="Create Player"></span>
+        </a>
+    {%endif%}
+
+    {%if current_user.is_admin%}
+        <h3>
+            Users
+        </h3>
+        <a href="crud/user/retrieve/">
+            <span class="icon_small icon_retrieve" title="Manage Users"></span>
+            Manage Users
+        </a>
+    {%endif%}
+{%endblock%}

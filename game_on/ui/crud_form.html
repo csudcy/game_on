@@ -1,0 +1,48 @@
+<ul class="crud_form">
+    {%for obj_prop in obj_props%}
+        <li>
+            <label for="{{obj_prop.name}}">{{obj_prop.label}}:</label>
+            {%if obj_prop.readonly%}
+                {{obj_prop.value}}
+            {%else%}
+                {%if obj_prop.type == 'String'%}
+                    <input
+                        id="{{obj_prop.name}}"
+                        name="{{obj_prop.name}}"
+                        type="text"
+                        value="{{obj_prop.value}}"/>
+                {%elif obj_prop.type == 'Password'%}
+                    <input
+                        id="{{obj_prop.name}}"
+                        name="{{obj_prop.name}}"
+                        type="password"/>
+                {%elif obj_prop.type == 'Boolean'%}
+                    <input
+                        name="{{obj_prop.name}}"
+                        type="hidden"
+                        value="{{obj_prop.value or 'false'}}"/>
+                    <input
+                        id="{{obj_prop.name}}"
+                        type="checkbox"
+                        {%if obj_prop.value%}checked="checked"{%endif%}
+                        onClick="javascript:document.getElementsByName('{{obj_prop.name}}')[0].value = this.checked;"/>
+                {%elif obj_prop.type == 'Related'%}
+                    <select id="{{obj_prop.name}}" name="{{obj_prop.name}}">
+                        {%for option in obj_prop.options%}
+                            <option value="{{option.value}}">
+                                {{option.label}}
+                            </option>
+                        {%endfor%}
+                    </select>
+                {%elif obj_prop.type == 'File'%}
+                    <input
+                        id="{{obj_prop.name}}"
+                        name="{{obj_prop.name}}"
+                        type="file"/>
+                {%else%}
+                    Unknown type: {{obj_prop.type}}
+                {%endif%}
+            {%endif%}
+        </li>
+    {%endfor%}
+</ul>

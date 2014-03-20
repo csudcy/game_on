@@ -1,0 +1,19 @@
+#header {
+    height: 32px;
+    border-bottom: 1px solid black;
+}
+
+#header .header_text {
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#header .header_user {
+    float: right;
+    margin-right: 15px;
+}
+
+#header .icon_logout {
+    margin-left: 10px;
+}

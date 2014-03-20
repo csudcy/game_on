@@ -1,0 +1,9 @@
+#login_container {
+    text-align: center;
+}
+
+#login_inner {
+    display: inline-block;
+    position: relative;
+    margin-top: 100px;
+}

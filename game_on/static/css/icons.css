@@ -1,0 +1,36 @@
+.icon_small, .icon_large {
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.icon_small {
+    height: 16px;
+    width: 16px;
+    margin: 2px;
+}
+
+.icon_large {
+    height: 32px;
+    width: 32px;
+}
+
+.icon_create {
+    background-image: url('/static/img/icons/crud_create.png');
+}
+
+.icon_retrieve {
+    background-image: url('/static/img/icons/crud_retrieve.png');
+}
+
+.icon_update {
+    background-image: url('/static/img/icons/crud_update.png');
+}
+
+.icon_delete {
+    background-image: url('/static/img/icons/crud_delete.png');
+}
+
+.icon_logout {
+    background-image: url('/static/img/icons/logout.png');
+}
