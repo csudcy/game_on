@@ -7,6 +7,7 @@ from . import example_teams
 from . import external
 from . import projectile
 from . import team
+from . import utils
 from game_on.games import base_game
 from game_on.tools import jinja_tool
 
@@ -64,23 +65,21 @@ class TankGame(base_game.BaseGame):
         #Initialise the players
         try:
             self.team_1.init_players(
-                board_width = self.width,
-                board_height = self.height,
-                min_x = 0.05 * self.width,
-                max_x = 0.25 * self.width,
-                min_y = 0.1  * self.height,
-                max_y = 0.9  * self.height,
-                enemy_direction = 0,
+                game=self,
+                min_x=0.05 * self.width,
+                max_x=0.25 * self.width,
+                min_y=0.1  * self.height,
+                max_y=0.9  * self.height,
+                enemy_direction=0,
             )
 
             self.team_2.init_players(
-                board_width = self.width,
-                board_height = self.height,
-                min_x = 0.75 * self.width,
-                max_x = 0.95 * self.width,
-                min_y = 0.1  * self.height,
-                max_y = 0.9  * self.height,
-                enemy_direction = math.pi,
+                game=self,
+                min_x=0.75 * self.width,
+                max_x=0.95 * self.width,
+                min_y=0.1  * self.height,
+                max_y=0.9  * self.height,
+                enemy_direction=math.pi,
             )
         except Exception, ex:
             raise
@@ -138,6 +137,12 @@ class TankGame(base_game.BaseGame):
     #       Setters
     #################################################
 
+    def add_projectile(self, projectile):
+        self.projectiles.append(projectile)
+
+    def remove_projectile(self, projectile):
+        self.projectiles.remove(projectile)
+
     #################################################
     #       Getters
     #################################################
@@ -152,7 +157,12 @@ class TankGame(base_game.BaseGame):
         """
         Determine who (if anyone) won this game
         """
-        raise Exception('Games must override the get_winners method!')
+        winners = []
+        if not self.team_1.is_dead:
+            winners.append('team_1')
+        if not self.team_2.is_dead:
+            winners.append('team_2')
+        return winners
 
     #################################################
     #       Execution
@@ -176,26 +186,13 @@ class TankGame(base_game.BaseGame):
         for projectile in self.projectiles:
             projectile.run_tick()
 
-
-
-
-"""
-    damage: function(x, y, r) {
-        var self=this;
-        function check_damage(ai) {
-            ai.live_players.forEach(function(player) {
-                if (player.distance_to(x, y) < r) {
-                    //Yes!
-                    player.stats.health -= DAMAGE;
-                    if (player.is_dead()) {
-                        ai.update_live_players();
-                    }
-                }
-            });
-        }
-        check_damage(self.ai_1);
-        check_damage(self.ai_2);
-    },
-
-});
-"""
+    def damage(self, x, y, r):
+        """
+        """
+        def check_damage(team):
+            for player in team.live_players:
+                if player.distance_to(x, y) < r:
+                    #Yes!
+                    player.health -= utils.DAMAGE
+        check_damage(self.team_1)
+        check_damage(self.team_2)

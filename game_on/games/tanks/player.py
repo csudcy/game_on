@@ -1,6 +1,7 @@
 import math
 
 from . import utils
+from . import projectile
 
 
 class Player(object):
@@ -57,8 +58,9 @@ class Player(object):
                 self,
                 #Added by inheriting classes
                 id,
-                board_width,
-                board_height,
+                game,
+                team,
+                #Set by external_team
                 **player_info
             ):
         """
@@ -119,13 +121,15 @@ class Player(object):
         #       Save stats
         ########################################
 
-        #Constant stats
+        #Things we need to know
         self.id = id
+        self.game = game
+        self.team = team
+
+        #Constant stats
         self.sight = player_info['sight']
         self.health = player_info['health']
-        self.blast_radius = player_info['blast_radius']
-        self.board_width = board_width
-        self.board_height = board_height
+        self.blast_radius = math.sqrt(player_info['blast_radius'])
 
         #Complex stats
         self.x = player_info['x']
@@ -222,8 +226,8 @@ class Player(object):
         self.speed.target = val
 
     def set_target(self, x, y, r=None):
-        self.target_x = max(min(x, self.board_width), 0)
-        self.target_y = max(min(y, self.board_height), 0)
+        self.target_x = max(min(x, self.game.width), 0)
+        self.target_y = max(min(y, self.game.height), 0)
         self.target_r = r or 10
 
     def clear_target(self):
@@ -289,8 +293,8 @@ class Player(object):
 
         #Update position
         x_y = utils.angle_speed_to_xy(self.direction.current, self.speed.current)
-        self.x = max(min(self.x + x_y[0], self.board_width), 0)
-        self.y = max(min(self.y + x_y[1], self.board_height), 0)
+        self.x = max(min(self.x + x_y.x, self.game.width), 0)
+        self.y = max(min(self.y + x_y.y, self.game.height), 0)
 
         #Check we're on target
         if self.target_r:
@@ -308,30 +312,21 @@ class Player(object):
                 #We're not pointing the right direction yet, stop
                 self.set_speed(0)
 
-
-
-
-
-
-
-"""
-    ///// Actions
-    fire: function(elevation) {
-        //Fire a projectile
-        var self=this;
-        //Create the projectile
-        //TODO: Incorporate tank direction & speed
-        self.ai.board.add_projectile(new Projectile(
+    def fire(self, elevation):
+        """
+        Fire a projectile
+        """
+        #Fire ze missiles
+        projectile.Projectile(
             self,
-            self.position.x,
-            self.position.y,
-            0,
+            self.game,
+            self.team,
+            self.x,
+            self.y,
             self.turret_direction.current,
             elevation,
-            10,
-            self.stats.firepower
-        ));
-        //Make sure we can't fire again straight away
-        self.reload.current = 0;
-    },
-"""
+            self.blast_radius
+        )
+
+        #Make sure we can't fire again straight away
+        self.reload._current = 0

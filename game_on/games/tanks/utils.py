@@ -1,14 +1,16 @@
 import math
+from collections import namedtuple
 
 
 GRAVITY = -0.1
 DAMAGE = 10
 
+Point = namedtuple('Point', ['x', 'y'])
 
 def angle_speed_to_xy(angle, speed):
-    return (
+    return Point(
         speed * math.cos(angle),
-        speed * math.sin(angle)
+        speed * math.sin(angle),
     )
 
 

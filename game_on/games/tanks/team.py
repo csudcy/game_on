@@ -19,8 +19,7 @@ class Team(object):
 
     def init_players(
             self,
-            board_width,
-            board_height,
+            game,
             min_x,
             max_x,
             min_y,
@@ -31,6 +30,7 @@ class Team(object):
         Initialise & validate players
         """
         #Construct the class we can pass through to the external_team
+        team = self
         class TeamPlayer(player.Player):
             def __init__(self, **player_info):
                 #Set the corrent min/max x/y
@@ -40,8 +40,8 @@ class Team(object):
                 self.STATS['y']['max'] = max_y
                 super(TeamPlayer, self).__init__(
                     id=TeamPlayer.player_count,
-                    board_width=board_width,
-                    board_height=board_height,
+                    game=game,
+                    team=team,
                     **player_info
                 )
                 TeamPlayer.player_count += 1
@@ -50,8 +50,8 @@ class Team(object):
         #Initialise players
         self.players = self.external_team.init_players(
             TeamPlayer,
-            board_width,
-            board_height,
+            game.width,
+            game.height,
             min_x,
             max_x,
             min_y,

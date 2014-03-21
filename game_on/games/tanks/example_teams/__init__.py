@@ -4,6 +4,7 @@ from . import passive_static
 from . import passive_mover
 from . import passive_runner_ordered
 from . import passive_runner_random
+from . import aggresive_static_random
 
 
 cwd = os.path.dirname(os.path.abspath(__file__))
@@ -24,5 +25,9 @@ EXAMPLE_TEAMS = [
     {
         'name': passive_runner_random.Team.name,
         'path': os.path.join(cwd, 'passive_runner_random.py')
+    },
+    {
+        'name': aggresive_static_random.Team.name,
+        'path': os.path.join(cwd, 'aggresive_static_random.py')
     },
 ]

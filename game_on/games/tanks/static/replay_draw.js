@@ -20,7 +20,7 @@ State dictionaries are something like this:
         },
         team_2: ...,
         projectile: {
-            show_age: 5,
+            expand_age: 5,
             fade_age: 15,
             max_age: 20,
         }
@@ -52,8 +52,8 @@ State dictionaries are something like this:
                 origin_y: ,
                 current_x: ,
                 current_y: ,
-                team: , (team_1, team_2)
-                player: , (0-4)
+                team_id: , (team_1, team_2)
+                player_id: , (0-4)
                 explosion_age: ,
             },
             ...
@@ -68,8 +68,8 @@ function draw_board(g, constant_info, tick_info) {
     draw_team(g, constant_info.team_1, tick_info.team_1);
     draw_team(g, constant_info.team_2, tick_info.team_2);
     tick_info.projectiles.forEach(function(tick_info_projectile) {
-        var constant_info_team = constant_info[tick_info_projectile.team],
-            constant_info_player = constant_info_team.players[tick_info_projectile.player],
+        var constant_info_team = constant_info[tick_info_projectile.team_id],
+            constant_info_player = constant_info_team.players[tick_info_projectile.player_id],
             constant_info_projectile = constant_info.projectile;
         draw_projectile(
             g,
@@ -179,9 +179,9 @@ function draw_projectile(
     } else {
         var r = constant_info_player.blast_radius,
             opacity = 0.7;
-        if (tick_info_projectile.explosion_age < constant_info_projectile.show_age) {
+        if (tick_info_projectile.explosion_age < constant_info_projectile.expand_age) {
             //Expand the explosion until we reach full size
-            r *= tick_info_projectile.explosion_age / constant_info_projectile.show_age;
+            r *= tick_info_projectile.explosion_age / constant_info_projectile.expand_age;
         } else if (tick_info_projectile.explosion_age > constant_info_projectile.fade_age) {
             //Fade the explosion until we reach max age
             opacity *= (constant_info_projectile.max_age - tick_info_projectile.explosion_age) /

@@ -7,6 +7,9 @@ TODO:
     Add create_date to match
         Order list by reverse
         Display on list
+    Show match winner(s)
+        List?
+        Replay?
     Improve index page
         Latest matches
         ? Use game thumbnails?
@@ -21,6 +24,7 @@ TODO:
     ? File versioning?
 
 TANKS TODO:
+    Explosions don't expand :(
     Incorporate tank direction & speed when firing
     Check for victory
     Max proofing
