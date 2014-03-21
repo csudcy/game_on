@@ -34,3 +34,7 @@
 .icon_logout {
     background-image: url('/static/img/icons/logout.png');
 }
+
+.icon_play {
+    background-image: url('/static/img/icons/play.png');
+}

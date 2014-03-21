@@ -91,6 +91,15 @@ class Team(ModelBase, Base):
     setattr(creator_uuid, 'related_name', 'creator')
     setattr(creator_uuid, 'related_model', User)
 
+    def load_class(self):
+        """
+        Load the class referenced by self.path
+        """
+        import imp
+        module_name = 'game_on.games.%s.loaded_team.%s' % (self.game, self.uuid)
+        module = imp.load_source(module_name, self.path)
+        return module.Team
+
 
 class Match(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
@@ -104,12 +113,21 @@ class Match(ModelBase, Base):
     #Add extra info because I cant work out how to get it through f**king SqlAlchemy!
     setattr(team_1_uuid, 'related_name', 'team')
     setattr(team_1_uuid, 'related_model', Team)
-    #setattr(team_2_uuid, 'related_name', 'team')
-    #setattr(team_2_uuid, 'related_model', Team)
+    setattr(team_2_uuid, 'related_name', 'team')
+    setattr(team_2_uuid, 'related_model', Team)
     setattr(creator_uuid, 'related_name', 'creator')
     setattr(creator_uuid, 'related_model', User)
 
-    def get_match_path(self, game_id, match_id):
-        filename = '%s.json' % self.uuid
+    def get_path(self):
+        filename = '%s-%s.json' % (self.game, self.uuid)
         path = os.path.join(config['match']['folder'], filename)
         return path
+
+    def save_result(self, result):
+        """
+        Save the result of this match to file
+        """
+        import json
+        result_json = json.dumps(result)
+        with open(self.get_path(), 'w') as f:
+            f.write(result_json)

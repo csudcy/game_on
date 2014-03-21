@@ -8,14 +8,7 @@ from game_on import games
 from game_on.cfg import config
 
 
-MATCH_ID = '20140101T000000'
-
 class GameTree(object):
-    def get_match_path(self, game_id, match_id):
-        filename = '%s-%s.json' % (game_id, match_id)
-        path = os.path.join(config['match']['folder'], filename)
-        return path
-
     def get_teams(self, game_id):
         teams = db.Session.query(
             db.Team
@@ -36,7 +29,7 @@ class GameTree(object):
 
     @cherrypy.expose
     @cherrypy.tools.jinja2('game_setup.html')
-    def setup(self, game_id):
+    def setup(self, game_id, team_1=None, team_2=None):
         """
         Display the setup page for a match of <game_id>
         """
@@ -50,7 +43,12 @@ class GameTree(object):
         your_teams = []
         public_teams = []
         other_teams = []
+        team_lookup = {}
         for team in teams:
+            #Create a lookup (used when POSTing)
+            team_lookup[team.uuid] = team
+
+            #Create the lists (used when GETting)
             team_dict = {
                 'id': team.uuid,
                 'name': team.name,
@@ -62,41 +60,44 @@ class GameTree(object):
             else:
                 other_teams.append(team_dict)
 
+        if cherrypy.request.method == 'POST':
+            #Find the teams
+            team_1_dbobj = team_lookup[team_1]
+            team_2_dbobj = team_lookup[team_2]
+
+            #Find the team classes
+            team_1_class = team_1_dbobj.load_class()
+            team_2_class = team_2_dbobj.load_class()
+
+            #Run the game
+            game_obj = game([team_1_class, team_2_class])
+            result = game_obj.run()
+
+            #Create the match
+            match = db.Match(
+                game = game_id,
+                team_1 = team_1_dbobj,
+                team_2 = team_2_dbobj,
+                creator = cherrypy.request.user,
+            )
+            db.Session.add(match)
+            db.Session.commit()
+
+            #Save result to file
+            match.save_result(result)
+
+            #Go replay the match!
+            raise cherrypy.HTTPRedirect('../replay/%s/' % match.uuid)
+
         #Render the setup template
         return {
             'game_id': game_id,
+            'game_name': game.name,
             'static_url': '/go/game/static/%s' % game_id,
             'your_teams': your_teams,
             'public_teams': public_teams,
             'other_teams': other_teams,
         }
-
-    @cherrypy.expose
-    def run(self, game_id, **params):
-        """
-        Run a match of <game_id> with the posted parameters
-        """
-        #TODO: Implement!
-
-        #Run a game
-        from game_on.games.tanks import game
-        from game_on.games.tanks import example_teams
-        tg = game.TankGame([
-            example_teams.dumb_runner_random.Team,
-            example_teams.dumb_runner_ordered.Team,
-        ])
-        match = tg.run()
-
-        #JSON the output
-        import json
-        match_json = json.dumps(match)
-
-        #Save it to file
-        with open(self.get_match_path(game_id, MATCH_ID), 'w') as f:
-            f.write(match_json)
-
-        #Go watch it right now
-        raise cherrypy.HTTPRedirect('../replay/%s/%s/' % (game_id, MATCH_ID))
 
     @cherrypy.expose
     def matches(self, game_id):
@@ -106,25 +107,30 @@ class GameTree(object):
         #TODO: Implement!
         pass
 
-        #HAX
-        raise cherrypy.HTTPRedirect('../replay/%s/%s/' % (game_id, MATCH_ID))
-
     @cherrypy.expose
-    def replay(self, game_id, match_id):
+    def replay(self, match_uuid):
         """
-        Replay the selected <match_id> for <game_id>
+        Replay the selected <match_uuid>
         """
+        #Get the match
+        match = db.Session.query(
+            db.Match
+        ).filter(
+            db.Match.uuid == match_uuid
+        ).one()
+
         #Get the game
-        game = games.GAME_DICT[game_id]
+        game = games.GAME_DICT[match.game]
 
         #Render the replay template
         template = game.jinja2_env.get_template('replay.html')
         return template.render({
             'current_user': cherrypy.request.user,
-            'game_id': game_id,
-            'match_id': match_id,
-            'static_url': '/go/game/static/%s' % game_id,
-            'data_url': '/go/game/replay_json/%s/%s/' % (game_id, match_id),
+            'game_name': game.name,
+            'match_uuid': match_uuid,
+            'static_url': '/go/game/static/%s' % match.game,
+            'data_url': '/go/game/replay_json/%s/' % match_uuid,
+            'match_list_url': '/go/game/matches/%s/' % match.game,
         })
 
 
@@ -147,17 +153,19 @@ class GameTree(object):
         return cherrypy.lib.static.serve_file(path)
 
     @cherrypy.expose
-    def replay_json(self, game_id, match_id):
+    def replay_json(self, match_uuid):
         """
-        Retrieve the JSON for the selected <match_id> for <game_id>
+        Retrieve the JSON for the selected <match_uuid>
         """
-        #TODO: Implement!
+        #Get the match
+        match = db.Session.query(
+            db.Match
+        ).filter(
+            db.Match.uuid == match_uuid
+        ).one()
 
-        #Find the replay file
-        path = self.get_match_path(game_id, match_id)
-
-        #Return the file
-        return cherrypy.lib.static.serve_file(path)
+        #Return the result
+        return cherrypy.lib.static.serve_file(match.get_path())
 
 
 def mount_tree():
