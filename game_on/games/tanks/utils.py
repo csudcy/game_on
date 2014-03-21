@@ -68,7 +68,7 @@ class RateBoundDirection(RateBoundVariable):
         return self._target
     @target.setter
     def target(self, value):
-        self.target = self.check_target_bounds(value)
+        self._target = self.check_target_bounds(value)
 
     def check_target_bounds(self, val):
         while (val < -math.pi):

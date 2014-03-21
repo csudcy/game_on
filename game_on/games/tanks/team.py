@@ -8,13 +8,13 @@ class Team(object):
     #       Initialisation
     #################################################
 
-    def __init__(self, id, team_class, effect_colour):
+    def __init__(self, id, external_team_class, effect_colour):
         """
         Create the team
         """
         #Create the team
         self.id = id
-        self.team = team_class()
+        self.external_team = external_team_class()
         self.effect_colour = effect_colour
 
     def init_players(
@@ -30,8 +30,26 @@ class Team(object):
         """
         Initialise & validate players
         """
+        #Construct the class we can pass through to the external_team
+        class TeamPlayer(player.Player):
+            def __init__(self, **player_info):
+                #Set the corrent min/max x/y
+                self.STATS['x']['min'] = min_x
+                self.STATS['x']['max'] = max_x
+                self.STATS['y']['min'] = min_y
+                self.STATS['y']['max'] = max_y
+                super(TeamPlayer, self).__init__(
+                    id=TeamPlayer.player_count,
+                    board_width=board_width,
+                    board_height=board_height,
+                    **player_info
+                )
+                TeamPlayer.player_count += 1
+        TeamPlayer.player_count = 0
+
         #Initialise players
-        player_infos = self.team.init_players(
+        self.players = self.external_team.init_players(
+            TeamPlayer,
             board_width,
             board_height,
             min_x,
@@ -42,99 +60,9 @@ class Team(object):
         )
 
         #Validate players
-        stat_info = {
-            #Absolute stats (just range checked)
-            'x': {
-                'min': min_x,
-                'max': max_x,
-            },
-            'y': {
-                'min': min_y,
-                'max': max_y,
-            },
-            'direction': {
-                'min': 0,
-                'max': 2*math.pi,
-            },
-            'turret_direction': {
-                'min': 0,
-                'max': 2*math.pi,
-            },
-
-            #Variable stats (range checked & altered)
-            'speed': {
-                'min': 0,
-                'max': 1,
-                'add': 0.1,
-                'mult': 10,
-            },
-            'sight': {
-                'min': 0,
-                'max': 1,
-                'add': 0.2,
-                'mult': 200,
-            },
-            'health': {
-                'min': 0,
-                'max': 1,
-                'add': 0.2,
-                'mult': 100,
-            },
-            'blast_radius': {
-                'min': 0,
-                'max': 1,
-                'add': 0.1,
-                'mult': 10000,
-            },
-        }
-
-        self.max_health = (stat_info['health']['max'] + stat_info['health']['add']) * stat_info['health']['mult']
-
-        self.players = []
-        for player_info in player_infos:
-            #Check they haven't used too many points
-            total_stats = player_info['speed']
-            total_stats += player_info['sight']
-            total_stats += player_info['health']
-            total_stats += player_info['blast_radius']
-            if total_stats > 1.0:
-                raise Exception(
-                    'Player stats out of bounds: total @ {val} > 1.0'.format(
-                        val = total_stats,
-                    )
-                )
-
-            #Check individual stats
-            for stat in stat_info:
-                #Range check
-                if player_info[stat] < stat_info[stat]['min']:
-                    raise Exception(
-                        'Player stat out of bounds: {stat} @ {val} < {min}'.format(
-                            stat = stat,
-                            val = player_info[stat],
-                            min = stat_info[stat]['min'],
-                        )
-                    )
-                if player_info[stat] > stat_info[stat]['max']:
-                    raise Exception(
-                        'Player stat out of bounds: {stat} @ {val} > {max}'.format(
-                            stat = stat,
-                            val = player_info[stat],
-                            max = stat_info[stat]['max'],
-                        )
-                    )
-
-                #Alter stat
-                if 'add' in stat_info[stat]:
-                    player_info[stat] = (player_info[stat] + stat_info[stat]['add']) * stat_info[stat]['mult']
-
-            #Create player
-            self.players.append(player.Player(
-                id=len(self.players),
-                board_width=board_width,
-                board_height=board_height,
-                **player_info
-            ))
+        for p in self.players:
+            if not isinstance(p, TeamPlayer):
+                raise Exception('Players must be an instance of TeamPlayer!')
 
     #################################################
     #       Serialisers
@@ -154,9 +82,9 @@ class Team(object):
             },
         """
         return {
-            'name': self.team.name,
+            'name': self.external_team.name,
             'player_count': len(self.players),
-            'max_health': self.max_health,
+            'max_health': player.Player.get_max_health(),
             'effect_colour': self.effect_colour,
             'players': [p.get_constant_state() for p in self.players]
         }
@@ -222,7 +150,7 @@ class Team(object):
 
     def run_tick(self, seen):
         #Pass through to the external team
-        self.team.run_tick(self.live_players, seen)
+        self.external_team.run_tick(self.live_players, seen)
 
         #Then run the players
         for live_player in self.live_players:

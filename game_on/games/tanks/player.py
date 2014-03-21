@@ -7,48 +7,143 @@ class Player(object):
     #################################################
     #       Initialisation
     #################################################
+    STATS = {
+        #Absolute stats (just range checked)
+        'x': {
+            'min': 0, #Filled in by inheriting class
+            'max': 0, #Filled in by inheriting class
+        },
+        'y': {
+            'min': 0, #Filled in by inheriting class
+            'max': 0, #Filled in by inheriting class
+        },
+        'direction': {
+            'min': 0,
+            'max': 2*math.pi,
+        },
+        'turret_direction': {
+            'min': 0,
+            'max': 2*math.pi,
+        },
+
+        #Variable stats (range checked & altered)
+        'speed': {
+            'min': 0,
+            'max': 1,
+            'add': 0.1,
+            'mult': 10,
+        },
+        'sight': {
+            'min': 0,
+            'max': 1,
+            'add': 0.2,
+            'mult': 200,
+        },
+        'health': {
+            'min': 0,
+            'max': 1,
+            'add': 0.2,
+            'mult': 100,
+        },
+        'blast_radius': {
+            'min': 0,
+            'max': 1,
+            'add': 0.1,
+            'mult': 10000,
+        },
+    }
 
     def __init__(
                 self,
+                #Added by inheriting classes
                 id,
-                sight,
-                health,
-                blast_radius,
                 board_width,
                 board_height,
-
-                x,
-                y,
-
-                speed,
-                direction,
-                turret_direction
+                **player_info
             ):
+        """
+        player_info = {
+            'x': num (range: min_x-max_x),
+            'y': num (range: min_y-max_y),
+
+            'speed': num (range: 0-1),
+            'sight': num (range: 0-1),
+            'health': num (range: 0-1),
+            'blast_radius': num (range: 0-1),
+
+            'direction': num (range: 0-2*Pi),
+            'turret_direction': num (range: 0-2*Pi),
+        }
+        """
+        ########################################
+        #       Validate stats
+        ########################################
+
+        #Check they haven't used too many points
+        total_stats = player_info['speed']
+        total_stats += player_info['sight']
+        total_stats += player_info['health']
+        total_stats += player_info['blast_radius']
+        if total_stats > 1.0:
+            raise Exception(
+                'Player stats out of bounds: total @ {val} > 1.0'.format(
+                    val = total_stats,
+                )
+            )
+
+        #Check individual stats
+        for stat in self.STATS:
+            #Range check
+            if player_info[stat] < self.STATS[stat]['min']:
+                raise Exception(
+                    'Player stat out of bounds: {stat} @ {val} < {min}'.format(
+                        stat = stat,
+                        val = player_info[stat],
+                        min = self.STATS[stat]['min'],
+                    )
+                )
+            if player_info[stat] > self.STATS[stat]['max']:
+                raise Exception(
+                    'Player stat out of bounds: {stat} @ {val} > {max}'.format(
+                        stat = stat,
+                        val = player_info[stat],
+                        max = self.STATS[stat]['max'],
+                    )
+                )
+
+            #Alter stat
+            if 'add' in self.STATS[stat]:
+                player_info[stat] = (player_info[stat] + self.STATS[stat]['add']) * self.STATS[stat]['mult']
+
+        ########################################
+        #       Save stats
+        ########################################
+
         #Constant stats
         self.id = id
-        self.sight = sight
-        self.health = health
-        self.blast_radius = blast_radius
+        self.sight = player_info['sight']
+        self.health = player_info['health']
+        self.blast_radius = player_info['blast_radius']
         self.board_width = board_width
         self.board_height = board_height
 
         #Complex stats
-        self.x = x
-        self.y = y
+        self.x = player_info['x']
+        self.y = player_info['y']
 
         #Rate bound stats
         self.speed = utils.RateBoundVariable(
             current = 0,
             rate = 0.1,
             minimum = 0,
-            maximum = speed,
+            maximum = player_info['speed'],
         )
         self.direction = utils.RateBoundDirection(
-            current = direction,
+            current = player_info['direction'],
             rate = 0.1,
         )
         self.turret_direction = utils.RateBoundDirection(
-            current = turret_direction,
+            current = player_info['turret_direction'],
             rate = 0.2,
         )
         self.reload = utils.RateBoundVariable(
@@ -115,21 +210,21 @@ class Player(object):
     #       Setters
     #################################################
 
-    def set_direction(val):
-        self.direction.set_target(val)
+    def set_direction(self, val):
+        self.direction.target = val
 
-    def set_turret_direction(val):
-        self.turret_direction.set_target(val)
+    def set_turret_direction(self, val):
+        self.turret_direction.target = val
 
-    def set_speed(val):
-        self.speed.set_target(val)
+    def set_speed(self, val):
+        self.speed.target = val
 
-    def set_target(x, y, r):
+    def set_target(self, x, y, r):
         self.target_x = max(min(x, self.board_width), 0)
-        self.target_y = max(min(y, self.board_height), 0),
+        self.target_y = max(min(y, self.board_height), 0)
         self.target_r = r or 10
 
-    def clear_target():
+    def clear_target(self):
         self.target_x = None
         self.target_y = None
         self.target_r = None
@@ -139,13 +234,13 @@ class Player(object):
     #################################################
 
     @property
-    def in_target():
+    def in_target(self):
         if not self.target_r:
             raise Exception('No target has been defined!')
         return self.distance_to(self.target_x, self.target_y) <= self.target_r
 
     @property
-    def can_fire():
+    def can_fire(self):
         #Check if this player can currently fire
         return self.reload.current == self.reload.target
 
@@ -153,14 +248,18 @@ class Player(object):
     def is_dead(self):
         return self.health <= 0
 
+    @classmethod
+    def get_max_health(cls):
+        return (cls.STATS['health']['max'] + cls.STATS['health']['add']) * cls.STATS['health']['mult']
+
     #################################################
     #       Calculators
     #################################################
 
-    def angle_to(x, y):
+    def angle_to(self, x, y):
         return math.atan2((y - self.y), (x - self.x))
 
-    def calculate_firing_angle(distance):
+    def calculate_firing_angle(self, distance):
         #http://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_of_reach
         return math.asin(-utils.GRAVITY * distance / math.pow(10, 2)) / 2
 
