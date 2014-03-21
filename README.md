@@ -24,7 +24,6 @@ TODO:
     ? File versioning?
 
 TANKS TODO:
-    Explosions don't expand :(
     Incorporate tank direction & speed when firing
     Check for victory
     Max proofing

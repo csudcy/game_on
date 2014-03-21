@@ -1,17 +1,24 @@
 $(document).ready(function() {
-    //// Deal with pause state
-    var paused = true;
-
-    function pause() {
-        $('#pause').css('background-color', 'darkgray');
-        $('#play').css('background-color', '');
-        paused = true;
+    //// Deal with play state
+    var PLAY_DIRECTIONS = {
+            reverse: -1,
+            pause: 0,
+            forward: 1,
+        },
+        play_direction = 0;
+    function update_play_state_click() {
+        update_play_state($(this));
+    }
+    function update_play_state(button) {
+        $('#forward').css('background-color', '');
+        $('#pause').css('background-color', '');
+        $('#reverse').css('background-color', '');
+        button.css('background-color', 'darkgray');
+        play_direction = PLAY_DIRECTIONS[button.attr('id')];
     }
 
-    function play() {
-        $('#pause').css('background-color', '');
-        $('#play').css('background-color', 'darkgray');
-        paused = false;
+    function pause() {
+        update_play_state($('#pause'));
     }
 
     //// Bind interaction handlers
@@ -20,9 +27,11 @@ $(document).ready(function() {
         set_tick(get_tick() - 1);
     });
 
-    $('#pause').click(pause);
+    $('#forward').click(update_play_state_click);
 
-    $('#play').click(play);
+    $('#pause').click(update_play_state_click);
+
+    $('#reverse').click(update_play_state_click);
 
     $('#step_right').click(function() {
         pause();
@@ -53,6 +62,9 @@ $(document).ready(function() {
     function set_tick(tick) {
         var max_ticks = parseInt($('#tick').attr('max'));
         tick = Math.min(Math.max(tick, 0), max_ticks);
+        if (tick === 0 || tick === max_ticks) {
+            pause();
+        }
         $('#tick_display').text(tick);
         $('#tick').val(tick);
         render_tick();
@@ -61,12 +73,12 @@ $(document).ready(function() {
     //// Timer
     var last_timer_render = new Date();
     function timer() {
-        if (!paused) {
+        if (play_direction !== 0) {
             //Only do anything when we're playing
             var now = new Date();
             if (now - last_timer_render >= get_interval()) {
                 //Time to move!
-                set_tick(get_tick() + 1);
+                set_tick(get_tick() + play_direction);
                 last_timer_render = now;
             }
         }
@@ -97,7 +109,6 @@ $(document).ready(function() {
         function(body, result, jqxhr) {
             //We now have the match data
             match = JSON.parse(body);
-            //console.log(match);
 
             //Show some info from the match
             $('#tick').attr('max', match.tick_count-1);
