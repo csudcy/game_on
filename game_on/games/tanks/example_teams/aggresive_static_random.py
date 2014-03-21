@@ -14,7 +14,7 @@ class Team(external.ExternalTeam):
         x = (min_x + max_x) / 2
         y_step = (max_y - min_y) / 4
         for i in xrange(5):
-            players.append(PlayerClass(
+            player = PlayerClass(
                 x=x,
                 y=min_y + i * y_step,
 
@@ -25,7 +25,8 @@ class Team(external.ExternalTeam):
 
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
-            ))
+            )
+            players.append(player)
         return players
 
     def run_tick(self, live_players, seen):
