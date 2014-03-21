@@ -219,7 +219,7 @@ class Player(object):
     def set_speed(self, val):
         self.speed.target = val
 
-    def set_target(self, x, y, r):
+    def set_target(self, x, y, r=None):
         self.target_x = max(min(x, self.board_width), 0)
         self.target_y = max(min(y, self.board_height), 0)
         self.target_r = r or 10

@@ -3,7 +3,7 @@ from game_on.games.tanks import external
 
 class Team(external.ExternalTeam):
     #Give the team a nice name
-    name = 'Example Team'
+    name = 'Dumb Mover'
 
     def init_players(self, PlayerClass, board_width, board_height, min_x, max_x, min_y, max_y, enemy_direction):
         #Initialise the players
@@ -37,23 +37,3 @@ class Team(external.ExternalTeam):
     def run_tick(self, live_players, seen):
         #We're really dumb, nothing to do here!
         pass
-
-
-"""
-var AIMover = AIStatic.extend({
-    init_players: function(w, h, add_player) {
-        var self=this;
-        self._super(w, h, add_player);
-        self.players.forEach(function(player) {
-            player.set_speed(
-                999
-            ).set_target(
-                0.8*self.board.width,
-                (player.id+1)/(self.board.player_count+1)*self.board.height,
-                50
-            );
-        });
-    }
-});
-AIMover.description = 'Dumb - Mover';
-"""
