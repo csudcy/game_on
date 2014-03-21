@@ -111,7 +111,7 @@ class TankGame(base_game.BaseGame):
                 'height': self.height,
             },
             'team_1': self.team_1.get_constant_state(),
-            'team_2': self.team_1.get_constant_state(),
+            'team_2': self.team_2.get_constant_state(),
             'projectile': projectile.Projectile.get_constant_state()
         }
 

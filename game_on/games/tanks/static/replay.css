@@ -11,11 +11,15 @@
 #setup, #field {
     border: 1px solid black;
     float: left;
-    height: 700px;
+    height: 800px;
 }
 
 #setup {
     width: 200px;
+}
+
+#field {
+    width: 1000px;
 }
 
 #setup input {

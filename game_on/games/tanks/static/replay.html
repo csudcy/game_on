@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{%extends 'game_replay.html'%}
 
 {%block title%}
     GameOn - Tanks! - Replay
@@ -6,18 +6,16 @@
 
 {%block head%}
     {{ super() }}
-    <link rel="stylesheet" type="text/css" href="{{static_url}}/game.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{static_url}}/replay.css" media="all" />
     <script type="text/javascript">
         //Save some constants for the game to use
-        var GAME_ID = '{{game_id}}',
-            MATCH_ID = '{{match_id}}',
-            DATA_URL = '{{data_url}}';
+        var DATA_URL = '{{data_url}}';
     </script>
-    <script type="text/javascript" src="{{static_url}}/main.js"></script>
-    <script type="text/javascript" src="{{static_url}}/draw.js"></script>
+    <script type="text/javascript" src="{{static_url}}/replay.js"></script>
+    <script type="text/javascript" src="{{static_url}}/replay_draw.js"></script>
 {%endblock%}
 
-{%block content%}
+{%block game_replay%}
     <div id="setup">
         Team 1: <span id="team_1">?</span><br/>
         <br/>

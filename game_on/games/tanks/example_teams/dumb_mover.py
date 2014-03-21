@@ -27,9 +27,9 @@ class Team(external.ExternalTeam):
                 turret_direction=enemy_direction,
             )
             player.set_target(
-                target_x,
-                player.y,
-                50
+                0.5*board_width,
+                0.5*board_height,
+                250
             )
             players.append(player)
         return players

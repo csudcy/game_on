@@ -1,0 +1,13 @@
+{%extends 'base.html'%}
+
+{%block content%}
+    <h3 style="margin: 5px;">
+        {{game_name}} - Match {{match_id}}
+        (<a href="{{match_list_url}}">
+            Return to match list
+        </a>)
+    </h3>
+    {%block game_replay%}
+        Insert replay here!
+    {%endblock%}
+{%endblock%}
