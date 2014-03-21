@@ -101,7 +101,7 @@ class Player(object):
         """
         return {
             'x': self.x,
-            'y': self.x,
+            'y': self.y,
             'direction': self.direction.current,
             'turret_direction': self.turret_direction.current,
             'is_dead': self.is_dead,

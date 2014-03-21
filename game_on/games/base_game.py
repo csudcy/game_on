@@ -1,42 +1,6 @@
 
 class BaseGame(object):
     """
-    Final output:
-        {
-            'status': 'State of the game',
-            (e.g.
-                "Error - team init failed",
-                "Finished (Too many ticks)",
-                "Finished"
-            )
-            'winners': ['team_1', 'team_2'],
-            (multiple winners => draw)
-            'ticks': [
-                {
-                    'team_1': {
-                        'name': 'Dumb Team',
-                        'stats': {
-                            'health': 100,
-                            'range': 50
-                        },
-                        'position': {
-                            'x': 10,
-                            'y': 20
-                        }
-                    },
-                    'team_2': ...,
-                    'projectiles': [
-                        {
-                            'x': 15,
-                            'y': 15,
-                            ...
-                        }
-                        ...
-                    ]
-                },
-                ...
-            ]
-        }
     """
     #A nice name for this game
     name = None
@@ -56,10 +20,21 @@ class BaseGame(object):
     #Example team file which users download to show them how to make a team
     example_team_file = None
 
+    #The folder where static files for this game can be found (optional)
+    static_folder = None
+
+    #The jinja2 environment used for rendering UIs for this game
+    jinja2_env = None
+
     def __init__(self, team_classes):
         if self.name is None:
             raise Exception(
                 'You must define a name attribute on the game "{name}"!'.format(
+                    name = self.name,
+                ))
+        if self.base_team is None:
+            raise Exception(
+                'You must define a base_team attribute on the game "{name}"!'.format(
                     name = self.name,
                 ))
         if self.example_team_file is None:
@@ -67,9 +42,9 @@ class BaseGame(object):
                 'You must define an example_team_file attribute on the game "{name}"!'.format(
                     name = self.name,
                 ))
-        if self.base_team is None:
+        if self.jinja2_env is None:
             raise Exception(
-                'You must define a base_team attribute on the game "{name}"!'.format(
+                'You must define a jinja2_env attribute on the game "{name}"!'.format(
                     name = self.name,
                 ))
         if len(team_classes) != self.team_count:
@@ -92,17 +67,34 @@ class BaseGame(object):
     def run(self):
         """
         Run this game until it ends
+        @return: A summary of the match in this format:
+            {
+                'status': 'State of the game',
+                'winners': ['team_1', 'team_2'],
+                    (multiple winners => draw)
+                'constant_state': {
+                    <return of get_constant_state>
+                },
+                'tick_count': 1234,
+                'tick_state': [
+                    {
+                        <return of get_tick_state>
+                    },
+                    ...
+                ]
+            }
         """
         #Initialise the return structure
         match = {
             'status': None,
             'winners': None,
             'constant_state': None,
-            'ticks': []
+            'tick_count': None,
+            'tick_state': []
         }
 
-        #Initialise the teams
-        error = self.initialise_teams(self.team_classes)
+        #Initialise the game
+        error = self.initialise(self.team_classes)
         if error:
             match['status'] = 'Error - team init failed: %s' % error
         else:
@@ -111,18 +103,18 @@ class BaseGame(object):
 
             #Tick until the game ends
             previous_state = self.get_tick_state()
-            match['ticks'].append(previous_state)
+            match['tick_state'].append(previous_state)
             while (True):
                 #Check if we have run too many ticks
-                if len(match['ticks']) > self.max_ticks:
+                if len(match['tick_state']) > self.max_ticks:
                     match['status'] = 'Finished (Too many ticks)'
                     break
 
                 from pprint import pprint as pp
                 #pp(match)
 
-                if len(match['ticks']) % 100 == 0:
-                    print len(match['ticks'])
+                if len(match['tick_state']) % 100 == 0:
+                    print len(match['tick_state'])
 
                 #Run a tick
                 self.run_tick()
@@ -130,15 +122,17 @@ class BaseGame(object):
                 #Get the changed game state
                 current_state = self.get_tick_state()
                 #changed_state = self.get_changed_state(previous_state, current_state)
-                #match['ticks'].append(changed_state)
+                #match['tick_state'].append(changed_state)
                 #previous_state = current_state
-                match['ticks'].append(current_state)
+                match['tick_state'].append(current_state)
 
                 #Check if the game is over
                 if self.is_complete():
                     match['status'] = 'Finished'
                     match['winners'] = self.get_winners()
                     break
+
+        match['tick_count'] = len(match['tick_state'])
 
         #Return the output of the game
         return match
@@ -153,12 +147,13 @@ class BaseGame(object):
     Everything under this line must be overridden by real game classes
     """
 
-    def initialise_teams(self, team_classes):
+    def initialise(self, team_classes):
         """
-        Ensure the teams are created and are valid (e.g. stats are in correct ranges)
+        Initialise this game. This includes ensure the teams are created and
+        validated (e.g. stats are in correct ranges).
         Return an error message or None
         """
-        raise Exception('Games must override the initialise_teams method!')
+        raise Exception('Games must override the initialise method!')
 
     def run_tick(self):
         """

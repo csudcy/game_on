@@ -1,0 +1,23 @@
+#loading {
+    background-color: rgba(200, 200, 200, 0.5);
+    background-image: url('loading.gif');
+    background-repeat: no-repeat;
+    background-position: 50%;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+#setup, #field {
+    border: 1px solid black;
+    float: left;
+    height: 700px;
+}
+
+#setup {
+    width: 200px;
+}
+
+#setup input {
+    width: 98%;
+}

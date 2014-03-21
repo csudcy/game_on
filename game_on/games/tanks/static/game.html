@@ -1,0 +1,61 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    GameOn - Tanks!
+{%endblock%}
+
+{%block head%}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{static_url}}/game.css" media="all" />
+    <script type="text/javascript">
+        //Save some constants for the game to use
+        var GAME_ID = '{{game_id}}',
+            MATCH_ID = '{{match_id}}',
+            DATA_URL = '{{data_url}}';
+    </script>
+    <script type="text/javascript" src="{{static_url}}/main.js"></script>
+    <script type="text/javascript" src="{{static_url}}/draw.js"></script>
+{%endblock%}
+
+{%block content%}
+    <div id="setup">
+        Team 1: <span id="team_1">?</span><br/>
+        <br/>
+        Team 2: <span id="team_2">?</span><br/>
+        <br/>
+
+        <hr/>
+
+        Interval: <span id="interval_display">100</span><br/>
+        <input id="interval" type="range" min="0" max="500" step="10" value="100"/><br/>
+
+        <hr/>
+
+        Time: <span id="tick_display">0</span> / <span id="tick_max_display">?</span><br/>
+        <input id="tick" type="range" min="0" max="500" step="1" value="0"/><br/>
+        <button
+            id="step_left"
+            class="icon_large"
+            style="background-image: url('{{static_url}}/step_left.png');">
+        </button>
+        <button
+            id="pause"
+            class="icon_large"
+            style="background-image: url('{{static_url}}/pause.png');">
+        </button>
+        <button
+            id="play"
+            class="icon_large"
+            style="background-image: url('{{static_url}}/play.png');">
+        </button>
+        <button
+            id="step_right"
+            class="icon_large"
+            style="background-image: url('{{static_url}}/step_right.png');">
+        </button>
+    </div>
+    <canvas id="field" width="1000" height="700">
+    </canvas>
+    <div id="loading">
+    </div>
+{%endblock%}

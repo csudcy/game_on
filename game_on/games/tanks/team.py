@@ -17,12 +17,29 @@ class Team(object):
         self.team = team_class()
         self.effect_colour = effect_colour
 
-    def init_players(self, board_width, board_height, min_x, max_x, min_y, max_y):
+    def init_players(
+            self,
+            board_width,
+            board_height,
+            min_x,
+            max_x,
+            min_y,
+            max_y,
+            enemy_direction,
+        ):
         """
         Initialise & validate players
         """
         #Initialise players
-        player_infos = self.team.init_players(board_width, board_height, min_x, max_x, min_y, max_y)
+        player_infos = self.team.init_players(
+            board_width,
+            board_height,
+            min_x,
+            max_x,
+            min_y,
+            max_y,
+            enemy_direction,
+        )
 
         #Validate players
         stat_info = {
@@ -129,6 +146,7 @@ class Team(object):
 
         Constant state for GameOn.Tanks.Team is:
             {
+                name: ,
                 player_count: ,
                 max_health: ,
                 effect_colour: , ('rgba(255, 0, 0, {alpha})')
@@ -136,6 +154,7 @@ class Team(object):
             },
         """
         return {
+            'name': self.team.name,
             'player_count': len(self.players),
             'max_health': self.max_health,
             'effect_colour': self.effect_colour,

@@ -1,7 +1,7 @@
-#Allow easy access to some things
-from constants import DIR
-
 class ExternalTeam(object):
+    #Give the team a nice name
+    name = None
+
     def init_players(self, board_width, board_height, min_x, max_x, min_y, max_y):
         """
         Initalise your players

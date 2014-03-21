@@ -1,4 +1,10 @@
+import math
+import os
+
+import cherrypy
+
 from game_on.games import base_game
+from game_on.tools import jinja_tool
 from . import external
 from . import team
 from . import projectile
@@ -11,23 +17,32 @@ class TankGame(base_game.BaseGame):
     base_team = external.ExternalTeam
     example_team_file = 'example_team.py'
 
+    cwd = os.path.dirname(os.path.abspath(__file__))
+    static_folder = os.path.join(cwd, 'static')
+    jinja2_env = jinja_tool.get_env(
+        extra_paths=static_folder
+    )
+
     #Tank specific properties
     width = 1000
     height = 800
-    projectiles = []
 
     #################################################
     #       Initialisation
     #################################################
 
-    def initialise_teams(self, team_classes):
+    def initialise(self, team_classes):
         """
-        Ensure the teams are created and are valid (e.g. stats are in correct ranges)
+        Initialise this game. This includes ensure the teams are created and
+        validated (e.g. stats are in correct ranges).
         Return an error message or None
         """
         #Initialise the teams
         self.team_1 = team.Team('team_1', team_classes[0], 'rgba(255, 255, 0, {alpha})')
         self.team_2 = team.Team('team_2', team_classes[1], 'rgba(128, 0, 128, {alpha})')
+
+        #Initialise other storage
+        self.projectiles = []
 
         #Initialise the players
         try:
@@ -38,6 +53,7 @@ class TankGame(base_game.BaseGame):
                 max_x = 0.25 * self.width,
                 min_y = 0.1  * self.height,
                 max_y = 0.9  * self.height,
+                enemy_direction = 0,
             )
 
             self.team_2.init_players(
@@ -47,6 +63,7 @@ class TankGame(base_game.BaseGame):
                 max_x = 0.95 * self.width,
                 min_y = 0.1  * self.height,
                 max_y = 0.9  * self.height,
+                enemy_direction = math.pi,
             )
         except Exception, ex:
             raise
@@ -96,7 +113,7 @@ class TankGame(base_game.BaseGame):
         """
         return {
             'team_1': self.team_1.get_tick_state(),
-            'team_2': self.team_1.get_tick_state(),
+            'team_2': self.team_2.get_tick_state(),
             'projectiles': [p.get_tick_state() for p in self.projectiles]
         }
 
