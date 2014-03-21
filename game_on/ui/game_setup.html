@@ -29,13 +29,6 @@
                     {%endfor%}
                 </optgroup>
             {%endif%}
-            {%if example_teams%}
-                <optgroup label="Example Teams">
-                    {%for team in example_teams%}
-                        <option value="{{team.id}}">{{team.name}}</option>
-                    {%endfor%}
-                </optgroup>
-            {%endif%}
         </select>
         <br/>
 

@@ -26,7 +26,7 @@ class TeamCrud(base_crud.BaseCrud):
                 prop['type'] = 'Related'
 
                 options = []
-                for game in games.GAMES_LIST:
+                for game in games.GAME_LIST:
                     options.append({
                         'label': game['name'],
                         'value': game['id'],
@@ -65,7 +65,6 @@ class TeamCrud(base_crud.BaseCrud):
             validation_errors.append('You must upload a file when creating a Team.')
 
         return validation_errors
-
 
 def mount_tree():
     return TeamCrud()

@@ -5,15 +5,15 @@ from sqlalchemy import or_
 
 from game_on import database as db
 from game_on import games
+from game_on.cfg import config
 
 
-MATCH_DIRECTORY = 'C:/dev/tanks/matches'
 MATCH_ID = '20140101T000000'
 
 class GameTree(object):
     def get_match_path(self, game_id, match_id):
         filename = '%s-%s.json' % (game_id, match_id)
-        path = os.path.join(MATCH_DIRECTORY, filename)
+        path = os.path.join(config['match']['folder'], filename)
         return path
 
     def get_teams(self, game_id):
@@ -21,6 +21,8 @@ class GameTree(object):
             db.Team
         ).filter(
             db.Team.game == game_id
+        ).order_by(
+            db.Team.name
         )
         if not cherrypy.request.user.is_admin:
             #Current user is not an admin so they only see public teams and their own teams
@@ -33,6 +35,7 @@ class GameTree(object):
         return teams
 
     @cherrypy.expose
+    @cherrypy.tools.jinja2('game_setup.html')
     def setup(self, game_id):
         """
         Display the setup page for a match of <game_id>
@@ -43,17 +46,30 @@ class GameTree(object):
         #Get teams for this game
         teams = self.get_teams(game_id)
 
-        #Get the setup data for this game
-        setup_data = game.setup(teams)
+        #Split teams into your, public, others
+        your_teams = []
+        public_teams = []
+        other_teams = []
+        for team in teams:
+            team_dict = {
+                'id': team.uuid,
+                'name': team.name,
+            }
+            if team.is_public:
+                public_teams.append(team_dict)
+            elif team.creator == cherrypy.request.user:
+                your_teams.append(team_dict)
+            else:
+                other_teams.append(team_dict)
 
         #Render the setup template
-        template = game.jinja2_env.get_template('setup.html')
-        setup_data.update({
-            'current_user': cherrypy.request.user,
+        return {
             'game_id': game_id,
             'static_url': '/go/game/static/%s' % game_id,
-        })
-        return template.render(setup_data)
+            'your_teams': your_teams,
+            'public_teams': public_teams,
+            'other_teams': other_teams,
+        }
 
     @cherrypy.expose
     def run(self, game_id, **params):

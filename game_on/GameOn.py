@@ -20,29 +20,10 @@ import cherrypy
 from game_on import tools
 from game_on import controllers
 from game_on import database as db
+from game_on import games
+from game_on.cfg import config
 from game_on.utils import log as log_utils
 from game_on.utils.json_tools import json_in_processor, json_out_handler
-
-config = {
-    'db': {
-        'name': 'game_on',
-        'host': '127.0.0.1',
-        'port': 5432,
-        'user': 'postgres',
-        'password': 'postgres',
-    },
-    'cherrypy': {
-        'host': '0.0.0.0',
-        'port': 8080,
-        'static_timeout_hours': 0,
-    },
-    'logging': {
-        'log_to_console': True,
-        'log_level': 'DEBUG',
-        'access_logging_enabled': False,
-        'disabled_loggers': [],
-    }
-}
 
 
 def initialise_db():
@@ -62,6 +43,18 @@ def initialise_db():
             is_admin = True,
         ))
         db.Session.commit()
+
+
+def initialise_games():
+    #Get the admin user for creating example teams
+    admin_user = db.Session.query(
+        db.User
+    ).filter(
+        db.User.is_admin == True
+    ).one()
+
+    #Go!
+    games.initialise_games(admin_user)
 
 
 def initialise_cherrypy():
@@ -143,6 +136,7 @@ def main():
 
     log_utils.configure_logging(config['logging'])
     initialise_db()
+    initialise_games()
     initialise_cherrypy()
     try:
         start_cherrypy()

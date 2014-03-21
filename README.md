@@ -4,9 +4,6 @@ Tanks
 A (fairly basic) 5-a-side tank simulation
 
 TODO:
-    Change backend to Python
-    Implement web socket to send udpates to frontend
-    Record web socket traffic to file for replays
     ? Keep track of matches and results?
     File uploads & versioning
     Download example team file

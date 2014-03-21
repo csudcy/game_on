@@ -22,7 +22,6 @@ class BaseGame(object):
 
     #The folder where static files for this game can be found (optional)
     #The static folder must have at least:
-    #  setup.html
     #  replay.html
     #  thumbnail.png
     static_folder = None
@@ -147,17 +146,23 @@ class BaseGame(object):
         """
         raise Exception('TODO')
 
-    """
-    Everything under this line must be overridden by real game classes
-    """
+    ##########################################################################
+    ##########################################################################
+    #   Everything under this line must be overridden by real game classes
+    ##########################################################################
+    ##########################################################################
 
     @classmethod
-    def setup(cls, teams):
+    def get_example_teams(self):
         """
-        Get all the data required to render setup.html
-        Return a dictionary of the data
+        Get any example teams which should be added to the team database
+        @return: A list of dictionaries like:
+            {
+                'name': 'A nice name',
+                'file': '/path/to/example/team.py'
+            }
         """
-        raise Exception('Games must override the setup method!')
+        raise Exception('Games must override the get_example_teams method!')
 
     def initialise(self, team_classes):
         """

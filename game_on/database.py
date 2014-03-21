@@ -8,7 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref
 
 from game_on import database_helper
-
+from game_on.cfg import config
 
 Base = declarative_base()
 
@@ -82,8 +82,8 @@ class User(ModelBase, Base):
 class Team(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
     name = sa.Column(sa.String(100), nullable=False)
-    description = sa.Column(sa.String(1000))
     is_public = sa.Column(sa.Boolean(), default=False)
+    path = sa.Column(sa.String(200), nullable=False)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     creator = sa_orm.relationship('User', backref=backref('teams', passive_deletes=True, cascade="all"))
 
@@ -108,3 +108,8 @@ class Match(ModelBase, Base):
     #setattr(team_2_uuid, 'related_model', Team)
     setattr(creator_uuid, 'related_name', 'creator')
     setattr(creator_uuid, 'related_model', User)
+
+    def get_match_path(self, game_id, match_id):
+        filename = '%s.json' % self.uuid
+        path = os.path.join(config['match']['folder'], filename)
+        return path
