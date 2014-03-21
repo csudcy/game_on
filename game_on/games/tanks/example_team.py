@@ -80,5 +80,5 @@ class Team(external.ExternalTeam):
         @param: live_players A list of your players which are still alive
         @param: seen A list of {x:x, y:y} of seen enemy players
         """
-        #We're really dumb, nothing to do here!
+        #We're really nice, nothing to do here!
         pass

@@ -1,11 +1,17 @@
+import random
+
 from game_on.games.tanks import external
 
 
 class Team(external.ExternalTeam):
     #Give the team a nice name
-    name = 'Dumb Mover'
+    name = 'Passive Runner (Random)'
 
     def init_players(self, PlayerClass, board_width, board_height, min_x, max_x, min_y, max_y, enemy_direction):
+        #Need these later...
+        self.board_width = board_width
+        self.board_height = board_height
+
         #Initialise the players
         players = []
         x = (min_x + max_x) / 2
@@ -26,14 +32,17 @@ class Team(external.ExternalTeam):
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
             )
-            player.set_target(
-                0.5*board_width,
-                0.5*board_height,
-                250
-            )
+            self.set_random_target(player)
             players.append(player)
         return players
 
+    def set_random_target(self, player):
+        player.set_target(
+            random.randint(0, self.board_width),
+            random.randint(0, self.board_height),
+        )
+
     def run_tick(self, live_players, seen):
-        #We're really dumb, nothing to do here!
-        pass
+        for player in live_players:
+            if player.in_target:
+                self.set_random_target(player)

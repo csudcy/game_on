@@ -3,13 +3,9 @@ from game_on.games.tanks import external
 
 class Team(external.ExternalTeam):
     #Give the team a nice name
-    name = 'Dumb Runner (Ordered)'
+    name = 'Passive Mover'
 
     def init_players(self, PlayerClass, board_width, board_height, min_x, max_x, min_y, max_y, enemy_direction):
-        #Need these later...
-        self.board_width = board_width
-        self.board_height = board_height
-
         #Initialise the players
         players = []
         x = (min_x + max_x) / 2
@@ -31,19 +27,13 @@ class Team(external.ExternalTeam):
                 turret_direction=enemy_direction,
             )
             player.set_target(
-                target_x,
-                player.y
+                0.5*board_width,
+                0.5*board_height,
+                250
             )
             players.append(player)
         return players
 
     def run_tick(self, live_players, seen):
-        for player in live_players:
-            if player.in_target:
-                target_x = 0.8 * self.board_width
-                if player.x > 0.5 * self.board_width:
-                    target_x = 0.2 * self.board_width
-                player.set_target(
-                    target_x,
-                    player.target_y
-                )
+        #We're really nice, nothing to do here!
+        pass
