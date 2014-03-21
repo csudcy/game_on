@@ -1,3 +1,6 @@
+
+
+
 from game_on.games.tanks import external
 
 
@@ -10,9 +13,6 @@ class Team(external.ExternalTeam):
         players = []
         x = (min_x + max_x) / 2
         y_step = (max_y - min_y) / 4
-        target_x = 0.8*board_width
-        if x > 0.5 * board_width:
-            target_x = 0.2 * board_width
         for i in xrange(5):
             player = PlayerClass(
                 x=x,
