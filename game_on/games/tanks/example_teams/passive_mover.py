@@ -3,7 +3,7 @@ from game_on.games.tanks import external
 
 class Team(external.ExternalTeam):
     #Give the team a nice name
-    name = 'Passive Mover'
+    name = 'Passive (Mover)'
 
     def init_players(self, PlayerClass, board_width, board_height, min_x, max_x, min_y, max_y, enemy_direction):
         #Initialise the players
