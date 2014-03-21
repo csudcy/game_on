@@ -113,12 +113,6 @@ class BaseGame(object):
                     match['status'] = 'Finished (Too many ticks)'
                     break
 
-                from pprint import pprint as pp
-                #pp(match)
-
-                if len(match['tick_state']) % 100 == 0:
-                    print len(match['tick_state'])
-
                 #Run a tick
                 self.run_tick()
 

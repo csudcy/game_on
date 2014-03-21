@@ -122,7 +122,6 @@ class Projectile(object):
                 #We are still exploding
                 damage_radius = float(self.blast_radius)
                 damage_radius *= float(self.explosion_age) / float(self.expand_age)
-                print damage_radius
                 self.game.damage(
                     self.current_x,
                     self.current_y,
