@@ -18,10 +18,10 @@ class Team(external.ExternalTeam):
                 x=x,
                 y=min_y + i * y_step,
 
-                speed=0.25,
-                sight=0.25,
-                health=0.25,
-                blast_radius=0.25,
+                speed=0,
+                sight=0,
+                health=0,
+                blast_radius=1,
 
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
@@ -35,5 +35,5 @@ class Team(external.ExternalTeam):
                 #We're stupid, just fire at a random elevation in front
                 player.fire(
                     #Make a random elevation somewhere between horizontal & vertical
-                    random.uniform(1.0/8 * math.pi, 3.0/8 * math.pi)
+                    random.uniform(1.0/32 * math.pi, 5.0/32 * math.pi)
                 )

@@ -1,7 +1,7 @@
 from . import utils
 
 class Projectile(object):
-    show_age = 5
+    expand_age = 5
     fade_age = 15
     max_age = 20
     speed = 10
@@ -55,13 +55,13 @@ class Projectile(object):
 
         Constant state for GameOn.Tanks.Projectile is:
             {
-                show_age: 5,
+                expand_age: 5,
                 fade_age: 15,
                 max_age: 20,
             }
         """
         return {
-            'show_age': Projectile.show_age,
+            'expand_age': Projectile.expand_age,
             'fade_age': Projectile.fade_age,
             'max_age': Projectile.max_age,
         }
@@ -118,10 +118,10 @@ class Projectile(object):
             self.diff_z += utils.GRAVITY
         else:
             #Is it can be assplosion tiem nao?
-            if self.explosion_age < self.show_age:
+            if self.explosion_age < self.expand_age:
                 #We are still exploding
                 damage_radius = float(self.blast_radius)
-                damage_radius *= float(self.explosion_age) / float(self.show_age)
+                damage_radius *= float(self.explosion_age) / float(self.expand_age)
                 print damage_radius
                 self.game.damage(
                     self.current_x,
