@@ -5,10 +5,10 @@ from . import passive_mover
 from . import passive_runner_ordered
 from . import passive_runner_random
 
-from . import aggresive_static_random
-from . import aggresive_mover_random
-#from . import aggresive_runner_ordered_random
-#from . import aggresive_runner_random_random
+from . import aggressive_static_random
+from . import aggressive_mover_random
+from . import aggressive_runner_ordered_random
+from . import aggressive_runner_random_random
 
 
 cwd = os.path.dirname(os.path.abspath(__file__))
@@ -32,19 +32,19 @@ EXAMPLE_TEAMS = [
     },
 
     {
-        'name': aggresive_static_random.Team.name,
-        'path': os.path.join(cwd, 'aggresive_static_random.py')
+        'name': aggressive_static_random.Team.name,
+        'path': os.path.join(cwd, 'aggressive_static_random.py')
     },
     {
-        'name': aggresive_mover_random.Team.name,
-        'path': os.path.join(cwd, 'aggresive_mover_random.py')
+        'name': aggressive_mover_random.Team.name,
+        'path': os.path.join(cwd, 'aggressive_mover_random.py')
     },
-    #{
-    #    'name': aggresive_runner_ordered_random.Team.name,
-    #    'path': os.path.join(cwd, 'aggresive_runner_ordered_random.py')
-    #},
-    #{
-    #    'name': aggresive_runner_random_random.Team.name,
-    #    'path': os.path.join(cwd, 'aggresive_runner_random_random.py')
-    #},
+    {
+        'name': aggressive_runner_ordered_random.Team.name,
+        'path': os.path.join(cwd, 'aggressive_runner_ordered_random.py')
+    },
+    {
+        'name': aggressive_runner_random_random.Team.name,
+        'path': os.path.join(cwd, 'aggressive_runner_random_random.py')
+    },
 ]
