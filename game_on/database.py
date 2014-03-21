@@ -79,13 +79,32 @@ class User(ModelBase, Base):
         return self.password_hash == check_password_hash
 
 
-class Player(ModelBase, Base):
+class Team(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
     name = sa.Column(sa.String(100), nullable=False)
     description = sa.Column(sa.String(1000))
     is_public = sa.Column(sa.Boolean(), default=False)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    creator = sa_orm.relationship('User', backref=backref('players', passive_deletes=True, cascade="all"))
+    creator = sa_orm.relationship('User', backref=backref('teams', passive_deletes=True, cascade="all"))
+
     #Add extra info because I cant work out how to get it through f**king SqlAlchemy!
+    setattr(creator_uuid, 'related_name', 'creator')
+    setattr(creator_uuid, 'related_model', User)
+
+
+class Match(ModelBase, Base):
+    game = sa.Column(sa.String(100), nullable=False)
+    team_1_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    team_1 = sa_orm.relationship('Team', foreign_keys=[team_1_uuid], backref=backref('matches_1', passive_deletes=True, cascade="all"))
+    team_2_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    team_2 = sa_orm.relationship('Team', foreign_keys=[team_2_uuid], backref=backref('matches_2', passive_deletes=True, cascade="all"))
+    creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    creator = sa_orm.relationship('User', backref=backref('matches', passive_deletes=True, cascade="all"))
+
+    #Add extra info because I cant work out how to get it through f**king SqlAlchemy!
+    setattr(team_1_uuid, 'related_name', 'team')
+    setattr(team_1_uuid, 'related_model', Team)
+    #setattr(team_2_uuid, 'related_name', 'team')
+    #setattr(team_2_uuid, 'related_model', Team)
     setattr(creator_uuid, 'related_name', 'creator')
     setattr(creator_uuid, 'related_model', User)

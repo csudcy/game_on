@@ -12,6 +12,19 @@ TODO:
     Download example team file
     ? Online editor
 
+TANKS TODO:
+    Movement prediciton
+    Incorporate tank direction & speed when firing
+    Check for victory
+    Max proofing
+
+TANKS TO-REDO:
+    Show current target on UI
+    Health
+    effect_colour
+
+
+
 New DB structure:
     User
         UUID

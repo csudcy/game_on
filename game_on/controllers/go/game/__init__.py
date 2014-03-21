@@ -36,8 +36,8 @@ class GameTree(object):
         from game_on.games.tanks import game
         from game_on.games.tanks import example_teams
         tg = game.TankGame([
-            example_teams.dumb_static.Team,
-            example_teams.dumb_mover.Team,
+            example_teams.dumb_runner_random.Team,
+            example_teams.dumb_runner_ordered.Team,
         ])
         match = tg.run()
 

@@ -4,9 +4,9 @@ from game_on import database as db
 from game_on import games
 from game_on.controllers.go.crud import base_crud
 
-class PlayerCrud(base_crud.BaseCrud):
+class TeamCrud(base_crud.BaseCrud):
     db = db
-    model = db.Player
+    model = db.Team
     readonly_properties = ['uuid', 'creator_uuid']
 
     def can_write(self, user, obj):
@@ -17,7 +17,7 @@ class PlayerCrud(base_crud.BaseCrud):
 
     def get_form_data(self, obj):
         #Get default form properties
-        form_data = super(PlayerCrud, self).get_form_data(obj)
+        form_data = super(TeamCrud, self).get_form_data(obj)
 
         #Override form properties
         for prop in form_data:
@@ -52,20 +52,20 @@ class PlayerCrud(base_crud.BaseCrud):
         obj.creator = cherrypy.request.user
 
         #Remove the extra form properties
-        player_file = data.pop('file', None)
+        team_file = data.pop('file', None)
 
         #Deal with default form properties
-        validation_errors = super(PlayerCrud, self).set_form_data(obj, data)
+        validation_errors = super(TeamCrud, self).set_form_data(obj, data)
 
         #Deal with extra form properties
-        if player_file.length:
+        if team_file.length:
             #Save the file to disk
-            raise Exception('TODO: Save player file')
+            raise Exception('TODO: Save team file')
         elif not obj.uuid:
-            validation_errors.append('You must upload a file when creating a Player.')
+            validation_errors.append('You must upload a file when creating a Team.')
 
         return validation_errors
 
 
 def mount_tree():
-    return PlayerCrud()
+    return TeamCrud()

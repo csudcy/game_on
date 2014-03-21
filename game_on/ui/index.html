@@ -22,21 +22,21 @@
     </ul>
 
     <h3>
-        Players
-        <a href="crud/player/retrieve/">
-            <span class="icon_small icon_retrieve" title="Manage Players"></span>
+        Teams
+        <a href="crud/team/retrieve/">
+            <span class="icon_small icon_retrieve" title="Manage Teams"></span>
         </a>
     </h3>
-    {%if players%}
+    {%if teams%}
         <ul>
-            {%for player in players%}
-                <li>{{player.name}}</li>
+            {%for team in teams%}
+                <li>{{team.name}}</li>
             {%endfor%}
         </ul>
     {%else%}
-        You don't have any players yet!
-        <a href="crud/player/create/">
-            <span class="icon_small icon_create" title="Create Player"></span>
+        You don't have any Teams yet!
+        <a href="crud/team/create/">
+            <span class="icon_small icon_create" title="Create Team"></span>
         </a>
     {%endif%}
 
