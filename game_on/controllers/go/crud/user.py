@@ -1,7 +1,7 @@
 import cherrypy
 
 from game_on import database as db
-from game_on.controllers.auth.crud import base_crud
+from game_on.controllers.go.crud import base_crud
 
 class UserCrud(base_crud.BaseCrud):
     db = db

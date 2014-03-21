@@ -1,5 +1,5 @@
 from game_on import database as db
-from game_on.controllers.auth.api import base_api
+from game_on.controllers.go.api import base_api
 
 class UserAPI(base_api.RestAPI):
     db = db

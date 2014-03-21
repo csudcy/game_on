@@ -2,7 +2,7 @@ import cherrypy
 
 from game_on import database as db
 from game_on import games
-from game_on.controllers.auth.crud import base_crud
+from game_on.controllers.go.crud import base_crud
 
 class PlayerCrud(base_crud.BaseCrud):
     db = db
@@ -26,10 +26,10 @@ class PlayerCrud(base_crud.BaseCrud):
                 prop['type'] = 'Related'
 
                 options = []
-                for game in games.get_games().keys():
+                for game in games.GAMES_LIST:
                     options.append({
-                        'label': game,
-                        'value': game,
+                        'label': game['name'],
+                        'value': game['id'],
                     })
                 prop['options'] = options
 

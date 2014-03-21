@@ -10,20 +10,11 @@ class Tree(object):
     @cherrypy.expose
     @cherrypy.tools.jinja2(template = 'index.html')
     def index(self):
-        #Get the list of games
-        game_list = []
-        for id, game in games.get_games().items():
-            game_list.append({
-                'id': id,
-                'name': game.name,
-                'description': game.description,
-            })
-
         #TODO: Get the list of players for the current user
         players = []
 
         return {
-            'games': game_list,
+            'games': games.GAME_LIST,
             'players': players,
         }
 

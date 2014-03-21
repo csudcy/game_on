@@ -32,7 +32,7 @@ class Tree(object):
                 #Everything is good
                 cherrypy.session['user_uuid'] = user.uuid
                 cherrypy.session.save()
-                raise cherrypy.HTTPRedirect(redirect or '/auth/')
+                raise cherrypy.HTTPRedirect(redirect or '/go/')
 
         #If we get here, something's wrong :(
         url = '/?error=Username or password incorrect'

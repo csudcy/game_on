@@ -16,7 +16,6 @@ sys.path.insert(0, os.path.join(LIB_PATH, 'cherrypy'))
 
 import cherrypy
 
-#DO NOT IMPORT HERE ANYTHING THAT DIRECTLY OR INDIRECTLY WOULD REQUIRE THE CUSTOM CFG TO BE LOADED
 #Have to import tools before controllers
 from game_on import tools
 from game_on import controllers
@@ -89,10 +88,10 @@ def initialise_cherrypy():
                 'tools.json_in.processor': json_in_processor,
                 'tools.json_out.handler': json_out_handler,
             },
-            '/auth': {
+            '/go': {
                 'tools.auth_tool.on': True,
             },
-            '/auth/crud': {
+            '/go/crud': {
                 #Make sure everything has a trailing slash so relative links work
                 'tools.forced_trailing_slash_tool.on': True,
             },
