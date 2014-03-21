@@ -38,3 +38,7 @@
 .icon_play {
     background-image: url('/static/img/icons/play.png');
 }
+
+.icon_settings {
+    background-image: url('/static/img/icons/settings.png');
+}

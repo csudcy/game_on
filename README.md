@@ -4,22 +4,34 @@ Tanks
 A (fairly basic) 5-a-side tank simulation
 
 TODO:
-    File uploads & versioning
+    Add create_date to match
+        Order list by reverse
+        Display on list
+    Improve index page
+        Latest matches
+        ? Use game thumbnails?
+    File uploads
     Download example team file
-    ? Online editor
     Play matches asynchronously
-    ? Play tournaments? Bracketed, all v all/matrix
+    ? Play tournaments?
+        Best of 3
+        Bracketed
+        All v all/matrix
+    ? Online editor?
+    ? File versioning?
 
 TANKS TODO:
-    Movement prediciton
     Incorporate tank direction & speed when firing
     Check for victory
     Max proofing
+    ? Show current target on UI?
 
-TANKS TO-REDO:
-    Show current target on UI
-    Health
-
+AI TODO:
+    Movement prediciton
+    Keep spotters moving
+    Danger close
+    ? Run away from enemies?
+        Turn back if they go out of sight though
 
 New DB structure:
     User

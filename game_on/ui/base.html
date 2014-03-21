@@ -21,11 +21,18 @@
             </span>
             {%if current_user%}
                 <span class="header_user">
-                    <a href="/go/crud/user/update/{{current_user.uuid}}/">
-                        {{current_user.name}}
-                    </a>
+
+
+                    {%if current_user.is_admin%}
+                        <a href="crud/user/retrieve/">
+                            <span class="icon_small icon_settings" title="Manage Users"/>
+                        </a>
+                    {%endif%}
+
+
+                    {{current_user.name}}
                     <a href="/logout">
-                        <span class="icon_small icon_logout" title="Logout"></span>
+                        <span class="icon_small icon_logout" title="Logout"/>
                     </a>
                 </span>
             {%endif%}

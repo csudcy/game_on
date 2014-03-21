@@ -39,6 +39,7 @@ State dictionaries are something like this:
                     target_x: ,
                     target_y: ,
                     target_r: ,
+                    health: ,
                 },
                 ...
             ]

@@ -192,6 +192,7 @@ class Player(object):
                 target_x: ,
                 target_y: ,
                 target_r: ,
+                health: ,
             }
         """
         return {
@@ -204,6 +205,7 @@ class Player(object):
             'target_x': self.target_x,
             'target_y': self.target_y,
             'target_r': self.target_r,
+            'health': self.health,
         }
 
     #################################################
