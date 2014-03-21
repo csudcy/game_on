@@ -21,6 +21,10 @@ class BaseGame(object):
     example_team_file = None
 
     #The folder where static files for this game can be found (optional)
+    #The static folder must have at least:
+    #  setup.html
+    #  replay.html
+    #  thumbnail.png
     static_folder = None
 
     #The jinja2 environment used for rendering UIs for this game
@@ -146,6 +150,14 @@ class BaseGame(object):
     """
     Everything under this line must be overridden by real game classes
     """
+
+    @classmethod
+    def setup(cls, teams):
+        """
+        Get all the data required to render setup.html
+        Return a dictionary of the data
+        """
+        raise Exception('Games must override the setup method!')
 
     def initialise(self, team_classes):
         """

@@ -3,11 +3,12 @@ import os
 
 import cherrypy
 
+from . import example_teams
+from . import external
+from . import projectile
+from . import team
 from game_on.games import base_game
 from game_on.tools import jinja_tool
-from . import external
-from . import team
-from . import projectile
 
 
 class TankGame(base_game.BaseGame):
@@ -26,6 +27,49 @@ class TankGame(base_game.BaseGame):
     #Tank specific properties
     width = 1000
     height = 800
+
+    #################################################
+    #       Setup
+    #################################################
+
+    @classmethod
+    def setup(cls, teams):
+        """
+        Get all the data required to render setup.html
+        Return a dictionary of the data
+        """
+        #Split teams into your, public, others
+        your_teams = []
+        public_teams = []
+        other_teams = []
+        for team in teams:
+            team_dict = {
+                'id': team.uuid,
+                'name': team.name,
+            }
+            if team.creator == cherrypy.request.user:
+                your_teams.append(team_dict)
+            elif team.is_public:
+                public_teams.append(team_dict)
+            else:
+                other_teams.append(team_dict)
+
+        #Load example teams
+        _example_teams = []
+        for team in example_teams.EXAMPLE_TEAMS:
+            _example_teams.append({
+                'id': 'example-%s' % team.__class__.__name__,
+                'name': team.name,
+            })
+        _example_teams.sort(key=lambda t: t['name'])
+
+        #Return the data
+        return {
+            'your_teams': your_teams,
+            'public_teams': public_teams,
+            'other_teams': other_teams,
+            'example_teams': _example_teams,
+        }
 
     #################################################
     #       Initialisation

@@ -1,7 +1,9 @@
 import os
 
 import cherrypy
+from sqlalchemy import or_
 
+from game_on import database as db
 from game_on import games
 
 
@@ -14,16 +16,44 @@ class GameTree(object):
         path = os.path.join(MATCH_DIRECTORY, filename)
         return path
 
+    def get_teams(self, game_id):
+        teams = db.Session.query(
+            db.Team
+        ).filter(
+            db.Team.game == game_id
+        )
+        if not cherrypy.request.user.is_admin:
+            #Current user is not an admin so they only see public teams and their own teams
+            teams = teams.filter(
+                _or(
+                    db.Team.is_public == True,
+                    db.Team.creator == cherrypy.request.user
+                )
+            )
+        return teams
+
     @cherrypy.expose
     def setup(self, game_id):
         """
         Display the setup page for a match of <game_id>
         """
-        #TODO: Implement!
-        pass
+        #make sure the game exists
+        game = games.GAME_DICT[game_id]
 
-        #HAX
-        raise cherrypy.HTTPRedirect('../run/%s/' % game_id)
+        #Get teams for this game
+        teams = self.get_teams(game_id)
+
+        #Get the setup data for this game
+        setup_data = game.setup(teams)
+
+        #Render the setup template
+        template = game.jinja2_env.get_template('setup.html')
+        setup_data.update({
+            'current_user': cherrypy.request.user,
+            'game_id': game_id,
+            'static_url': '/go/game/static/%s' % game_id,
+        })
+        return template.render(setup_data)
 
     @cherrypy.expose
     def run(self, game_id, **params):
@@ -68,9 +98,11 @@ class GameTree(object):
         """
         Replay the selected <match_id> for <game_id>
         """
-        #TODO: Implement!
+        #Get the game
         game = games.GAME_DICT[game_id]
-        template = game.jinja2_env.get_template('game.html')
+
+        #Render the replay template
+        template = game.jinja2_env.get_template('replay.html')
         return template.render({
             'current_user': cherrypy.request.user,
             'game_id': game_id,

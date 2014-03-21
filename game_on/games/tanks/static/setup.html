@@ -1,0 +1,44 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    GameOn - Tanks! - Setup
+{%endblock%}
+
+{%block content%}
+    <form action="{{post_url}}" method="post">
+        Team 1:
+        <select>
+            {%if your_teams%}
+                <optgroup label="Your Teams">
+                    {%for team in your_teams%}
+                        <option value="{{team.id}}">{{team.name}}</option>
+                    {%endfor%}
+                </optgroup>
+            {%endif%}
+            {%if other_teams%}
+                <optgroup label="Other Teams">
+                    {%for team in other_teams%}
+                        <option value="{{team.id}}">{{team.name}}</option>
+                    {%endfor%}
+                </optgroup>
+            {%endif%}
+            {%if public_teams%}
+                <optgroup label="Public Teams">
+                    {%for team in public_teams%}
+                        <option value="{{team.id}}">{{team.name}}</option>
+                    {%endfor%}
+                </optgroup>
+            {%endif%}
+            {%if example_teams%}
+                <optgroup label="Example Teams">
+                    {%for team in example_teams%}
+                        <option value="{{team.id}}">{{team.name}}</option>
+                    {%endfor%}
+                </optgroup>
+            {%endif%}
+        </select>
+        <br/>
+
+        Team 2:
+    </form>
+{%endblock%}
