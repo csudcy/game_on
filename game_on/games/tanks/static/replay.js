@@ -71,7 +71,7 @@ $(document).ready(function() {
             }
         }
     }
-    setInterval(timer, 50);
+    setInterval(timer, 1);
 
     //// Rendering
     var match;
@@ -93,23 +93,30 @@ $(document).ready(function() {
     set_tick(0);
 
     //Load the data
-    $.get(DATA_URL).success(function(body, result, jqxhr) {
-        //We now have the match data
-        match = JSON.parse(body);
-        //console.log(match);
+    $.get(DATA_URL).success(
+        function(body, result, jqxhr) {
+            //We now have the match data
+            match = JSON.parse(body);
+            //console.log(match);
 
-        //Show some info from the match
-        $('#tick').attr('max', match.tick_count-1);
-        $('#tick_max_display').text(match.tick_count-1);
-        $('#field').attr('width', match.constant_state.board.width);
-        $('#field').attr('height', match.constant_state.board.height);
-        $('#team_1').text(match.constant_state.team_1.name);
-        $('#team_2').text(match.constant_state.team_2.name);
+            //Show some info from the match
+            $('#tick').attr('max', match.tick_count-1);
+            $('#tick_max_display').text(match.tick_count-1);
+            $('#field').attr('width', match.constant_state.board.width);
+            $('#field').attr('height', match.constant_state.board.height);
+            $('#team_1').text(match.constant_state.team_1.name);
+            $('#team_2').text(match.constant_state.team_2.name);
 
-        //Hide the loading div
-        $('#loading').hide();
+            //Hide the loading div
+            $('#loading').hide();
 
-        //Show the first frame!
-        render_tick();
-    });
+            //Show the first frame!
+            render_tick();
+        }
+    ).error(
+        function() {
+            alert('Error loading replay file!');
+            window.location = MATCH_LIST_URL;
+        }
+    );
 });

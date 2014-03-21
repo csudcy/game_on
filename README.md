@@ -4,10 +4,11 @@ Tanks
 A (fairly basic) 5-a-side tank simulation
 
 TODO:
-    ? Keep track of matches and results?
     File uploads & versioning
     Download example team file
     ? Online editor
+    Play matches asynchronously
+    ? Play tournaments? Bracketed, all v all/matrix
 
 TANKS TODO:
     Movement prediciton
@@ -18,8 +19,6 @@ TANKS TODO:
 TANKS TO-REDO:
     Show current target on UI
     Health
-    effect_colour
-
 
 
 New DB structure:

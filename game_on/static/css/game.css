@@ -1,0 +1,6 @@
+.match_team {
+    width: 250px;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+}

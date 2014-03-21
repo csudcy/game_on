@@ -33,7 +33,7 @@ class GameTree(object):
         """
         Display the setup page for a match of <game_id>
         """
-        #make sure the game exists
+        #Find the game
         game = games.GAME_DICT[game_id]
 
         #Get teams for this game
@@ -100,12 +100,62 @@ class GameTree(object):
         }
 
     @cherrypy.expose
+    @cherrypy.tools.jinja2('game_matches.html')
     def matches(self, game_id):
         """
         Display the list of matches for <game_id>
         """
-        #TODO: Implement!
-        pass
+        #Find the game
+        game = games.GAME_DICT[game_id]
+
+        #Find your matches
+        your_matches = db.Session.query(
+            db.Match
+        ).filter(
+            db.Match.creator == cherrypy.request.user
+        )
+
+        #Find matches your team has been used in (that aren't your matchs)
+        your_teams = db.Session.query(
+            db.Team
+        ).filter(
+            db.Team.creator == cherrypy.request.user,
+        )
+        team_matches = db.Session.query(
+            db.Match
+        ).filter(
+            or_(
+                db.Match.team_1 in your_teams,
+                db.Match.team_2 in your_teams,
+            )
+        )
+
+        #Transform for rendering
+        def get_matches_list(matches):
+            match_list = []
+            for match in matches:
+                match_list.append({
+                    'uuid': match.uuid,
+                    'team_1': match.team_1.name,
+                    'team_2': match.team_2.name,
+                })
+            return match_list
+
+        #Render
+        return {
+            'game_id': game_id,
+            'game': game,
+            'match_sections': [
+                {
+                    'type': 'Your Matches',
+                    'matches': get_matches_list(your_matches),
+                },
+                {
+                    'type': 'Team Matches',
+                    'matches': get_matches_list(team_matches),
+                },
+            ],
+        }
 
     @cherrypy.expose
     def replay(self, match_uuid):
