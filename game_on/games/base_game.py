@@ -153,7 +153,8 @@ class BaseGame(object):
         @return: A list of dictionaries like:
             {
                 'name': 'A nice name',
-                'file': '/path/to/example/team.py'
+                'file': '/path/to/example/team.py',
+                'is_public': False, (optional, default True)
             }
         """
         raise Exception('Games must override the get_example_teams method!')

@@ -40,7 +40,8 @@ class TankGame(base_game.BaseGame):
         @return: A list of dictionaries like:
             {
                 'name': 'A nice name',
-                'file': '/path/to/example/team.py'
+                'file': '/path/to/example/team.py',
+                'is_public': False, (optional, default True)
             }
         """
         return example_teams.EXAMPLE_TEAMS

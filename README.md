@@ -1,66 +1,39 @@
-Tanks
-=====
+GameOn
+======
+
+A multi-game simulator/challenge which allows users to upload teams which
+can then compete against other teams.
+
+Features:
+  * Multiple games (only 1 so far though...)
+  * Users can make as many teams as they want
+  * Matches can be replayed at any time
+
+Coming up:
+  * Improve index page
+    * Latest matches
+    * ? Use game thumbnails?
+  * File uploads
+  * Download example team file
+  * Play matches asynchronously
+  * Tournaments
+    * Best of 3
+    * ? Bracketed?
+    * ? All v all/matrix?
+  * ? Online editor?
+  * ? File versioning?
+  * Remove inline styles
+  * User creation
+
+GameOn.Tanks
+============
 
 A (fairly basic) 5-a-side tank simulation
 
-TODO:
-    Improve index page
-        Latest matches
-        ? Use game thumbnails?
-    File uploads
-    Download example team file
-    Play matches asynchronously
-    ? Play tournaments?
-        Best of 3
-        Bracketed
-        All v all/matrix
-    ? Online editor?
-    ? File versioning?
-    Remove inline styles
+Features:
+  * User allocatable stats (max speed, sight, health, blast radius)
+  * TODO: Fill this in...
 
-TANKS TODO:
-    Resize canvas with window
-    Max proofing
-
-AI TODO:
-    Movement prediciton
-    Keep spotters moving
-    Danger close
-    ? Run away from enemies?
-        Turn back if they go out of sight though
-
-New DB structure:
-    User
-        UUID
-        Username
-        PasswordHash
-        IsAdmin
-    Game
-        UUID
-        Name
-        Description
-    GameFile
-        UUID
-        GameUUID
-        Filename
-    GameFileVersion
-        UUID
-        GameFileUUID
-        Path
-        CreateDate
-    Player
-        UUID
-        GameUUID
-        Name
-        Description
-        IsPublic
-        CreatorUUID
-    PlayerFile
-        UUID
-        PlayerUUID
-        Filename
-    PlayerFileVersion
-        UUID
-        PlayerFileUUID
-        Path
-        CreateDate
+Coming up:
+  * Resize canvas with window
+  * Max proofing

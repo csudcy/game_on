@@ -31,7 +31,7 @@ def initialise_games(admin_user):
                 team = db.Team(
                     game = game_id,
                     name = example_team['name'],
-                    is_public = True,
+                    is_public = example_team.get('is_public', True),
                     path = example_team['path'],
                     creator = admin_user,
                 )

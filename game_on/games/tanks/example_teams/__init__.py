@@ -1,3 +1,11 @@
+"""
+Smart AI TODO:
+  * Movement prediciton
+  * Keep spotters moving
+  * Danger close
+  * ? Run away from enemies?
+    * Turn back if they go out of sight though
+"""
 import os
 
 from . import aggressive_static_random
@@ -52,6 +60,7 @@ EXAMPLE_TEAMS = [
 
     {
         'name': test_runner_ordered_random.Team.name,
-        'path': os.path.join(cwd, 'test_runner_ordered_random.py')
+        'path': os.path.join(cwd, 'test_runner_ordered_random.py'),
+        'is_public': False,
     },
 ]

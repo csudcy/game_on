@@ -19,9 +19,9 @@ config = {
         'disabled_loggers': [],
     },
     'team': {
-        'folder': 'C:/dev/tanks/teams'
+        'folder': 'C:/dev/game_on/teams'
     },
     'match': {
-        'folder': 'C:/dev/tanks/matches'
+        'folder': 'C:/dev/game_on/matches'
     },
 }
