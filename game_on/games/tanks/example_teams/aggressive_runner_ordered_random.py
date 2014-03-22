@@ -1,4 +1,5 @@
 import math
+import random
 
 from game_on.games.tanks import external
 

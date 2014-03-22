@@ -101,7 +101,7 @@ $(document).ready(function() {
 
     //// Make sure we start in the right state
     pause();
-    set_interval(100);
+    set_interval(25);
     set_tick(0);
 
     //Load the data

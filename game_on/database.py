@@ -96,7 +96,7 @@ class Team(ModelBase, Base):
         Load the class referenced by self.path
         """
         import imp
-        module_name = 'game_on.games.%s.loaded_team.%s' % (self.game, self.uuid)
+        module_name = 'game_on.games.%s.external.%s' % (self.game, self.uuid)
         module = imp.load_source(module_name, self.path)
         return module.Team
 
