@@ -32,7 +32,7 @@ def connect_to_db(db_config):
 class ModelBase(
         database_helper.TableNameMixin,
         database_helper.UuidMixin,
-        database_helper.DictMixin):
+        database_helper.CreateDateMixin):
 
     @classmethod
     def _get_objects_for_user(self, user):

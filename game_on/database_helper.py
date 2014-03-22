@@ -5,6 +5,7 @@ import os
 
 #Do not remove these imports (some of them are just to allow easier importing in other modules)
 from sqlalchemy import exc as sa_exc
+from sqlalchemy import func as sa_func
 from sqlalchemy import orm as sa_orm
 from sqlalchemy import types as sa_types
 from sqlalchemy.ext.declarative import declarative_base
@@ -109,64 +110,5 @@ class UuidMixin(object):
     uuid = sa.Column(sa.String(36), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
 
 
-class DictMixin(object):
-    to_dict_ignored_columns = ()
-
-    def to_dict(self, include=None):
-        """
-        Serialise this model instance.
-        Include is a dictionary of related objects to include in the serialised JSON.
-        E.g. for Advertiser we could have
-        {
-            'screen_advertising_company': {},
-            'brands': {
-                'industry_subsector': {}
-            }
-        }
-        BE CAREFUL: There are currently no size checks!
-        NOTE: This will not serialise accross databases
-        Heavily influenced by Producer & http://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json
-        """
-        object_dict = {}
-        for column in self.__table__.columns:
-            if column.name in self.to_dict_ignored_columns:
-                continue
-            val = getattr(self, column.name)
-            #See if we need to do any conversions
-            if isinstance(val.__class__, DeclarativeMeta) or (isinstance(val, list) and len(val) > 0 and isinstance(val[0].__class__, DeclarativeMeta)):
-                #This is a relation, check if we're expanding it
-                if column.name in include:
-                    raise Exception('We cant serialise sub objects yet!')
-                    #We want to serialise this object too
-                    func = lambda obj: obj.to_dict(include[column.name])
-                else:
-                    #Just provide the id(s)
-                    func = lambda obj: obj.uuid
-                #Now actually serialise them
-                if isinstance(val, list):
-                    val = [func(v) for v in val]
-                else:
-                    val = func(val)
-            #TODO: DateTime's
-            object_dict[column.name] = val
-
-        return object_dict
-
-    def from_dict(self, object_dict):
-        """
-        Update this model instance from a serialised version.
-        NOTE: Does not handle nested updates
-        Heavily influenced by Producer
-        """
-        for column in self.__table__.columns:
-            if column.name not in object_dict:
-                continue
-            val = object_dict[column.name]
-            #See if we need to do any conversions
-            #TODO: DateTime's
-            setattr(self, column.name, val)
-
-class StaticDataMixin(object):
-    @classmethod
-    def __declare_last__(cls):
-        cls.__table__.static_data = True
+class CreateDateMixin(object):
+    create_date = sa.Column(sa.DateTime, default=sa_func.now(), nullable=False)

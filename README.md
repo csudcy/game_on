@@ -22,10 +22,10 @@ TODO:
         All v all/matrix
     ? Online editor?
     ? File versioning?
+    Remove inline styles
 
 TANKS TODO:
     Incorporate tank direction & speed when firing
-    Check for victory
     Max proofing
     ? Show current target on UI?
 
