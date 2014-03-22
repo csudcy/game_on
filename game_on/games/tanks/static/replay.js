@@ -5,7 +5,9 @@ $(document).ready(function() {
             pause: 0,
             forward: 1,
         },
-        play_direction = 0;
+        play_direction = 0,
+        field_container = $('#field')[0],
+        match;
     function update_play_state_click() {
         update_play_state($(this));
     }
@@ -60,14 +62,29 @@ $(document).ready(function() {
         return parseInt($('#tick').val());
     }
     function set_tick(tick) {
+        //Validate the requested tick
         var max_ticks = parseInt($('#tick').attr('max'));
         tick = Math.min(Math.max(tick, 0), max_ticks);
         if (tick === 0 || tick === max_ticks) {
             pause();
         }
+
+        //Update tick UI
         $('#tick_display').text(tick);
         $('#tick').val(tick);
-        render_tick();
+
+        //Show the winner yet?
+        if (tick === max_ticks) {
+            $('#winner_wait').hide();
+            $('#winner_show').show();
+        }
+
+        //Draw everything!
+        draw_board(
+            field_container.getContext('2d'),
+            match.constant_state,
+            match.tick_state[tick]
+        );
     }
 
     //// Timer
@@ -83,26 +100,13 @@ $(document).ready(function() {
             }
         }
     }
-    setInterval(timer, 1);
-
-    //// Rendering
-    var match;
-    var container = $('#field')[0];
-    function render_tick() {
-        if (match === undefined) {
-            return;
-        }
-        draw_board(
-            container.getContext('2d'),
-            match.constant_state,
-            match.tick_state[get_tick()]
-        );
+    function start_timer() {
+        setInterval(timer, 1);
     }
 
     //// Make sure we start in the right state
     pause();
     set_interval(25);
-    set_tick(0);
 
     //Load the data
     $.get(DATA_URL).success(
@@ -117,12 +121,21 @@ $(document).ready(function() {
             $('#field').attr('height', match.constant_state.board.height);
             $('#team_1').text(match.constant_state.team_1.name);
             $('#team_2').text(match.constant_state.team_2.name);
+            if (!match.winners) {
+                //Undefined or empty
+                $('#winner_none').show();
+            } else if (match.winners.length === 2) {
+                $('#winner_draw').show();
+            } else {
+                $('#winner_' + match.winners[0]).show();
+            }
 
             //Hide the loading div
             $('#loading').hide();
 
             //Show the first frame!
-            render_tick();
+            set_tick(0);
+            start_timer();
         }
     ).error(
         function() {

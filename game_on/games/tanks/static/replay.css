@@ -15,13 +15,36 @@
 }
 
 #setup {
-    width: 200px;
-}
-
-#field {
-    width: 1000px;
+    width: 300px;
 }
 
 #setup input {
     width: 98%;
+}
+
+#setup .teams, #setup .winners {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#setup .winners span {
+    font-size: 24px;
+}
+
+#winner_show, #winner_show span {
+    display: none;
+}
+
+#setup .controls {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0px;
+    text-align: center;
+}
+
+#field {
+    width: 1000px;
 }

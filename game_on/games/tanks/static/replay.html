@@ -18,45 +18,63 @@
 
 {%block game_replay%}
     <div id="setup">
-        Team 1: <span id="team_1">?</span><br/>
-        <br/>
-        Team 2: <span id="team_2">?</span><br/>
-        <br/>
-
+        <span class="teams">
+            <span id="team_1">?</span><br/>
+            vs.<br/>
+            <span id="team_2">?</span><br/>
+        </span>
         <hr/>
 
-        Interval: <span id="interval_display">100</span><br/>
-        <input id="interval" type="range" min="0" max="200" step="5"/><br/>
-
+        <span class="winners">
+            <span id="winner_wait">
+                Wait...
+            </span>
+            <span id="winner_show">
+                <span id="winner_none">No winners</span>
+                <span id="winner_team_1">Team 1 wins!</span>
+                <span id="winner_team_2">Team 2 wins!</span>
+                <span id="winner_draw">It's a draw</span>
+            </span>
+        </span>
         <hr/>
 
-        Time: <span id="tick_display">0</span> / <span id="tick_max_display">?</span><br/>
-        <input id="tick" type="range" min="0" max="500" step="1"/><br/>
-        <button
-            id="step_left"
-            class="icon_large"
-            style="background-image: url('{{static_url}}/step_left.png');">
-        </button>
-        <button
-            id="reverse"
-            class="icon_large"
-            style="background-image: url('{{static_url}}/reverse.png');">
-        </button>
-        <button
-            id="pause"
-            class="icon_large"
-            style="background-image: url('{{static_url}}/pause.png');">
-        </button>
-        <button
-            id="forward"
-            class="icon_large"
-            style="background-image: url('{{static_url}}/forward.png');">
-        </button>
-        <button
-            id="step_right"
-            class="icon_large"
-            style="background-image: url('{{static_url}}/step_right.png');">
-        </button>
+        <span class="interval">
+            Interval: <span id="interval_display">100</span><br/>
+            <input id="interval" type="range" min="0" max="200" step="5"/><br/>
+        </span>
+        <hr/>
+
+        <span class="time">
+            Time: <span id="tick_display">0</span> / <span id="tick_max_display">?</span><br/>
+            <input id="tick" type="range" min="0" max="500" step="1"/><br/>
+            <span class="controls">
+                <button
+                    id="step_left"
+                    class="icon_large"
+                    style="background-image: url('{{static_url}}/step_left.png');">
+                </button>
+                <button
+                    id="reverse"
+                    class="icon_large"
+                    style="background-image: url('{{static_url}}/reverse.png');">
+                </button>
+                <button
+                    id="pause"
+                    class="icon_large"
+                    style="background-image: url('{{static_url}}/pause.png');">
+                </button>
+                <button
+                    id="forward"
+                    class="icon_large"
+                    style="background-image: url('{{static_url}}/forward.png');">
+                </button>
+                <button
+                    id="step_right"
+                    class="icon_large"
+                    style="background-image: url('{{static_url}}/step_right.png');">
+                </button>
+            </span>
+        </span>
     </div>
     <canvas id="field" width="1000" height="700">
     </canvas>

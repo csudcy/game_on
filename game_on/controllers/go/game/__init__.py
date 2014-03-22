@@ -42,6 +42,7 @@ class Tree(object):
 
         #Transform for rendering
         def get_matches_list(matches):
+            matches = matches.order_by(db.Match.create_date.desc())
             match_list = []
             for match in matches:
                 match_list.append({

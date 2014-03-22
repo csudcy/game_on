@@ -4,12 +4,6 @@ Tanks
 A (fairly basic) 5-a-side tank simulation
 
 TODO:
-    Add create_date to match
-        Order list by reverse
-        Display on list
-    Show match winner(s)
-        List?
-        Replay?
     Improve index page
         Latest matches
         ? Use game thumbnails?
@@ -26,6 +20,7 @@ TODO:
 
 TANKS TODO:
     Incorporate tank direction & speed when firing
+    Resize canvas with window
     Max proofing
     ? Show current target on UI?
 

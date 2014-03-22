@@ -1,4 +1,4 @@
- import cherrypy
+import cherrypy
 
 from game_on import database as db
 from game_on import games
