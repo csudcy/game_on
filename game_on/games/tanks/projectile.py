@@ -1,3 +1,5 @@
+import random
+
 from . import utils
 
 class Projectile(object):
@@ -48,6 +50,12 @@ class Projectile(object):
         self.diff_z = horz_vert.y
         self.blast_radius = player.blast_radius
         self.explosion_age = 0
+
+        #Add random variation to shots based on current speed
+        variation = (self.player.speed.current + 10) / 100.0
+        self.diff_x += random.uniform(-0.5*variation, 0.5*variation)
+        self.diff_y += random.uniform(-0.5*variation, 0.5*variation)
+        self.diff_z += random.uniform(-0.2*variation, 0.2*variation)
 
         #Add myself to the game
         self.game.add_projectile(self)

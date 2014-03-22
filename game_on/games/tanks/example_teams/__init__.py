@@ -19,6 +19,7 @@ from . import passive_runner_ordered
 from . import passive_runner_random
 
 from . import test_runner_ordered_random
+from . import test_static_fixed
 
 
 cwd = os.path.dirname(os.path.abspath(__file__))
@@ -61,6 +62,11 @@ EXAMPLE_TEAMS = [
     {
         'name': test_runner_ordered_random.Team.name,
         'path': os.path.join(cwd, 'test_runner_ordered_random.py'),
+        'is_public': False,
+    },
+    {
+        'name': test_static_fixed.Team.name,
+        'path': os.path.join(cwd, 'test_static_fixed.py'),
         'is_public': False,
     },
 ]
