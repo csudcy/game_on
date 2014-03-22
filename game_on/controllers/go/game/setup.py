@@ -83,7 +83,7 @@ class Tree(object):
             match.save_result(result)
 
             #Go replay the match!
-            raise cherrypy.HTTPRedirect('/go/games/replay/%s/' % match.uuid)
+            raise cherrypy.HTTPRedirect('/go/game/replay/%s/' % match.uuid)
 
         #Render the setup template
         return {

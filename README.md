@@ -19,10 +19,8 @@ TODO:
     Remove inline styles
 
 TANKS TODO:
-    Incorporate tank direction & speed when firing
     Resize canvas with window
     Max proofing
-    ? Show current target on UI?
 
 AI TODO:
     Movement prediciton

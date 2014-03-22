@@ -321,11 +321,7 @@ class Player(object):
             self,
             self.game,
             self.team,
-            self.x,
-            self.y,
-            self.turret_direction.current,
             elevation,
-            self.blast_radius
         )
 
         #Make sure we can't fire again straight away

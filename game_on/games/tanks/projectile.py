@@ -15,30 +15,38 @@ class Projectile(object):
             player,
             game,
             team,
-            x,
-            y,
-            direction,
-            elevation,
-            blast_radius
+            elevation
         ):
         #Break speed & angles into vector components
-        horz_vert = utils.angle_speed_to_xy(elevation, self.speed)
-        x_y = utils.angle_speed_to_xy(direction, horz_vert.x)
+        horz_vert = utils.angle_speed_to_xy(
+            elevation,
+            self.speed,
+        )
+        proj_x_y = utils.angle_speed_to_xy(
+            player.turret_direction.current,
+            horz_vert.x,
+        )
+
+        #Incorporate tank speed & direction
+        tank_x_y = utils.angle_speed_to_xy(
+            player.direction.current,
+            player.speed.current,
+        )
 
         #Save all the things
         self.player = player
         self.game = game
         self.team = team
-        self.origin_x = x
-        self.origin_y = y
+        self.origin_x = player.x
+        self.origin_y = player.y
         self.origin_z = 0
-        self.current_x = x
-        self.current_y = y
+        self.current_x = player.x
+        self.current_y = player.y
         self.current_z = 0
-        self.diff_x = x_y.x
-        self.diff_y = x_y.y
+        self.diff_x = proj_x_y.x + tank_x_y.x
+        self.diff_y = proj_x_y.y + tank_x_y.y
         self.diff_z = horz_vert.y
-        self.blast_radius = blast_radius
+        self.blast_radius = player.blast_radius
         self.explosion_age = 0
 
         #Add myself to the game
