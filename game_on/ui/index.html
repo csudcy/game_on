@@ -11,10 +11,10 @@
             <li>
                 <h3>{{game.name}}</h3>
                 {{game.description}}
-                <a href="game/setup/{{game.id}}/">
+                <a href="/go/game/setup/{{game.id}}/">
                     <span class="icon_small icon_create" title="Setup a game of {{game.name}}"></span>
                 </a>
-                <a href="game/{{game.id}}/">
+                <a href="/go/game/{{game.id}}/">
                     <span class="icon_small icon_retrieve" title="Review matches of {{game.name}}"></span>
                 </a>
             </li>
@@ -23,7 +23,7 @@
 
     <h3>
         Teams
-        <a href="crud/team/retrieve/">
+        <a href="/go/crud/team/retrieve/">
             <span class="icon_small icon_retrieve" title="Manage Teams"></span>
         </a>
     </h3>
@@ -35,7 +35,7 @@
         </ul>
     {%else%}
         You don't have any Teams yet!
-        <a href="crud/team/create/">
+        <a href="/go/crud/team/create/">
             <span class="icon_small icon_create" title="Create Team"></span>
         </a>
     {%endif%}
