@@ -11,6 +11,7 @@ import os
 from . import aggressive_static_random
 from . import aggressive_mover_random
 from . import aggressive_runner_ordered_random
+from . import aggressive_runner_ordered_smart
 from . import aggressive_runner_random_random
 
 from . import passive_static
@@ -27,36 +28,41 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 EXAMPLE_TEAMS = [
     {
         'name': aggressive_static_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_static_random.py')
+        'path': os.path.join(cwd, 'aggressive_static_random.py'),
     },
     {
         'name': aggressive_mover_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_mover_random.py')
+        'path': os.path.join(cwd, 'aggressive_mover_random.py'),
     },
     {
         'name': aggressive_runner_ordered_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_runner_ordered_random.py')
+        'path': os.path.join(cwd, 'aggressive_runner_ordered_random.py'),
+    },
+    {
+        'name': aggressive_runner_ordered_smart.Team.name,
+        'path': os.path.join(cwd, 'aggressive_runner_ordered_smart.py'),
+        'is_public': False,
     },
     {
         'name': aggressive_runner_random_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_runner_random_random.py')
+        'path': os.path.join(cwd, 'aggressive_runner_random_random.py'),
     },
 
     {
         'name': passive_static.Team.name,
-        'path': os.path.join(cwd, 'passive_static.py')
+        'path': os.path.join(cwd, 'passive_static.py'),
     },
     {
         'name': passive_mover.Team.name,
-        'path': os.path.join(cwd, 'passive_mover.py')
+        'path': os.path.join(cwd, 'passive_mover.py'),
     },
     {
         'name': passive_runner_ordered.Team.name,
-        'path': os.path.join(cwd, 'passive_runner_ordered.py')
+        'path': os.path.join(cwd, 'passive_runner_ordered.py'),
     },
     {
         'name': passive_runner_random.Team.name,
-        'path': os.path.join(cwd, 'passive_runner_random.py')
+        'path': os.path.join(cwd, 'passive_runner_random.py'),
     },
 
     {

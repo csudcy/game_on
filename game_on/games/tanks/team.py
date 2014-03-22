@@ -1,6 +1,7 @@
 import math
 
 from. import player
+from. import utils
 
 
 class Team(object):
@@ -128,9 +129,8 @@ class Team(object):
     #       Calculators
     #################################################
 
-    def get_seen(self, enemy):
+    def get_seen(self, enemy_players):
         my_players = self.live_players
-        enemy_players = enemy.live_players
         seen = []
         #For each live enemy player
         for enemy_player in enemy_players:
@@ -139,8 +139,8 @@ class Team(object):
                 #Can enemy_player be seen by my_player?
                 if my_player.can_see(enemy_player.x, enemy_player.y):
                     #Yes!
-                    seen.append((enemy_player.x, enemy_player.y))
-                    #No need to check if anyone else can see player_b
+                    seen.append(utils.Point(enemy_player.x, enemy_player.y))
+                    #No need to check if anyone else can see enemy_position
                     break
         return seen
 

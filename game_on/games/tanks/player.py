@@ -205,7 +205,7 @@ class Player(object):
             'direction': self.direction.current,
             'turret_direction': self.turret_direction.current,
             'is_dead': self.is_dead,
-            'reload_frac': self.reload.current / self.reload.target,
+            'reload_frac': float(self.reload.current) / self.reload.target,
             'target_x': self.target_x,
             'target_y': self.target_y,
             'target_r': self.target_r,

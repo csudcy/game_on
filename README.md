@@ -32,6 +32,7 @@ A (fairly basic) 5-a-side tank simulation
 
 Features:
   * User allocatable stats (max speed, sight, health, blast radius)
+  * Team stats
   * TODO: Fill this in...
 
 Coming up:

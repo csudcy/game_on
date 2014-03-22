@@ -68,10 +68,43 @@ $(document).ready(function() {
         if (tick === 0 || tick === max_ticks) {
             pause();
         }
+        var tick_state = match.tick_state[tick];
 
         //Update tick UI
         $('#tick_display').text(tick);
         $('#tick').val(tick);
+
+        //Show team stats
+        function show_team_stats(team) {
+            var player_states = tick_state[team].players,
+                team_health = 0,
+                max_health = match.constant_state[team].max_health,
+                player_count = match.constant_state[team].player_count;
+            for (var i=0; i<player_count; i++) {
+                //Find this players health
+                var player_state = player_states[i];
+
+                //Update the global stats
+                team_health += player_state.health;
+
+                //Show death
+                var pg_header = $('.team_stats.'+team+' .player_health.player_'+i);
+                if (player_state.is_dead) {
+                    pg_header.css('color', 'red');
+                } else {
+                    pg_header.css('color', '');
+                }
+
+                //Show this players health
+                var pg_inner = $('.team_stats.'+team+' .player_health.player_'+i+' .pg_vert_inner');
+                pg_inner.css('top', (1 - player_state.health / max_health) * pg_inner.height());
+            }
+            //Show team health
+            var pg_inner = $('.team_stats.'+team+' .team_health .pg_horz_inner');
+            pg_inner.css('width', (team_health / (player_count * max_health)) * pg_inner.parent().width());
+        }
+        show_team_stats('team_1');
+        show_team_stats('team_2');
 
         //Show the winner yet?
         if (tick === max_ticks) {
@@ -83,7 +116,7 @@ $(document).ready(function() {
         draw_board(
             field_container.getContext('2d'),
             match.constant_state,
-            match.tick_state[tick]
+            tick_state
         );
     }
 
@@ -119,16 +152,25 @@ $(document).ready(function() {
             $('#tick_max_display').text(match.tick_count-1);
             $('#field').attr('width', match.constant_state.board.width);
             $('#field').attr('height', match.constant_state.board.height);
-            $('#team_1').text(match.constant_state.team_1.name);
-            $('#team_2').text(match.constant_state.team_2.name);
-            if (!match.winners) {
-                //Undefined or empty
+            $('.team_name.team_1').text(match.constant_state.team_1.name);
+            $('.team_name.team_2').text(match.constant_state.team_2.name);
+            if (match.winners === undefined || match.winners.length === 0) {
                 $('#winner_none').show();
             } else if (match.winners.length === 2) {
                 $('#winner_draw').show();
             } else {
                 $('#winner_' + match.winners[0]).show();
             }
+
+            //Show some team colours
+            $('.team_1 .pg_vert_inner, .team_1 .pg_horz_inner').css(
+                'background-color',
+                match.constant_state.team_1.effect_colour.replace('{alpha}', '1.0')
+            )
+            $('.team_2 .pg_vert_inner, .team_2 .pg_horz_inner').css(
+                'background-color',
+                match.constant_state.team_2.effect_colour.replace('{alpha}', '1.0')
+            )
 
             //Hide the loading div
             $('#loading').hide();

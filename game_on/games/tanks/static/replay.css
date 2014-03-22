@@ -48,3 +48,54 @@
 #field {
     width: 1000px;
 }
+
+.team_stats .team_health {
+    margin-left: 10px;
+    width: 210px;
+    display: inline-block;
+}
+
+.team_stats .player_health {
+    margin-left: 17px;
+}
+
+
+.pg_horz_outer {
+    width: 100%;
+    height: 20px;
+    background-color: white;
+    display: inline-block;
+    border: 1px solid black;
+}
+
+.pg_horz_inner {
+    left: 0px;
+    width: 50%;
+    height: 100%;
+    background-color: red;
+    display: inline-block;
+}
+
+
+.pg_vert_header {
+    display: inline-block;
+    text-align: center;
+}
+
+.pg_vert_outer {
+    width: 20px;
+    height: 100px;
+    background-color: white;
+    display: inline-block;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+.pg_vert_inner {
+    top: 50px;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    display: inline-block;
+    position: relative;
+}

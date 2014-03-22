@@ -57,8 +57,8 @@ class TankGame(base_game.BaseGame):
         Return an error message or None
         """
         #Initialise the teams
-        self.team_1 = team.Team('team_1', team_classes[0], 'rgba(255, 255, 0, {alpha})')
-        self.team_2 = team.Team('team_2', team_classes[1], 'rgba(128, 0, 128, {alpha})')
+        self.team_1 = team.Team('team_1', team_classes[0], 'rgba(200, 50, 200, {alpha})')
+        self.team_2 = team.Team('team_2', team_classes[1], 'rgba(128, 128, 255, {alpha})')
 
         #Initialise other storage
         self.projectiles = []
@@ -176,8 +176,8 @@ class TankGame(base_game.BaseGame):
         dictionary to find any changes to the game state
         """
         #Find out what everyone can see
-        team_1_seen = self.team_1.get_seen(self.team_2)
-        team_2_seen = self.team_2.get_seen(self.team_1)
+        team_1_seen = self.team_1.get_seen(self.team_2.live_players)
+        team_2_seen = self.team_2.get_seen(self.team_1.live_players)
 
         #Run the teams & players
         self.team_1.run_tick(team_1_seen)
