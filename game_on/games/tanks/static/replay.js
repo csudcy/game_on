@@ -154,7 +154,7 @@ $(document).ready(function() {
             $('#field').attr('height', match.constant_state.board.height);
             $('.team_name.team_1').text(match.constant_state.team_1.name);
             $('.team_name.team_2').text(match.constant_state.team_2.name);
-            if (match.winners === undefined || match.winners.length === 0) {
+            if (match.winners === undefined || match.winners === null || match.winners.length === 0) {
                 $('#winner_none').show();
             } else if (match.winners.length === 2) {
                 $('#winner_draw').show();

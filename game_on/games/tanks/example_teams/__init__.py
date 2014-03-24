@@ -8,71 +8,43 @@ Smart AI TODO:
 """
 import os
 
-from . import aggressive_static_random
 from . import aggressive_mover_random
-from . import aggressive_runner_ordered_random
-from . import aggressive_runner_ordered_smart
-from . import aggressive_runner_random_random
-
-from . import passive_static
+from . import aggressive_runnerordered_random
+from . import aggressive_runnerordered_siderandom
+from . import aggressive_runnerordered_smart
+from . import aggressive_runnerrandom_random
+from . import aggressive_static_fixed
+from . import aggressive_static_lookout
+from . import aggressive_static_random
 from . import passive_mover
-from . import passive_runner_ordered
-from . import passive_runner_random
-
-from . import test_runner_ordered_random
-from . import test_static_fixed
+from . import passive_runnerordered
+from . import passive_runnerrandom
+from . import passive_static
 
 
-cwd = os.path.dirname(os.path.abspath(__file__))
+EXAMPLE_CLASSES = (
+    aggressive_mover_random,
+    aggressive_runnerordered_random,
+    aggressive_runnerordered_siderandom,
+    aggressive_runnerordered_smart,
+    aggressive_runnerrandom_random,
+    aggressive_static_fixed,
+    aggressive_static_lookout,
+    aggressive_static_random,
+    passive_mover,
+    passive_runnerordered,
+    passive_runnerrandom,
+    passive_static,
+)
 
-EXAMPLE_TEAMS = [
-    {
-        'name': aggressive_static_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_static_random.py'),
-    },
-    {
-        'name': aggressive_mover_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_mover_random.py'),
-    },
-    {
-        'name': aggressive_runner_ordered_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_runner_ordered_random.py'),
-    },
-    {
-        'name': aggressive_runner_ordered_smart.Team.name,
-        'path': os.path.join(cwd, 'aggressive_runner_ordered_smart.py'),
-        'is_public': False,
-    },
-    {
-        'name': aggressive_runner_random_random.Team.name,
-        'path': os.path.join(cwd, 'aggressive_runner_random_random.py'),
-    },
-
-    {
-        'name': passive_static.Team.name,
-        'path': os.path.join(cwd, 'passive_static.py'),
-    },
-    {
-        'name': passive_mover.Team.name,
-        'path': os.path.join(cwd, 'passive_mover.py'),
-    },
-    {
-        'name': passive_runner_ordered.Team.name,
-        'path': os.path.join(cwd, 'passive_runner_ordered.py'),
-    },
-    {
-        'name': passive_runner_random.Team.name,
-        'path': os.path.join(cwd, 'passive_runner_random.py'),
-    },
-
-    {
-        'name': test_runner_ordered_random.Team.name,
-        'path': os.path.join(cwd, 'test_runner_ordered_random.py'),
-        'is_public': False,
-    },
-    {
-        'name': test_static_fixed.Team.name,
-        'path': os.path.join(cwd, 'test_static_fixed.py'),
-        'is_public': False,
-    },
-]
+EXAMPLE_TEAMS = []
+for example_class in EXAMPLE_CLASSES:
+    filename = os.path.abspath(example_class.__file__)
+    if os.path.splitext(filename)[1] == '.pyc':
+        #We want the py file
+        filename = filename[:-1]
+    EXAMPLE_TEAMS.append({
+        'name': example_class.Team.name,
+        'path': filename,
+        'is_public': getattr(example_class.Team, 'is_public', True),
+    })

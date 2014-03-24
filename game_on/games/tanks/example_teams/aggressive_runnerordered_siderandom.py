@@ -9,7 +9,10 @@ class Team(external.ExternalTeam):
     Test that tank speed & direction is taken into account when firing
     """
     #Give the team a nice name
-    name = 'Test (Aggresive : Runner-Ordered : Random)'
+    name = 'Aggresive (Runner-Ordered : Side Random)'
+
+    #We don't want this team going public
+    is_public = False
 
     def init_players(self, PlayerClass, board_width, board_height, min_x, max_x, min_y, max_y, enemy_direction):
         #Need these later...

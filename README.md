@@ -10,6 +10,7 @@ Features:
   * Matches can be replayed at any time
 
 Coming up:
+  * GZip matches
   * Improve index page
     * Latest matches
     * ? Use game thumbnails?
