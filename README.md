@@ -10,7 +10,6 @@ Features:
   * Matches can be replayed at any time
 
 Coming up:
-  * GZip matches
   * Improve index page
     * Latest matches
     * ? Use game thumbnails?
@@ -37,5 +36,6 @@ Features:
   * TODO: Fill this in...
 
 Coming up:
+  * Play games until all projectiles finish exploding
   * Resize canvas with window
   * Max proofing

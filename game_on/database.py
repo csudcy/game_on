@@ -1,4 +1,6 @@
+from gzip import GzipFile
 import hashlib
+import json
 import os
 import uuid
 
@@ -118,16 +120,21 @@ class Match(ModelBase, Base):
     setattr(creator_uuid, 'related_name', 'creator')
     setattr(creator_uuid, 'related_model', User)
 
-    def get_path(self):
-        filename = '%s-%s.json' % (self.game, self.uuid)
+    def _get_path(self):
+        filename = '%s-%s.json.gz' % (self.game, self.uuid)
         path = os.path.join(config['match']['folder'], filename)
         return path
+
+    def get_flo(self):
+        """
+        Return a FLO for this matches results file.
+        """
+        return GzipFile(self._get_path())
 
     def save_result(self, result):
         """
         Save the result of this match to file
         """
-        import json
         result_json = json.dumps(result)
-        with open(self.get_path(), 'w') as f:
+        with GzipFile(self._get_path(), 'w') as f:
             f.write(result_json)

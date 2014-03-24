@@ -46,7 +46,7 @@ class Tree(object):
         ).one()
 
         #Return the result
-        return cherrypy.lib.static.serve_file(match.get_path())
+        return cherrypy.lib.static.serve_fileobj(match.get_flo())
 
 
 def mount_tree():
