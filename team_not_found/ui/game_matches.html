@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    {{super()}} - {{game.name}} - Matches
+{%endblock%}
+
+{%block content%}
+    <h3>
+        Previous Matches:
+    </h3>
+    {%for match_section in match_sections%}
+        {%if match_section['matches']%}
+            <h4>{{match_section.type}}:</h4>
+            {%for match in match_section['matches']%}
+                <span class="match_team">
+                    {{match.team_1}}
+                </span>
+                vs.
+                <span class="match_team">
+                    {{match.team_2}}
+                </span>
+                <a href="/tnf/game/replay/{{match.uuid}}/">
+                    <span class="icon_small icon_play"/>
+                </a>
+                <br/>
+            {%endfor%}
+        {%endif%}
+    {%endfor%}
+
+    <h3>
+        <a href="/tnf/game/setup/{{game_id}}/">
+            <span class="icon_large icon_create" title="Setup a game of {{game.name}}"></span>
+            Play a new match
+        </a>
+    </h3>
+{%endblock%}

@@ -1,0 +1,17 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    {{super()}} - {{game_name}} - Replay
+{%endblock%}
+
+{%block content%}
+    <h3 style="margin: 5px;">
+        {{game_name}} - Match {{match_id}}
+        (<a href="/tnf/game/{{game_id}}/">
+            Return to match list
+        </a>)
+    </h3>
+    {%block game_replay%}
+        Insert replay here!
+    {%endblock%}
+{%endblock%}

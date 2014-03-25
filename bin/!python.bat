@@ -1,5 +1,5 @@
 set ENVIRONMENT=development
-cd ../game_on
+cd ../team_not_found
 :loop
-python GameOn.py
+python TNF.py
 goto loop

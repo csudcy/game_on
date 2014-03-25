@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    {{super()}} - Login
+{%endblock%}
+
+{%block content%}
+    <div id="login_container">
+        <span id="login_inner">
+            <form action='/login{%if redirect%}?redirect={{redirect}}{%endif%}' method="post">
+                <input type="text" name="username" placeholder="Username" value="{{username}}" autofocus><br/>
+                <input type="password" name="password" placeholder="Password"><br/>
+                <input type="submit" value="Login">
+            </form>
+            {%if error%}
+                <div class="error">{{error}}</div>
+            {%endif%}
+        </span>
+    </div>
+{%endblock%}

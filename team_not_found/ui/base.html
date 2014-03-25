@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        {%block head%}
+            <meta charset="utf-8"/>
+            <title>
+                {%block title%}
+                    TeamNotFound!
+                {%endblock%}
+            </title>
+            <link rel="stylesheet" type="text/css" href="/static/css/all.css" media="all" />
+            <script type="text/javascript" src="/static/js/lib/jquery.min.js"></script>
+        {%endblock%}
+    </head>
+    <body>
+        <div id="header">
+            <span class="header_text">
+                <a href="/tnf/">
+                    Welcome to TeamNotFound!
+                </a>
+            </span>
+            {%if current_user%}
+                <span class="header_user">
+
+
+                    {%if current_user.is_admin%}
+                        <a href="/tnf/crud/user/retrieve/">
+                            <span class="icon_small icon_settings" title="Manage Users"/>
+                        </a>
+                    {%endif%}
+
+
+                    {{current_user.name}}
+                    <a href="/logout">
+                        <span class="icon_small icon_logout" title="Logout"/>
+                    </a>
+                </span>
+            {%endif%}
+        </div>
+
+        <div id="content">
+            {%block content%}
+                Insert content here!
+            {%endblock%}
+        </div>
+    </body>
+</html>

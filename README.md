@@ -1,7 +1,7 @@
-GameOn
-======
+TeamNotFound
+============
 
-A multi-game simulator/challenge which allows users to upload teams which
+TNF is a multi-game simulator/challenge which allows users to upload teams which
 can then compete against other teams.
 
 Features:
@@ -25,8 +25,8 @@ Coming up:
   * Remove inline styles
   * User creation
 
-GameOn.Tanks
-============
+TeamNotFound.Tanks
+==================
 
 A (fairly basic) 5-a-side tank simulation
 

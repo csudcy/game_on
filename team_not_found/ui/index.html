@@ -1,0 +1,42 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    {{super()}} - Dashboard
+{%endblock%}
+
+{%block content%}
+    <h3>Games</h3>
+    <ul>
+        {%for game in games%}
+            <li>
+                <h3>{{game.name}}</h3>
+                {{game.description}}
+                <a href="/tnf/game/setup/{{game.id}}/">
+                    <span class="icon_small icon_create" title="Setup a game of {{game.name}}"></span>
+                </a>
+                <a href="/tnf/game/{{game.id}}/">
+                    <span class="icon_small icon_retrieve" title="Review matches of {{game.name}}"></span>
+                </a>
+            </li>
+        {%endfor%}
+    </ul>
+
+    <h3>
+        Teams
+        <a href="/tnf/crud/team/retrieve/">
+            <span class="icon_small icon_retrieve" title="Manage Teams"></span>
+        </a>
+    </h3>
+    {%if teams%}
+        <ul>
+            {%for team in teams%}
+                <li>{{team.name}}</li>
+            {%endfor%}
+        </ul>
+    {%else%}
+        You don't have any Teams yet!
+        <a href="/tnf/crud/team/create/">
+            <span class="icon_small icon_create" title="Create Team"></span>
+        </a>
+    {%endif%}
+{%endblock%}
