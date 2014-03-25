@@ -1,4 +1,6 @@
 import logging
+import logging.handlers
+import os
 import sys
 
 import cherrypy
@@ -46,6 +48,28 @@ def configure_logging(logging_config):
         # \n is always added by StreamHandler
         log_format += '\r'
     log_formatter = logging.Formatter(log_format)
+
+    if 'log_folder' in logging_config:
+        # Make sure log folder exists
+        log_folder = os.path.expandvars(logging_config['log_folder'])
+        if not os.path.exists(log_folder):
+            os.makedirs(log_folder)
+
+        # Always hook the rotating file handler into the root logger
+        log_file = os.path.join(log_folder, logging_config['log_file'])
+        try:
+            rollover_log = logging.handlers.RotatingFileHandler(
+                log_file,
+                maxBytes=logging_config['log_file_size'] * 1024 * 1024,
+                backupCount=5
+            )
+            rollover_log.setLevel(log_level)
+            rollover_log.setFormatter(log_formatter)
+            root_logger.addHandler(rollover_log)
+        except IOError as ex:
+            print 'Unable to write to rotating logfile %s' % log_file
+            print unicode(ex).encode('ascii', errors='replace')
+            sys.exit(1)
 
     # If this is not running daemonized (or as a service) then also
     # log to the terminal

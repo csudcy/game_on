@@ -17,6 +17,9 @@ config = {
         'log_level': 'DEBUG',
         'access_logging_enabled': False,
         'disabled_loggers': [],
+        #'log_folder': '/home/wikimomo/public_html/teamnotfound.net/logs/',
+        #'log_file': 'output.log',
+        #'log_file_size': 10,
     },
     'team': {
         'folder': 'C:/dev/team_not_found/teams'

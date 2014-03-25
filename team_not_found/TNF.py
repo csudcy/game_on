@@ -106,11 +106,9 @@ def initialise_cherrypy():
             }
         })
 
-    cherrypy.server.socket_host = config['cherrypy']['host']
-    cherrypy.server.socket_port = config['cherrypy']['port']
-
 
 def start_cherrypy():
+    logging.info('CherryPy starting... (PID: %s)' % os.getpid())
     try:
         cherrypy.engine.start()
     except IOError:
@@ -122,11 +120,14 @@ def start_cherrypy():
         sys.exit(1)
     # Wait until the app is started before proceeding
     cherrypy.engine.wait(cherrypy.process.wspbus.states.STARTED)
-    logging.info('CherryPy started')
-    cherrypy.engine.block()
+    logging.info('CherryPy started (PID: %s)' % os.getpid())
+    try:
+        cherrypy.engine.block()
+    except Exception, ex:
+        print str(ex)
 
 
-def main():
+def init_all():
     if sys.version_info < (2, 6):
         print 'Requires Python 2.6 or greater'
         sys.exit(1)
@@ -138,11 +139,41 @@ def main():
     initialise_db()
     initialise_games()
     initialise_cherrypy()
-    try:
-        start_cherrypy()
-    except Exception, ex:
-        print str(ex)
 
+def run_server():
+    #Initialise all the things
+    init_all()
+
+    #Setup cherrypy for http(s) serving
+    cherrypy.server.socket_host = config['cherrypy']['host']
+    cherrypy.server.socket_port = config['cherrypy']['port']
+
+    #Continue starting cherrypy
+    start_cherrypy()
+
+def run_fcgi():
+    #Initialise all the things
+    init_all()
+
+    #We want to daemonize...
+    cherrypy.config.update({'log.screen': False})
+    cherrypy.process.plugins.Daemonizer(cherrypy.engine).subscribe()
+
+    # Turn off the default HTTP server & auto_reload
+    cherrypy.config.update({'engine.autoreload_on': False})
+    cherrypy.server.unsubscribe()
+
+    #Setup cherrypy for fcgi serving
+    addr = (config['cherrypy']['host'], config['cherrypy']['port'])
+    f = cherrypy.process.servers.FlupFCGIServer(application=cherrypy.tree, bindAddress=addr)
+    s = cherrypy.process.servers.ServerAdapter(cherrypy.engine, httpserver=f, bind_addr=addr)
+    s.subscribe()
+
+    #Continue starting cherrypy
+    start_cherrypy()
+
+def main():
+    run_server()
 
 if __name__ == '__main__':
     main()
