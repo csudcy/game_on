@@ -18,7 +18,7 @@ import sqlalchemy as sa
 class Connection(object):
     def __init__(
             self,
-            base
+            base,
             user,
             password,
             host,
