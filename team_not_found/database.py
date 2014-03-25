@@ -21,12 +21,13 @@ connection = None
 def connect_to_db(db_config):
     global connection, Session
     connection = database_helper.Connection(
-        name=db_config['name'],
-        host=db_config['host'],
-        port=db_config['port'],
+        base = Base,
         user=db_config['user'],
         password=db_config['password'],
-        base = Base)
+        host=db_config['host'],
+        port=db_config['port'],
+        name=db_config['name'],
+    )
 
     Session = connection.Session
 

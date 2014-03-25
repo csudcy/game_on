@@ -18,12 +18,13 @@ import sqlalchemy as sa
 class Connection(object):
     def __init__(
             self,
-            name,
-            host,
-            port,
+            base
             user,
             password,
-            base):
+            host,
+            port,
+            name,
+        ):
         self.name = name
         self.user = user
         self.password = password
