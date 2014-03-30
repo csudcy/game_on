@@ -148,11 +148,19 @@ class TankGame(base_game.BaseGame):
     #       Getters
     #################################################
 
+    @property
+    def can_fire(self):
+        """
+        Determine if players can shoot anymore
+        """
+        return not (self.team_1.is_dead or self.team_2.is_dead)
+
+    @property
     def is_complete(self):
         """
         Determine if this game is complete
         """
-        return self.team_1.is_dead or self.team_2.is_dead
+        return (self.team_1.is_dead or self.team_2.is_dead) and (len(self.projectiles) == 0)
 
     def get_winners(self):
         """

@@ -34,8 +34,8 @@ Features:
   * User allocatable stats (max speed, sight, health, blast radius)
   * Team stats
   * TODO: Fill this in...
+  * Play games until all projectiles finish exploding
 
 Coming up:
-  * Play games until all projectiles finish exploding
   * Resize canvas with window
   * Max proofing

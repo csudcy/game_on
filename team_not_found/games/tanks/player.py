@@ -248,7 +248,7 @@ class Player(object):
     @property
     def can_fire(self):
         #Check if this player can currently fire
-        return self.reload.current == self.reload.target
+        return self.game.can_fire and self.reload.is_complete
 
     @property
     def is_dead(self):

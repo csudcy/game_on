@@ -124,7 +124,7 @@ class BaseGame(object):
                 match['tick_state'].append(current_state)
 
                 #Check if the game is over
-                if self.is_complete():
+                if self.is_complete:
                     match['status'] = 'Finished'
                     match['winners'] = self.get_winners()
                     break
@@ -189,11 +189,12 @@ class BaseGame(object):
         """
         raise Exception('Games must override the get_tick_state method!')
 
+    @property
     def is_complete(self):
         """
         Determine if this game is complete
         """
-        raise Exception('Games must override the is_complete method!')
+        raise Exception('Games must override the is_complete property!')
 
     def get_winners(self):
         """
