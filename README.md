@@ -24,6 +24,7 @@ Coming up:
   * ? File versioning?
   * Remove inline styles
   * User creation
+  * Match/team table/dir cleanup
 
 TeamNotFound.Tanks
 ==================

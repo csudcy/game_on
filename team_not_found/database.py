@@ -106,6 +106,7 @@ class Team(ModelBase, Base):
 
 class Match(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
+    state = sa.Column(sa.String(10), nullable=False) #WAITING, PLAYING, PLAYED
     team_1_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     team_1 = sa_orm.relationship('Team', foreign_keys=[team_1_uuid], backref=backref('matches_1', passive_deletes=True, cascade="all"))
     team_2_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)

@@ -39,12 +39,8 @@ class Tree(object):
         your_teams = []
         public_teams = []
         other_teams = []
-        team_lookup = {}
         for team in teams:
-            #Create a lookup (used when POSTing)
-            team_lookup[team.uuid] = team
-
-            #Create the lists (used when GETting)
+            #Create the team lists
             team_dict = {
                 'id': team.uuid,
                 'name': team.name,
@@ -57,32 +53,15 @@ class Tree(object):
                 other_teams.append(team_dict)
 
         if cherrypy.request.method == 'POST':
-            #Find the teams
-            team_1_dbobj = team_lookup[team_1]
-            team_2_dbobj = team_lookup[team_2]
-
-            #Find the team classes
-            team_1_class = team_1_dbobj.load_class()
-            team_2_class = team_2_dbobj.load_class()
-
-            #Run the game
-            game_obj = game([team_1_class, team_2_class])
-            result = game_obj.run()
-
             #Create the match
-            match = db.Match(
-                game = game_id,
-                team_1 = team_1_dbobj,
-                team_2 = team_2_dbobj,
-                creator = cherrypy.request.user,
+            match = games.start_match(
+                game_id,
+                team_1,
+                team_2,
+                cherrypy.request.user,
             )
-            db.Session.add(match)
-            db.Session.commit()
 
-            #Save result to file
-            match.save_result(result)
-
-            #Go replay the match!
+            #Go wait for/replay the match!
             raise cherrypy.HTTPRedirect('/tnf/game/replay/%s/' % match.uuid)
 
         #Render the setup template

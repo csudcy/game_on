@@ -55,7 +55,7 @@ def initialise_games():
     ).one()
 
     #Go!
-    games.initialise_games(admin_user)
+    games.initialise(admin_user)
 
 
 def initialise_cherrypy():
