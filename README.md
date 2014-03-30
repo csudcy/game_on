@@ -8,6 +8,7 @@ Features:
   * Multiple games (only 1 so far though...)
   * Users can make as many teams as they want
   * Matches can be replayed at any time
+  * Matches are played asynchronously
 
 Coming up:
   * Improve index page
@@ -15,7 +16,6 @@ Coming up:
     * ? Use game thumbnails?
   * File uploads
   * Download example team file
-  * Play matches asynchronously
   * Tournaments
     * Best of 3
     * ? Bracketed?

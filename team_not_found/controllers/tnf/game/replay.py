@@ -1,3 +1,5 @@
+import json
+
 import cherrypy
 
 from team_not_found import database as db
@@ -44,6 +46,12 @@ class Tree(object):
         ).filter(
             db.Match.uuid == match_uuid
         ).one()
+
+        #Check the match has been played
+        if match.state != 'PLAYED':
+            return json.dumps({
+                'state': match.state
+            })
 
         #Return the result
         return cherrypy.lib.static.serve_fileobj(match.get_flo())

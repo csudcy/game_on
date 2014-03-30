@@ -142,53 +142,70 @@ $(document).ready(function() {
     set_interval(25);
 
     //Load the data
-    $.get(DATA_URL).success(
-        function(body, result, jqxhr) {
-            //We now have the match data
-            try {
-                match = JSON.parse(body);
-            } catch (e) {
-                alert('Error parsing replay file!');
+    function load_data() {
+        $.get(DATA_URL).success(
+            function(body, result, jqxhr) {
+                //We now have the match data
+                var data;
+                try {
+                    data = JSON.parse(body);
+                } catch (e) {
+                    alert('Error parsing replay file!');
+                    window.location = MATCH_LIST_URL;
+                    return;
+                }
+
+                if (data.state !== undefined) {
+                    //The match is not finished yet
+                    //Let the user know
+                    $('#loading_text').text('Match is ' + data.state + '...');
+
+                    //Then try again in a second
+                    setTimeout(load_data, 1000);
+                    return;
+                }
+
+                //Otherwise, this match is ready to go!
+                match = data;
+
+                //Show some info from the match
+                $('#tick').attr('max', match.tick_count-1);
+                $('#tick_max_display').text(match.tick_count-1);
+                $('#field').attr('width', match.constant_state.board.width);
+                $('#field').attr('height', match.constant_state.board.height);
+                $('.team_name.team_1').text(match.constant_state.team_1.name);
+                $('.team_name.team_2').text(match.constant_state.team_2.name);
+                if (match.winners === undefined || match.winners === null || match.winners.length === 0) {
+                    $('#winner_none').show();
+                } else if (match.winners.length === 2) {
+                    $('#winner_draw').show();
+                } else {
+                    $('#winner_' + match.winners[0]).show();
+                }
+
+                //Show some team colours
+                $('.team_1 .pg_vert_inner, .team_1 .pg_horz_inner').css(
+                    'background-color',
+                    match.constant_state.team_1.effect_colour.replace('{alpha}', '1.0')
+                )
+                $('.team_2 .pg_vert_inner, .team_2 .pg_horz_inner').css(
+                    'background-color',
+                    match.constant_state.team_2.effect_colour.replace('{alpha}', '1.0')
+                )
+
+                //Hide the loading div
+                $('#loading').hide();
+
+                //Show the first frame!
+                set_tick(0);
+                start_timer();
+            }
+        ).error(
+            function() {
+                alert('Error loading replay file!');
                 window.location = MATCH_LIST_URL;
-                return;
             }
-
-            //Show some info from the match
-            $('#tick').attr('max', match.tick_count-1);
-            $('#tick_max_display').text(match.tick_count-1);
-            $('#field').attr('width', match.constant_state.board.width);
-            $('#field').attr('height', match.constant_state.board.height);
-            $('.team_name.team_1').text(match.constant_state.team_1.name);
-            $('.team_name.team_2').text(match.constant_state.team_2.name);
-            if (match.winners === undefined || match.winners === null || match.winners.length === 0) {
-                $('#winner_none').show();
-            } else if (match.winners.length === 2) {
-                $('#winner_draw').show();
-            } else {
-                $('#winner_' + match.winners[0]).show();
-            }
-
-            //Show some team colours
-            $('.team_1 .pg_vert_inner, .team_1 .pg_horz_inner').css(
-                'background-color',
-                match.constant_state.team_1.effect_colour.replace('{alpha}', '1.0')
-            )
-            $('.team_2 .pg_vert_inner, .team_2 .pg_horz_inner').css(
-                'background-color',
-                match.constant_state.team_2.effect_colour.replace('{alpha}', '1.0')
-            )
-
-            //Hide the loading div
-            $('#loading').hide();
-
-            //Show the first frame!
-            set_tick(0);
-            start_timer();
-        }
-    ).error(
-        function() {
-            alert('Error loading replay file!');
-            window.location = MATCH_LIST_URL;
-        }
-    );
+        );
+    }
+    load_data();
 });
