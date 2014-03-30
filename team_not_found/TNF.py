@@ -140,6 +140,7 @@ def init_all():
     initialise_games()
     initialise_cherrypy()
 
+
 def run_server():
     #Initialise all the things
     init_all()
@@ -151,7 +152,9 @@ def run_server():
     #Continue starting cherrypy
     start_cherrypy()
 
+
 def run_fcgi_http():
+    raise Exception('Never got this to work properly!')
     #Initialise all the things
     init_all()
 
@@ -173,8 +176,8 @@ def run_fcgi_http():
     start_cherrypy()
 
 
-
 def run_fcgi_sock():
+    raise Exception('Never got this to work properly!')
     #Initialise all the things
     init_all()
 
@@ -205,6 +208,6 @@ def run_fcgi_sock():
 def main():
     run_server()
 
+
 if __name__ == '__main__':
     main()
-
