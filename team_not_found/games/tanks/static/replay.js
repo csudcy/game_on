@@ -147,7 +147,7 @@ $(document).ready(function() {
             //We now have the match data
             try {
                 match = JSON.parse(body);
-            } catch {
+            } catch (e) {
                 alert('Error parsing replay file!');
                 window.location = MATCH_LIST_URL;
                 return;
