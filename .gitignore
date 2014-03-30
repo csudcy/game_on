@@ -1,5 +1,7 @@
 AISmart.js
 *.pyc
 
-matches
-teams
+dynamic/logs/*.log
+dynamic/matches/*.gz
+dynamic/socks/*.sock
+dynamic/teams/*.py

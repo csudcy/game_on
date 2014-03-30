@@ -151,7 +151,7 @@ def run_server():
     #Continue starting cherrypy
     start_cherrypy()
 
-def run_fcgi():
+def run_fcgi_http():
     #Initialise all the things
     init_all()
 
@@ -164,7 +164,7 @@ def run_fcgi():
     cherrypy.server.unsubscribe()
 
     #Setup cherrypy for fcgi serving
-    addr = (config['cherrypy']['host'], config['cherrypy']['port'])
+    addr = ('127.0.0.1', 10000 + (os.getpid() % 10000))
     f = cherrypy.process.servers.FlupFCGIServer(application=cherrypy.tree, bindAddress=addr)
     s = cherrypy.process.servers.ServerAdapter(cherrypy.engine, httpserver=f, bind_addr=addr)
     s.subscribe()
@@ -172,8 +172,39 @@ def run_fcgi():
     #Continue starting cherrypy
     start_cherrypy()
 
+
+
+def run_fcgi_sock():
+    #Initialise all the things
+    init_all()
+
+    #We want to daemonize...
+    cherrypy.config.update({'log.screen': False})
+    cherrypy.process.plugins.Daemonizer(cherrypy.engine).subscribe()
+
+    # Turn off the default HTTP server & auto_reload
+    cherrypy.config.update({'engine.autoreload_on': False})
+    cherrypy.server.unsubscribe()
+
+    #Add some handlers?
+    if hasattr(cherrypy.engine, "signal_handler"):
+        cherrypy.engine.signal_handler.subscribe()
+    if hasattr(cherrypy.engine, "console_control_handler"):
+        cherrypy.engine.console_control_handler.subscribe()
+
+    #Setup cherrypy for fcgi serving
+    addr = config['cherrypy']['sock']
+    f = cherrypy.process.servers.FlupFCGIServer(application=cherrypy.tree, bindAddress=addr)
+    s = cherrypy.process.servers.ServerAdapter(cherrypy.engine, httpserver=f, bind_addr=addr)
+    s.subscribe()
+
+    #Continue starting cherrypy
+    start_cherrypy()
+
+
 def main():
     run_server()
 
 if __name__ == '__main__':
     main()
+
