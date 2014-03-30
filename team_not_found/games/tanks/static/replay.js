@@ -145,7 +145,13 @@ $(document).ready(function() {
     $.get(DATA_URL).success(
         function(body, result, jqxhr) {
             //We now have the match data
-            match = JSON.parse(body);
+            try {
+                match = JSON.parse(body);
+            } catch {
+                alert('Error parsing replay file!');
+                window.location = MATCH_LIST_URL;
+                return;
+            }
 
             //Show some info from the match
             $('#tick').attr('max', match.tick_count-1);

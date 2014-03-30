@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/local/bin/python2.7
+
 from optparse import OptionParser
 import logging
 import os
@@ -80,6 +81,7 @@ def initialise_cherrypy():
                 'tools.sessions.timeout': 60 * 24 * 7, # 1 week
                 'tools.json_in.processor': json_in_processor,
                 'tools.json_out.handler': json_out_handler,
+                'tools.proxy.on': True,
             },
             '/tnf': {
                 'tools.auth_tool.on': True,
