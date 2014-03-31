@@ -16,7 +16,7 @@ class Tree(object):
         if not cherrypy.request.user.is_admin:
             #Current user is not an admin so they only see public teams and their own teams
             teams = teams.filter(
-                _or(
+                db.sa.or_(
                     db.Team.is_public == True,
                     db.Team.creator == cherrypy.request.user
                 )

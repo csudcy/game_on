@@ -30,6 +30,7 @@ from team_not_found.utils.json_tools import json_in_processor, json_out_handler
 def initialise_db():
     db.connect_to_db(config['db'])
     db.connection.sync()
+
     #Ensure an admin user exists
     admin_users = db.Session.query(
         db.User
@@ -40,8 +41,23 @@ def initialise_db():
         db.Session.add(db.User(
             username = 'admin',
             name = 'Admin',
-            password_hash = db.User.hash_password('admin'),
+            password_hash = db.User.hash_password('password1!'),
             is_admin = True,
+        ))
+        db.Session.commit()
+
+    #Ensure a non-admin user exists
+    admin_users = db.Session.query(
+        db.User
+    ).filter(
+        db.User.is_admin == False
+    )
+    if admin_users.count() == 0:
+        db.Session.add(db.User(
+            username = 'player',
+            name = 'Player',
+            password_hash = db.User.hash_password('Pl4y3r'),
+            is_admin = False,
         ))
         db.Session.commit()
 
