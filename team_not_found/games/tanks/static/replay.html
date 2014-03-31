@@ -13,168 +13,170 @@
 {%endblock%}
 
 {%block game_replay%}
-    <div id="setup">
-        <span class="teams">
-            <span class="team_name team_1">?</span><br/>
-            vs.<br/>
-            <span class="team_name team_2">?</span><br/>
-        </span>
-        <hr/>
+    <div id="main">
+        <div id="setup">
+            <span class="teams">
+                <span class="team_name team_1">?</span><br/>
+                vs.<br/>
+                <span class="team_name team_2">?</span><br/>
+            </span>
+            <hr/>
 
-        <span class="winners">
-            <span id="winner_wait">
-                Wait...
+            <span class="winners">
+                <span id="winner_wait">
+                    Wait...
+                </span>
+                <span id="winner_show">
+                    <span id="winner_none">No winner</span>
+                    <span id="winner_team_1">Team 1 wins!</span>
+                    <span id="winner_team_2">Team 2 wins!</span>
+                    <span id="winner_draw">It's a draw</span>
+                </span>
             </span>
-            <span id="winner_show">
-                <span id="winner_none">No winner</span>
-                <span id="winner_team_1">Team 1 wins!</span>
-                <span id="winner_team_2">Team 2 wins!</span>
-                <span id="winner_draw">It's a draw</span>
-            </span>
-        </span>
-        <hr/>
+            <hr/>
 
-        <span class="interval">
-            Interval: <span id="interval_display">100</span><br/>
-            <input id="interval" type="range" min="0" max="200" step="5"/><br/>
-        </span>
-        <hr/>
+            <span class="interval">
+                Interval: <span id="interval_display">100</span><br/>
+                <input id="interval" type="range" min="0" max="200" step="5"/><br/>
+            </span>
+            <hr/>
 
-        <span class="time">
-            Time: <span id="tick_display">0</span> / <span id="tick_max_display">?</span><br/>
-            <input id="tick" type="range" min="0" max="500" step="1"/><br/>
-            <span class="controls">
-                <button
-                    id="start"
-                    class="icon_large"
-                    style="background-image: url('{{static_url}}/start.png');">
-                </button>
-                <button
-                    id="reverse"
-                    class="icon_large"
-                    style="background-image: url('{{static_url}}/reverse.png');">
-                </button>
-                <button
-                    id="step_left"
-                    class="icon_large"
-                    style="background-image: url('{{static_url}}/step_left.png');">
-                </button>
-                <button
-                    id="pause"
-                    class="icon_large"
-                    style="background-image: url('{{static_url}}/pause.png');">
-                </button>
-                <button
-                    id="step_right"
-                    class="icon_large"
-                    style="background-image: url('{{static_url}}/step_right.png');">
-                </button>
-                <button
-                    id="forward"
-                    class="icon_large"
-                    style="background-image: url('{{static_url}}/forward.png');">
-                </button>
-                <button
-                    id="end"
-                    class="icon_large"
-                    style="background-image: url('{{static_url}}/end.png');">
-                </button>
+            <span class="time">
+                Time: <span id="tick_display">0</span> / <span id="tick_max_display">?</span><br/>
+                <input id="tick" type="range" min="0" max="500" step="1"/><br/>
+                <span class="controls">
+                    <button
+                        id="start"
+                        class="icon_large"
+                        style="background-image: url('{{static_url}}/start.png');">
+                    </button>
+                    <button
+                        id="reverse"
+                        class="icon_large"
+                        style="background-image: url('{{static_url}}/reverse.png');">
+                    </button>
+                    <button
+                        id="step_left"
+                        class="icon_large"
+                        style="background-image: url('{{static_url}}/step_left.png');">
+                    </button>
+                    <button
+                        id="pause"
+                        class="icon_large"
+                        style="background-image: url('{{static_url}}/pause.png');">
+                    </button>
+                    <button
+                        id="step_right"
+                        class="icon_large"
+                        style="background-image: url('{{static_url}}/step_right.png');">
+                    </button>
+                    <button
+                        id="forward"
+                        class="icon_large"
+                        style="background-image: url('{{static_url}}/forward.png');">
+                    </button>
+                    <button
+                        id="end"
+                        class="icon_large"
+                        style="background-image: url('{{static_url}}/end.png');">
+                    </button>
+                </span>
             </span>
-        </span>
-        <hr/>
+            <hr/>
 
-        <span class="team_stats team_1">
-            1: <span class="team_name team_1">?</span><br/>
-            <!--Team health-->
-            <span class="team_health">
-                <span class="pg_horz_outer">
-                    <span class="pg_horz_inner"></span>
+            <span class="team_stats team_1">
+                1: <span class="team_name team_1">?</span><br/>
+                <!--Team health-->
+                <span class="team_health">
+                    <span class="pg_horz_outer">
+                        <span class="pg_horz_inner"></span>
+                    </span>
                 </span>
-            </span>
-            <br/>
+                <br/>
 
-            <!--Player health-->
-            <span class="pg_vert_header player_health player_0">
-                0<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
+                <!--Player health-->
+                <span class="pg_vert_header player_health player_0">
+                    0<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                </span>
+                <span class="pg_vert_header player_health player_1">
+                    1<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                </span>
+                <span class="pg_vert_header player_health player_2">
+                    2<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                    </span>
+                <span class="pg_vert_header player_health player_3">
+                    3<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                </span>
+                <span class="pg_vert_header player_health player_4">
+                    4<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
                 </span>
             </span>
-            <span class="pg_vert_header player_health player_1">
-                1<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-            </span>
-            <span class="pg_vert_header player_health player_2">
-                2<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-                </span>
-            <span class="pg_vert_header player_health player_3">
-                3<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-            </span>
-            <span class="pg_vert_header player_health player_4">
-                4<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-            </span>
-        </span>
-        <hr/>
+            <hr/>
 
-        <span class="team_stats team_2">
-            2: <span class="team_name team_2">?</span><br/>
-            <!--Team health-->
-            <span class="team_health">
-                <span class="pg_horz_outer">
-                    <span class="pg_horz_inner"></span>
+            <span class="team_stats team_2">
+                2: <span class="team_name team_2">?</span><br/>
+                <!--Team health-->
+                <span class="team_health">
+                    <span class="pg_horz_outer">
+                        <span class="pg_horz_inner"></span>
+                    </span>
                 </span>
-            </span>
-            <br/>
+                <br/>
 
-            <!--Player health-->
-            <span class="pg_vert_header player_health player_0">
-                0<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
+                <!--Player health-->
+                <span class="pg_vert_header player_health player_0">
+                    0<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                </span>
+                <span class="pg_vert_header player_health player_1">
+                    1<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                </span>
+                <span class="pg_vert_header player_health player_2">
+                    2<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                    </span>
+                <span class="pg_vert_header player_health player_3">
+                    3<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
+                </span>
+                <span class="pg_vert_header player_health player_4">
+                    4<br/>
+                    <span class="pg_vert_outer">
+                        <span class="pg_vert_inner"></span>
+                    </span>
                 </span>
             </span>
-            <span class="pg_vert_header player_health player_1">
-                1<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-            </span>
-            <span class="pg_vert_header player_health player_2">
-                2<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-                </span>
-            <span class="pg_vert_header player_health player_3">
-                3<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-            </span>
-            <span class="pg_vert_header player_health player_4">
-                4<br/>
-                <span class="pg_vert_outer">
-                    <span class="pg_vert_inner"></span>
-                </span>
-            </span>
-        </span>
-        <hr/>
-    </div>
-    <canvas id="field" width="1000" height="700">
-    </canvas>
-    <div>
-        Icons are mostly from <a href="https://www.iconfinder.com/search/?q=iconset:cc_mono_icon_set">Wireframe mono icons</a> used under <a href="http://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0</a>.
+            <hr/>
+        </div>
+        <canvas id="field" width="1000" height="700">
+        </canvas>
+        <div id="attribution">
+            Icons are mostly from <a href="https://www.iconfinder.com/search/?q=iconset:cc_mono_icon_set">Wireframe mono icons</a> used under <a href="http://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0</a>.
+        </div>
     </div>
     <div id="loading">
         <div id="loading_spinner"></div>

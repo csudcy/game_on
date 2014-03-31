@@ -17,6 +17,10 @@
     margin-top: 20%;
 }
 
+#main {
+    float: left;
+}
+
 #setup, #field {
     border: 1px solid black;
     float: left;
