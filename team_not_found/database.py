@@ -127,11 +127,23 @@ class Match(ModelBase, Base):
         path = os.path.join(config['match']['folder'], filename)
         return path
 
-    def get_flo(self):
+    def get_flo_reader_compressed(self):
+        """
+        Return a FLO for this (still GZipped) matches results file.
+        """
+        return open(self._get_path(), 'rb')
+
+    def get_flo_reader(self):
         """
         Return a FLO for this matches results file.
         """
-        return GzipFile(self._get_path())
+        return GzipFile(self._get_path(), 'rb')
+
+    def get_flo_writer(self):
+        """
+        Return a FLO for this matches results file.
+        """
+        return GzipFile(self._get_path(), 'wb')
 
     def save_result(self, result):
         """

@@ -54,7 +54,13 @@ class Tree(object):
             })
 
         #Return the result
-        return cherrypy.lib.static.serve_fileobj(match.get_flo())
+        ret = cherrypy.lib.static.serve_fileobj(match.get_flo_reader_compressed())
+
+        #Make the client unGZip
+        cherrypy.response.headers['Content-Encoding'] = 'gzip'
+
+        #Then just return it
+        return ret
 
 
 def mount_tree():

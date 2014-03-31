@@ -5,14 +5,14 @@ TNF is a multi-game simulator/challenge which allows users to upload teams which
 can then compete against other teams.
 
 Features:
-  * Multiple games (only 1 so far though...)
+  * Support for multiple games (only 1 so far though...)
   * Users can make as many teams as they want
   * Matches can be replayed at any time
   * Matches are played asynchronously
+  * Don't un-GZip results files before returning to client
 
 Cool stuff coming up:
   * Stream match results to the GZipFile to avoid memory issues
-  * Don't un-GZip results files before returning to client
   * Tournaments
     * Best of 3
     * ? Bracketed?
