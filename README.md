@@ -10,9 +10,9 @@ Features:
   * Matches can be replayed at any time
   * Matches are played asynchronously
   * Don't un-GZip results files before returning to client
+  * Stream match results to the GZipFile to avoid memory issues
 
 Cool stuff coming up:
-  * Stream match results to the GZipFile to avoid memory issues
   * Tournaments
     * Best of 3
     * ? Bracketed?
@@ -36,6 +36,10 @@ Stuff I really should do:
   * ? File versioning?
   * Remove inline styles
   * Match/team table/dir cleanup
+    * Dont do this automatically
+    * Allow admins to replay matches where the file doesnt exist
+    * Dont show them to non-admins?
+      * Could lead to much file checking?
 
 Stuff which probably isnt needed anymore:
   * File uploads

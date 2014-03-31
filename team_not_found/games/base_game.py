@@ -1,3 +1,4 @@
+import json
 
 class BaseGame(object):
     """
@@ -67,7 +68,7 @@ class BaseGame(object):
         #Save this for later
         self.team_classes = team_classes
 
-    def run(self):
+    def run(self, match_flo):
         """
         Run this game until it ends
         @return: A summary of the match in this format:
@@ -78,7 +79,6 @@ class BaseGame(object):
                 'constant_state': {
                     <return of get_constant_state>
                 },
-                'tick_count': 1234,
                 'tick_state': [
                     {
                         <return of get_tick_state>
@@ -91,10 +91,12 @@ class BaseGame(object):
         match = {
             'status': None,
             'winners': None,
-            'constant_state': None,
-            'tick_count': None,
-            'tick_state': []
+            'constant_state': None
         }
+
+        #Not really a nice way to do streaming JSON in Python so we'll be
+        #hacky as fuck...
+        match_flo.write('{"tick_state": [')
 
         #Initialise the game
         error = self.initialise(self.team_classes)
@@ -105,23 +107,23 @@ class BaseGame(object):
             match['constant_state'] = self.get_constant_state()
 
             #Tick until the game ends
+            tick_count = 0
             previous_state = self.get_tick_state()
-            match['tick_state'].append(previous_state)
+            match_flo.write(json.dumps(previous_state))
             while (True):
                 #Check if we have run too many ticks
-                if len(match['tick_state']) > self.max_ticks:
+                if tick_count >= self.max_ticks:
                     match['status'] = 'Finished (Too many ticks)'
                     break
+                tick_count += 1
 
                 #Run a tick
                 self.run_tick()
 
                 #Get the changed game state
                 current_state = self.get_tick_state()
-                #changed_state = self.get_changed_state(previous_state, current_state)
-                #match['tick_state'].append(changed_state)
-                #previous_state = current_state
-                match['tick_state'].append(current_state)
+                match_flo.write(',')
+                match_flo.write(json.dumps(current_state))
 
                 #Check if the game is over
                 if self.is_complete:
@@ -129,16 +131,21 @@ class BaseGame(object):
                     match['winners'] = self.get_winners()
                     break
 
-        match['tick_count'] = len(match['tick_state'])
+        #Continuing to be hacky as fuck...
+        #Close the list of tick_state
+        match_flo.write('],')
 
-        #Return the output of the game
-        return match
+        #Convert what we have so far into JSON
+        match_json = json.dumps(match)
 
-    def get_changed_state(self, previous_state, current_state):
-        """
-        Work out the changes between the previous game state and the current game state
-        """
-        raise Exception('TODO')
+        #Remove the leading {
+        match_json = match_json[1:]
+
+        #Write the match_json to the match_flo
+        match_flo.write(match_json)
+
+        #Yay, hacky JSON streaming is complete!
+
 
     ##########################################################################
     ##########################################################################

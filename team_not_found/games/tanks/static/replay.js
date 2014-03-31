@@ -169,8 +169,8 @@ $(document).ready(function() {
                 match = data;
 
                 //Show some info from the match
-                $('#tick').attr('max', match.tick_count-1);
-                $('#tick_max_display').text(match.tick_count-1);
+                $('#tick').attr('max', match.tick_state.length-1);
+                $('#tick_max_display').text(match.tick_state.length-1);
                 $('#field').attr('width', match.constant_state.board.width);
                 $('#field').attr('height', match.constant_state.board.height);
                 $('.team_name.team_1').text(match.constant_state.team_1.name);

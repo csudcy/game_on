@@ -74,14 +74,11 @@ class MatchProcessor(threading.Thread):
         from team_not_found import games
         game = games.GAME_DICT[match.game]
 
-        #Run the game
+        #Run the game & stream it to file
         #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))
         game_obj = game([team_1_class, team_2_class])
-        result = game_obj.run()
-
-        #Save result to file
-        #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))
-        match.save_result(result)
+        with match.get_flo_writer() as match_flo:
+            game_obj.run(match_flo)
 
         #Mark the match as PLAYED
         #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))
