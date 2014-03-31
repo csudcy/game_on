@@ -23,23 +23,34 @@ $(document).ready(function() {
         update_play_state($('#pause'));
     }
 
-    //// Bind interaction handlers
+    //// Bind playback control handlers
+    $('#start').click(function() {
+        pause();
+        set_tick(0);
+    });
+
+    $('#forward').click(update_play_state_click);
+
     $('#step_left').click(function() {
         pause();
         set_tick(get_tick() - 1);
     });
 
-    $('#forward').click(update_play_state_click);
-
     $('#pause').click(update_play_state_click);
-
-    $('#reverse').click(update_play_state_click);
 
     $('#step_right').click(function() {
         pause();
         set_tick(get_tick() + 1);
     });
 
+    $('#reverse').click(update_play_state_click);
+
+    $('#end').click(function() {
+        pause();
+        set_tick(get_max_tick());
+    });
+
+    //// Bind other interaction handlers
     $('#interval').change(function() {
         set_interval($(this).val());
     });
@@ -61,9 +72,12 @@ $(document).ready(function() {
     function get_tick() {
         return parseInt($('#tick').val());
     }
+    function get_max_tick() {
+        return match.tick_state.length - 1;
+    }
     function set_tick(tick) {
         //Validate the requested tick
-        var max_ticks = parseInt($('#tick').attr('max'));
+        var max_ticks = get_max_tick();
         tick = Math.min(Math.max(tick, 0), max_ticks);
         if (tick === 0 || tick === max_ticks) {
             pause();
@@ -169,8 +183,8 @@ $(document).ready(function() {
                 match = data;
 
                 //Show some info from the match
-                $('#tick').attr('max', match.tick_state.length-1);
-                $('#tick_max_display').text(match.tick_state.length-1);
+                $('#tick').attr('max', get_max_tick());
+                $('#tick_max_display').text(get_max_tick());
                 $('#field').attr('width', match.constant_state.board.width);
                 $('#field').attr('height', match.constant_state.board.height);
                 $('.team_name.team_1').text(match.constant_state.team_1.name);

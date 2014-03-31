@@ -45,9 +45,9 @@
             <input id="tick" type="range" min="0" max="500" step="1"/><br/>
             <span class="controls">
                 <button
-                    id="step_left"
+                    id="start"
                     class="icon_large"
-                    style="background-image: url('{{static_url}}/step_left.png');">
+                    style="background-image: url('{{static_url}}/start.png');">
                 </button>
                 <button
                     id="reverse"
@@ -55,9 +55,19 @@
                     style="background-image: url('{{static_url}}/reverse.png');">
                 </button>
                 <button
+                    id="step_left"
+                    class="icon_large"
+                    style="background-image: url('{{static_url}}/step_left.png');">
+                </button>
+                <button
                     id="pause"
                     class="icon_large"
                     style="background-image: url('{{static_url}}/pause.png');">
+                </button>
+                <button
+                    id="step_right"
+                    class="icon_large"
+                    style="background-image: url('{{static_url}}/step_right.png');">
                 </button>
                 <button
                     id="forward"
@@ -65,9 +75,9 @@
                     style="background-image: url('{{static_url}}/forward.png');">
                 </button>
                 <button
-                    id="step_right"
+                    id="end"
                     class="icon_large"
-                    style="background-image: url('{{static_url}}/step_right.png');">
+                    style="background-image: url('{{static_url}}/end.png');">
                 </button>
             </span>
         </span>
@@ -163,6 +173,9 @@
     </div>
     <canvas id="field" width="1000" height="700">
     </canvas>
+    <div>
+        Icons are mostly from <a href="https://www.iconfinder.com/search/?q=iconset:cc_mono_icon_set">Wireframe mono icons</a> used under <a href="http://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0</a>.
+    </div>
     <div id="loading">
         <div id="loading_spinner"></div>
         <div id="loading_text">
