@@ -1,6 +1,7 @@
 import logging
 import Queue
 import threading
+import time
 
 from team_not_found import database as db
 
@@ -35,8 +36,11 @@ class MatchProcessor(threading.Thread):
             else:
                 #Process the match
                 logging.debug('MatchProcessor %s. Processing match %s...' % (self.index, match_uuid))
+                start_time = time.time()
                 self.run_match(match_uuid)
-                logging.debug('MatchProcessor %s. Processing match %s done!' % (self.index, match_uuid))
+                end_time = time.time()
+                diff_time = end_time - start_time
+                logging.debug('MatchProcessor %s. Processing match %s done in %.2fs!' % (self.index, match_uuid, diff_time))
 
                 #Let the queue know it was completed
                 self.queue.task_done()
