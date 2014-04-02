@@ -5,22 +5,47 @@
 {%endblock%}
 
 {%block content%}
-    <h3>Games</h3>
-    <ul>
-        {%for game in games%}
-            <li>
-                <h3>{{game.name}}</h3>
-                {{game.description}}
-                <a href="/tnf/game/setup/{{game.id}}/">
-                    <span class="icon_small icon_create" title="Setup a game of {{game.name}}"></span>
-                </a>
-                <a href="/tnf/game/{{game.id}}/">
-                    <span class="icon_small icon_retrieve" title="Review matches of {{game.name}}"></span>
-                </a>
-            </li>
-        {%endfor%}
-    </ul>
+    <section class="flex_container">
+        <section class="flex_row">
+            <article id="games_container">
+                <div class="frame small_header">
+                    Games
+                </div>
+                <div class="flex_row" style="overflow-x: scroll;">
+                    {%for game in games%}
+                        <section class="frame">
+                            <h3>{{game.name}}</h3>
+                            {{game.description}}
+                            <a href="/tnf/game/setup/{{game.id}}/">
+                                <span
+                                    class="icon_small icon_create"
+                                    title="Setup a game of {{game.name}}">
+                                </span>
+                            </a>
+                            <a href="/tnf/game/{{game.id}}/">
+                                <span
+                                    class="icon_small icon_retrieve"
+                                    title="Review matches of {{game.name}}">
+                                </span>
+                            </a>
+                        </section>
+                    {%endfor%}
+                </div>
+            </article>
+        </section>
+        <section class="flex_row">
+            <article id="players_container" class="flex_cell">
+                Players go here
+            </article>
+            <article id="matches_container" class="flex_cell">
+                Matches go here
+            </article>
+            <article id="tournaments_container" class="flex_cell">
+                Tournaments go here
+            </article>
+        </section>
 
+    <!--
     <h3>
         Teams
         <a href="/tnf/crud/team/retrieve/">
@@ -39,4 +64,5 @@
             <span class="icon_small icon_create" title="Create Team"></span>
         </a>
     {%endif%}
+    -->
 {%endblock%}

@@ -13,7 +13,7 @@
         {%endblock%}
     </head>
     <body>
-        <div id="header">
+        <header class="frame">
             <span class="header_text">
                 <a href="/tnf/">
                     Welcome to TeamNotFound!
@@ -21,14 +21,11 @@
             </span>
             {%if current_user%}
                 <span class="header_user">
-
-
                     {%if current_user.is_admin%}
                         <a href="/tnf/crud/user/retrieve/">
                             <span class="icon_small icon_settings" title="Manage Users"/>
                         </a>
                     {%endif%}
-
 
                     {{current_user.name}}
                     <a href="/logout">
@@ -36,12 +33,12 @@
                     </a>
                 </span>
             {%endif%}
-        </div>
+        </header>
 
-        <div id="content">
+        <section id="content">
             {%block content%}
                 Insert content here!
             {%endblock%}
-        </div>
+        </section>
     </body>
 </html>

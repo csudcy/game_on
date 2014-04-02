@@ -6,7 +6,7 @@
 
 {%block content%}
     <div id="login_container">
-        <span id="login_inner">
+        <span id="login_inner" class="frame">
             <form action='/login{%if redirect%}?redirect={{redirect}}{%endif%}' method="post">
                 <input type="text" name="username" placeholder="Username" value="{{username}}" autofocus><br/>
                 <input type="password" name="password" placeholder="Password"><br/>

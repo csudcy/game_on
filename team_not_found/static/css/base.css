@@ -1,28 +1,59 @@
-#header {
-    height: 32px;
-    border-bottom: 1px solid black;
+header {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    height: 28px;
 }
 
-#header .header_text {
+header .header_text {
     float: left;
     font-size: 24px;
     font-weight: bold;
 }
 
-#header .header_user {
+header .header_user {
     float: right;
     margin-right: 15px;
 }
 
-#header .icon_logout {
+header .icon_logout {
     margin-left: 10px;
 }
 
 #content {
-    overflow: scroll;
     position: fixed;
-    bottom: 0px;
-    top: 42px;
     left: 0px;
     right: 0px;
+    top: 42px;
+    bottom: 0px;
+    overflow: scroll;
+}
+
+.frame, .flex_cell {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 1px;
+}
+
+.flex_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.flex_row {
+    display: flex;
+    flex: 1;
+}
+
+.flex_cell {
+    flex: 1;
+}
+
+.small_header {
+    font-size: 18pt;
+    font-weight: bold;
 }
