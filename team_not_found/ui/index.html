@@ -34,7 +34,7 @@
                 <section class="frame small_header">
                     Your Teams
                 </section>
-                <section class="flex_cell" style="overflow-y: scroll;">
+                <section class="flex_cell frame" style="overflow-y: scroll;">
                     <ul>
                         {%if teams%}
                             {%for team in teams%}
@@ -63,7 +63,7 @@
                 <section class="frame small_header">
                     Your Matches
                 </section>
-                <section class="flex_cell" style="overflow-y: scroll;">
+                <section class="flex_cell frame" style="overflow-y: scroll;">
                     <ul>
                         {%if matches%}
                             {%for match in matches%}
@@ -87,11 +87,34 @@
                     To play a match, goto the game page using the links above.
                 </section>
             </article>
-            <article id="tournaments_container" class="flex_cell">
+            <article id="tournaments_container" class="flex_cell flex_container">
                 <div class="frame small_header">
                     Your Tournaments
                 </div>
-                Coming soon!
+                <section class="flex_cell frame" style="overflow-y: scroll;">
+                    <ul>
+                        {%if tournaments%}
+                            {%for tournament in tournaments%}
+                                <li style="clear: both;">
+                                    <a href="/tnf/game/replay/{{match.uuid}}/" style="float: right;">
+                                        <span class="icon_small icon_play" title="Replay Match"/>
+                                    </a>
+                                    TODO!
+                                    {{match.game}}: {{match.team_1}} <br/>
+                                    vs. {{match.team_2}}
+                                </li>
+                            {%endfor%}
+                        {%else%}
+                            <li>
+                                You don't have any Tournaments yet...
+                            </li>
+                        {%endif%}
+                    </ul>
+                </section>
+                <section>
+                    <span class="icon_small icon_create" title="Create Match"></span>
+                    Tournaments are coming soon...
+                </section>
             </article>
         </section>
     </section>

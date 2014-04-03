@@ -30,7 +30,7 @@ header .icon_logout {
     overflow: hidden;
 }
 
-.frame, .flex_cell {
+.frame {
     border: 1px solid black;
     border-radius: 10px;
     padding: 5px;
