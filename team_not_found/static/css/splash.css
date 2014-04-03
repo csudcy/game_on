@@ -1,8 +1,8 @@
-#login_container {
+#center_container {
     text-align: center;
 }
 
-#login_inner {
+#center_inner {
     display: inline-block;
     position: relative;
     margin-top: 100px;

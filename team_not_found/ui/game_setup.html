@@ -5,77 +5,83 @@
 {%endblock%}
 
 {%block content%}
-    <h3>
-        Play a game of {{game_name}}:
-    </h3>
-    <form method="post">
-        <label for="team_1">Team 1:</label>
-        <select id="team_1" name="team_1">
-            {%if your_teams%}
-                <optgroup label="Your Teams">
-                    {%for team in your_teams%}
-                        <option value="{{team.id}}">{{team.name}}</option>
-                    {%endfor%}
-                </optgroup>
-            {%endif%}
-            {%if other_teams%}
-                <optgroup label="Other Teams">
-                    {%for team in other_teams%}
-                        <option value="{{team.id}}">{{team.name}}</option>
-                    {%endfor%}
-                </optgroup>
-            {%endif%}
-            {%if public_teams%}
-                <optgroup label="Public Teams">
-                    {%for team in public_teams%}
-                        <option value="{{team.id}}">{{team.name}}</option>
-                    {%endfor%}
-                </optgroup>
-            {%endif%}
-        </select>
-        <br/>
+    <div id="center_container">
+        <span id="center_inner" class="">
+            <section class="frame small_header">
+                Setup a match of {{game_name}}
+            </section>
+            <section class="frame">
+                <form method="post">
+                    <label for="team_1">Team 1:</label>
+                    <select id="team_1" name="team_1">
+                        {%if your_teams%}
+                            <optgroup label="Your Teams">
+                                {%for team in your_teams%}
+                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%endfor%}
+                            </optgroup>
+                        {%endif%}
+                        {%if other_teams%}
+                            <optgroup label="Other Teams">
+                                {%for team in other_teams%}
+                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%endfor%}
+                            </optgroup>
+                        {%endif%}
+                        {%if public_teams%}
+                            <optgroup label="Public Teams">
+                                {%for team in public_teams%}
+                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%endfor%}
+                            </optgroup>
+                        {%endif%}
+                    </select>
+                    <br/>
 
-        <label for="team_2">Team 2:</label>
-        <select id="team_2" name="team_2">
-            {%if your_teams%}
-                <optgroup label="Your Teams">
-                    {%for team in your_teams%}
-                        <option value="{{team.id}}">{{team.name}}</option>
-                    {%endfor%}
-                </optgroup>
-            {%endif%}
-            {%if other_teams%}
-                <optgroup label="Other Teams">
-                    {%for team in other_teams%}
-                        <option value="{{team.id}}">{{team.name}}</option>
-                    {%endfor%}
-                </optgroup>
-            {%endif%}
-            {%if public_teams%}
-                <optgroup label="Public Teams">
-                    {%for team in public_teams%}
-                        <option value="{{team.id}}">{{team.name}}</option>
-                    {%endfor%}
-                </optgroup>
-            {%endif%}
-        </select>
-        <br/>
+                    <label for="team_2">Team 2:</label>
+                    <select id="team_2" name="team_2">
+                        {%if your_teams%}
+                            <optgroup label="Your Teams">
+                                {%for team in your_teams%}
+                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%endfor%}
+                            </optgroup>
+                        {%endif%}
+                        {%if other_teams%}
+                            <optgroup label="Other Teams">
+                                {%for team in other_teams%}
+                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%endfor%}
+                            </optgroup>
+                        {%endif%}
+                        {%if public_teams%}
+                            <optgroup label="Public Teams">
+                                {%for team in public_teams%}
+                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%endfor%}
+                            </optgroup>
+                        {%endif%}
+                    </select>
+                    <br/>
 
-        <h4>
-            Caution! When using a public team,<br/>
-            others will be able to see your match<br/>
-            (even if it includes a non-public team)<br/>
-        </h4>
+                    <h4>
+                        Caution! When using a public team,<br/>
+                        others will be able to see your match<br/>
+                        (even if it includes a non-public team)<br/>
+                    </h4>
 
-        <button type="submit" style="font-size: 22px;">
-            <span class="icon_large icon_play"></span>
-            Play the Game!
-        </button>
+                    <button type="submit" style="font-size: 22px;">
+                        <span class="icon_large icon_play"></span>
+                        Play the Game!
+                    </button>
+                </form>
+            </section>
+            <section class="frame small_header">
+                <a href="/tnf/game/{{game_id}}/">
+                    Return to game info
+                </a>
+            </section>
+        </span>
+    </div>
 
-        <h3 style="margin: 5px;">
-            <a href="/tnf/game/{{game_id}}/">
-                Return to game info
-            </a>
-        </h3>
-    </form>
 {%endblock%}
