@@ -1,0 +1,118 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    {{super()}} - {{game_name}} - Setup Tournament
+{%endblock%}
+
+{%block content%}
+    <div id="center_container">
+        <span id="center_inner" class="">
+            <section class="frame small_header">
+                Setup a tournament of {{game_name}}
+            </section>
+            <form method="post">
+                <section class="flex_row">
+                    <section class="flex_cell">
+                        <section class="frame small_header">
+                            Tournament Type:
+                        </section>
+                        <section class="frame flex_cell">
+                            {%if your_teams%}
+                                <h3>Your Teams</h3>
+                                {%for team in your_teams%}
+                                    <input
+                                        type="checkbox"
+                                        id="team_{{team.id}}"
+                                        name="teams"
+                                        value="{{team.id}}"
+                                        style="float: right;"/>
+                                    <label for="team_{{team.id}}">
+                                        {{team.name}}
+                                    </label>
+                                    <br/>
+                                {%endfor%}
+                            {%endif%}
+                            {%if other_teams%}
+                                <h3>Other Teams</h3>
+                                {%for team in other_teams%}
+                                    <input
+                                        type="checkbox"
+                                        id="team_{{team.id}}"
+                                        name="teams"
+                                        value="{{team.id}}"
+                                        style="float: right;"/>
+                                    <label for="team_{{team.id}}">
+                                        {{team.name}}
+                                    </label>
+                                    <br/>
+                                {%endfor%}
+                            {%endif%}
+                            {%if public_teams%}
+                                <h3>Public Teams</h3>
+                                {%for team in public_teams%}
+                                    <input
+                                        type="checkbox"
+                                        id="team_{{team.id}}"
+                                        name="teams"
+                                        value="{{team.id}}"
+                                        style="float: right;"/>
+                                    <label for="team_{{team.id}}">
+                                        {{team.name}}
+                                    </label>
+                                    <br/>
+                                {%endfor%}
+                            {%endif%}
+                        </section>
+                    </section>
+                    <section class="flex_cell">
+                        <section class="frame small_header">
+                            Tournament Type:
+                        </section>
+                        <section class="frame flex_cell">
+                            {%for tournament_type in tournament_types%}
+                                <input
+                                    type="radio"
+                                    id="type_{{tournament_type.type}}"
+                                    name="tournament_type"
+                                    value="{{tournament_type.type}}"
+                                    checked="checked"/>
+                                <label for="type_{{tournament_type.type}}">
+                                    {{tournament_type.name}}
+                                </label>
+                                <br/>
+                            {%endfor%}
+                        </section>
+                        <section class="frame small_header">
+                            Best of:
+                        </section>
+                        <section class="frame flex_cell">
+                            {%for best_of in best_ofs%}
+                                <input
+                                    type="radio"
+                                    id="type_{{best_of}}"
+                                    name="best_of"
+                                    value="{{best_of}}"
+                                    checked="checked"/>
+                                <label for="type_{{best_of}}">
+                                    {{best_of}}
+                                </label>
+                                <br/>
+                            {%endfor%}
+                        </section>
+                        <section class="flex_cell">
+                            <button type="submit" style="font-size: 22px;">
+                                <span class="icon_large icon_play"></span>
+                                Start the tournament!
+                            </button>
+                        </section>
+                    </section>
+                </section>
+            </form>
+            <section class="frame small_header">
+                <a href="/tnf/game/{{game_id}}/">
+                    Return to game info
+                </a>
+            </section>
+        </span>
+    </div>
+{%endblock%}

@@ -10,7 +10,7 @@ from team_not_found.utils import mount as mount_utils
 
 class Tree(object):
     @cherrypy.expose
-    @cherrypy.tools.jinja2('game_matches.html')
+    @cherrypy.tools.jinja2('game_info.html')
     def default(self, game_id):
         """
         Display the list of matches for <game_id>

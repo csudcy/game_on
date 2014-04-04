@@ -30,7 +30,7 @@ class Tree(object):
             'game_name': game.name,
             'match_uuid': match_uuid,
             'static_url': '/tnf/game/static/%s' % match.game,
-            'data_url': '/tnf/game/replay/json/%s/' % match_uuid,
+            'data_url': '/tnf/match/json/%s/' % match_uuid,
             'match_list_url': '/tnf/game/%s/' % match.game,
         })
 

@@ -12,19 +12,35 @@
             </section>
             <section class="flex_row" style="overflow-x: scroll;">
                 {%for game in games%}
-                    <section class="frame">
-                        <h3>{{game.name}}</h3>
-                        {{game.description}}
-                        <a href="/tnf/game/setup/{{game.id}}/">
-                            <span
-                                class="icon_small icon_create"
-                                title="Setup a game of {{game.name}}"/>
-                        </a>
-                        <a href="/tnf/game/{{game.id}}/">
-                            <span
-                                class="icon_small icon_retrieve"
-                                title="Review matches of {{game.name}}"/>
-                        </a>
+                    <section class="flex_container">
+                        <section class="frame small_header">
+                            {{game.name}}
+                        </section>
+                        <section class="frame flex_cell">
+                            {{game.description}}
+                        </section>
+                        <section class="frame">
+                            <a href="/tnf/game/{{game.id}}/">
+                                <span
+                                    class="icon_small icon_retrieve"
+                                    title="Review matches of {{game.name}}"></span>
+                                Goto game details
+                            </a>
+                            <br/>
+                            <a href="/tnf/game/setup/match/{{game.id}}/">
+                                <span
+                                    class="icon_small icon_create"
+                                    title="Setup a match of {{game.name}}"></span>
+                                Setup a match of {{game.name}}
+                            </a>
+                            <br/>
+                            <a href="/tnf/game/setup/tournament/{{game.id}}/">
+                                <span
+                                    class="icon_small icon_create"
+                                    title="Setup a tournament of {{game.name}}"></span>
+                                Setup a tournament of {{game.name}}
+                            </a>
+                        </section>
                     </section>
                 {%endfor%}
             </section>
@@ -68,7 +84,7 @@
                         {%if matches%}
                             {%for match in matches%}
                                 <li style="clear: both;">
-                                    <a href="/tnf/game/replay/{{match.uuid}}/" style="float: right;">
+                                    <a href="/tnf/match/{{match.uuid}}/" style="float: right;">
                                         <span class="icon_small icon_play" title="Replay Match"/>
                                     </a>
                                     {{match.game}}: {{match.team_1}} <br/>
@@ -96,8 +112,8 @@
                         {%if tournaments%}
                             {%for tournament in tournaments%}
                                 <li style="clear: both;">
-                                    <a href="/tnf/game/replay/{{match.uuid}}/" style="float: right;">
-                                        <span class="icon_small icon_play" title="Replay Match"/>
+                                    <a href="/tnf/tournament/{{tournament.uuid}}/" style="float: right;">
+                                        <span class="icon_small icon_play" title="Tournament Results"/>
                                     </a>
                                     TODO!
                                     {{match.game}}: {{match.team_1}} <br/>

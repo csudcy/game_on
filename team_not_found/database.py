@@ -144,6 +144,7 @@ class Match(ModelBase, Base):
 class Tournament(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
     tournament_type = sa.Column(sa.String(100), nullable=False)
+    best_of = sa.Column(sa.Integer, nullable=False)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     creator = sa_orm.relationship('User', backref=backref('tournaments', passive_deletes=True, cascade="all"))
 

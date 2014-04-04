@@ -11,7 +11,7 @@
                 <section class="frame small_header">
                     Game
                 </section>
-                <section class="flex_cell">
+                <section class="frame flex_cell">
                     Game goes here
                 </section>
             </article>
@@ -19,8 +19,14 @@
                 <section class="frame small_header">
                     Tournaments
                 </section>
-                <section class="flex_cell">
+                <section class="frame flex_cell">
                     Tournaments goes here
+                </section>
+                <section class="frame">
+                    <a href="/tnf/game/setup/tournament/{{game_id}}/">
+                        <span class="icon_small icon_create" title="Setup a tournament of {{game.name}}"></span>
+                        Setup a tournament of {{game.name}}
+                    </a>
                 </section>
             </article>
         </section>
@@ -29,8 +35,14 @@
                 <section class="frame small_header">
                     Teams
                 </section>
-                <section class="flex_cell">
+                <section class="frame flex_cell">
                     Teams goes here
+                </section>
+                <section class="frame">
+                    <a href="/tnf/team/create/{{game_id}}/">
+                        <span class="icon_small icon_create" title="Create a team for {{game.name}}"></span>
+                        Create a team for {{game.name}}
+                    </a>
                 </section>
             </article>
             <article id="matches_container" class="flex_container" style="flex: 1;">
@@ -47,7 +59,7 @@
                                 <ul>
                                     {%for match in match_section['matches']%}
                                         <li style="clear: both; text-align: center;">
-                                            <a href="/tnf/game/replay/{{match.uuid}}/" style="float: right;">
+                                            <a href="/tnf/match/{{match.uuid}}/" style="float: right;">
                                                 <span class="icon_small icon_play"/>
                                             </a>
                                             <span class="match_team">{{match.team_1}}</span>
@@ -62,8 +74,8 @@
                         You have no matches...
                     {%endif%}
                 </section>
-                <section>
-                    <a href="/tnf/game/setup/{{game_id}}/">
+                <section class="frame">
+                    <a href="/tnf/game/setup/match/{{game_id}}/">
                         <span class="icon_small icon_create" title="Setup a match of {{game.name}}"></span>
                         Setup a match of {{game.name}}
                     </a>
