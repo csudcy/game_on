@@ -114,13 +114,8 @@ class Match(ModelBase, Base):
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     creator = sa_orm.relationship('User', backref=backref('matches', passive_deletes=True, cascade="all"))
 
-    #Add extra info because I cant work out how to get it through f**king SqlAlchemy!
-    setattr(team_1_uuid, 'related_name', 'team')
-    setattr(team_1_uuid, 'related_model', Team)
-    setattr(team_2_uuid, 'related_name', 'team')
-    setattr(team_2_uuid, 'related_model', Team)
-    setattr(creator_uuid, 'related_name', 'creator')
-    setattr(creator_uuid, 'related_model', User)
+    tournament_uuid = sa.Column(sa.String(36), sa.ForeignKey('tournament.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)
+    tournament = sa_orm.relationship('Tournament', backref=backref('matches', passive_deletes=True, cascade="all"))
 
     def _get_path(self):
         filename = '%s-%s.json.gz' % (self.game, self.uuid)
@@ -145,10 +140,18 @@ class Match(ModelBase, Base):
         """
         return GzipFile(self._get_path(), 'wb')
 
-    def save_result(self, result):
-        """
-        Save the result of this match to file
-        """
-        result_json = json.dumps(result)
-        with GzipFile(self._get_path(), 'w') as f:
-            f.write(result_json)
+
+class Tournament(ModelBase, Base):
+    game = sa.Column(sa.String(100), nullable=False)
+    tournament_type = sa.Column(sa.String(100), nullable=False)
+    creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    creator = sa_orm.relationship('User', backref=backref('tournaments', passive_deletes=True, cascade="all"))
+
+    teams = sa_orm.relationship('Team', secondary='tournamentteam', backref='tournaments')
+
+
+class TournamentTeam(ModelBase, Base):
+    tournament_uuid = sa.Column(sa.String(36), sa.ForeignKey('tournament.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    tournament = sa_orm.relationship('Tournament', backref=backref('tournament_teams', passive_deletes=True, cascade="all"))
+    team_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    team = sa_orm.relationship('Team', backref=backref('tournament_teams', passive_deletes=True, cascade="all"))

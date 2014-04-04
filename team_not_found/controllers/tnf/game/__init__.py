@@ -22,7 +22,8 @@ class Tree(object):
         your_matches = db.Session.query(
             db.Match
         ).filter(
-            db.Match.creator == cherrypy.request.user
+            db.Match.creator == cherrypy.request.user,
+            db.Match.tournament == None,
         )
 
         #Find matches your team has been used in (that aren't your matchs)

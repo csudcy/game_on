@@ -46,7 +46,8 @@ class Tree(object):
             team_2,
             db.Match.team_2
         ).filter(
-            db.Match.creator == cherrypy.request.user
+            db.Match.creator == cherrypy.request.user,
+            db.Match.tournament == None,
         ).all()
 
         # Process them into a usable format

@@ -17,9 +17,9 @@ Cool stuff coming up:
     * Best of 3
     * ? Bracketed?
     * ? All v all/matrix?
-  * Online editor
+  * Team creation
+    * Jump straight to online editor after team creation
     * Allow the code to be edited & immediately played
-    * Jump straight to this after player creation
     * Start the code as the example file from the game
     * http://ace.c9.io/ looks pretty sweet
   * Better error reporting
