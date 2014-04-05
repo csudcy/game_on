@@ -4,17 +4,19 @@ from team_not_found import database as db
 
 
 #Maintain this manually
-GAME_DICT = {
-    'tanks': game.TankGame,
-}
+GAMES = (
+    game.TankGame,
+)
 
 #Auto generate this
 GAME_LIST = []
-for game_id in GAME_DICT:
+GAME_DICT = {}
+for game in GAMES:
+    GAME_DICT[game.id] = game
     GAME_LIST.append({
-        'id': game_id,
-        'name': GAME_DICT[game_id].name,
-        'description': GAME_DICT[game_id].description,
+        'id': game.id,
+        'name': game.name,
+        'description': game.description,
     })
 
 
@@ -31,8 +33,8 @@ def initialise_games(admin_user):
     Add any example teams from games to the database
     """
     from team_not_found import database as db
-    for game_id in GAME_DICT:
-        example_teams = GAME_DICT[game_id].get_example_teams()
+    for game in GAMES:
+        example_teams = game.get_example_teams()
         for example_team in example_teams:
             existing_teams = db.Session.query(
                 db.Team
@@ -41,7 +43,7 @@ def initialise_games(admin_user):
             )
             if existing_teams.count() == 0:
                 team = db.Team(
-                    game = game_id,
+                    game = game.id,
                     name = example_team['name'],
                     is_public = example_team.get('is_public', True),
                     path = example_team['path'],

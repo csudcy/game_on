@@ -74,8 +74,7 @@ class Tree(object):
 
         #Render the setup template
         context.update({
-            'game_id': game_id,
-            'game_name': game.name,
+            'game': game,
             'static_url': '/tnf/game/static/%s' % game_id,
         })
         return context
@@ -108,8 +107,7 @@ class Tree(object):
 
         #Render the setup template
         context.update({
-            'game_id': game_id,
-            'game_name': game.name,
+            'game': game,
             'tournament_types': [
                 {
                     'type': 'bracket',

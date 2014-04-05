@@ -26,8 +26,7 @@ class Tree(object):
         template = game.jinja2_env.get_template('replay.html')
         return template.render({
             'current_user': cherrypy.request.user,
-            'game_id': match.game,
-            'game_name': game.name,
+            'game': game,
             'match_uuid': match_uuid,
             'static_url': '/tnf/game/static/%s' % match.game,
             'data_url': '/tnf/match/json/%s/' % match_uuid,

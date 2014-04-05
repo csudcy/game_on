@@ -1,13 +1,13 @@
 {%extends 'base.html'%}
 
 {%block title%}
-    {{super()}} - {{game_name}} - Match Replay
+    {{super()}} - {{game.name}} - Match Replay
 {%endblock%}
 
 {%block content%}
     <h3 style="margin: 5px;">
-        {{game_name}} - Match {{match_id}}
-        (<a href="/tnf/game/{{game_id}}/">
+        {{game.name}} - Match {{match_id}}
+        (<a href="/tnf/game/{{game.id}}/">
             Return to game info
         </a>)
     </h3>

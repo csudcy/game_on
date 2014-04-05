@@ -14,6 +14,7 @@ from team_not_found.tools import jinja_tool
 
 class TankGame(base_game.BaseGame):
     #Base properties
+    id = 'tanks'
     name = 'TNF.Tanks'
     description = 'A (fairly basic) 5-a-side tanks game'
     base_team = external.ExternalTeam

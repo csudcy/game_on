@@ -3,6 +3,9 @@ import json
 class BaseGame(object):
     """
     """
+    #A short string identifier for this game
+    id = None
+
     #A nice name for this game
     name = None
 
