@@ -165,7 +165,7 @@ $(document).ready(function() {
                     data = JSON.parse(body);
                 } catch (e) {
                     alert('Error parsing replay file!');
-                    window.location = MATCH_LIST_URL;
+                    window.location = GAME_INFO_URL;
                     return;
                 }
 
@@ -217,7 +217,7 @@ $(document).ready(function() {
         ).error(
             function() {
                 alert('Error loading replay file!');
-                window.location = MATCH_LIST_URL;
+                window.location = GAME_INFO_URL;
             }
         );
     }

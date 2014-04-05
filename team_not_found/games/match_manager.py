@@ -10,7 +10,7 @@ class MatchManager(cherrypy.process.plugins.SimplePlugin):
     match_queue = None
     match_processors = None
 
-    def __init__(self, processor_count=3):
+    def __init__(self, processor_count=0):
         """
         Startup & track the given number of threads
         """
