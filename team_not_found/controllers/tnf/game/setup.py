@@ -48,7 +48,7 @@ def split_teams(teams):
 class Tree(object):
 
     @cherrypy.expose
-    @cherrypy.tools.jinja2('game_setup_match.html')
+    @cherrypy.tools.jinja2('game/setup_match.html')
     def match(self, game_id, team_1=None, team_2=None):
         """
         Display the setup page for a match of <game_id>
@@ -81,7 +81,7 @@ class Tree(object):
         return context
 
     @cherrypy.expose
-    @cherrypy.tools.jinja2('game_setup_tournament.html')
+    @cherrypy.tools.jinja2('game/setup_tournament.html')
     def tournament(self, game_id, teams=None, tournament_type=None, best_of=None):
         """
         Display the setup page for a tournament of <game_id>

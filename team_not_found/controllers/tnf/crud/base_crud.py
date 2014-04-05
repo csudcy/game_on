@@ -128,7 +128,7 @@ class BaseCrud(object):
         raise cherrypy.HTTPRedirect('retrieve/')
 
     @cherrypy.expose
-    @cherrypy.tools.jinja2(template='crud_retrieve.html')
+    @cherrypy.tools.jinja2(template='crud/retrieve.html')
     def retrieve(self):
         """
         Retrieve the list of objects in a nice HTML page
@@ -152,7 +152,7 @@ class BaseCrud(object):
         }
 
     @cherrypy.expose
-    @cherrypy.tools.jinja2(template='crud_create.html')
+    @cherrypy.tools.jinja2(template='crud/create.html')
     def create(self, **kwargs):
         """
         Create a new object in a nice HTML page
@@ -185,7 +185,7 @@ class BaseCrud(object):
         }
 
     @cherrypy.expose
-    @cherrypy.tools.jinja2(template='crud_update.html')
+    @cherrypy.tools.jinja2(template='crud/update.html')
     def update(self, uuid, **kwargs):
         """
         Update this object in a nice HTML page
@@ -219,7 +219,7 @@ class BaseCrud(object):
         }
 
     @cherrypy.expose
-    @cherrypy.tools.jinja2(template='crud_delete.html')
+    @cherrypy.tools.jinja2(template='crud/delete.html')
     def delete(self, uuid):
         """
         Delete this object in a nice HTML page

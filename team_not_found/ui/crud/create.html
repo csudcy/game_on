@@ -1,11 +1,11 @@
 {%extends 'base.html'%}
 
 {%block title%}
-    {{super()}} - {{object_name}} Update - {{obj.uuid}}
+    {{super()}} - {{object_name}} Create
 {%endblock%}
 
 {%block content%}
-    <h3>{{object_name}} Edit:</h3>
+    <h3>{{object_name}} Create:</h3>
     {%if validation_errors%}
         Validation errors:
         <ul class="error">
@@ -15,11 +15,11 @@
         </ul>
     {%endif%}
     <form method="post" enctype="multipart/form-data">
-        {%include 'crud_form.html'%}
-        <button type="submit">Save {{object_name}}</button>
+        {%include 'crud/form.html'%}
+        <button type="submit">Create {{object_name}}</button>
     </form>
     <br/>
-    <a href="../../retrieve/">
+    <a href="../retrieve/">
         Return to {{object_name}} list
     </a>
 {%endblock%}
