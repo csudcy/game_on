@@ -112,6 +112,7 @@ class Connection(object):
             ).one()
         except sa.exc.ProgrammingError:
             #Table doesn't exist, create it
+            logging.info('Creating version table...')
             self.Version.__table__.create(bind = self.engine)
             self.Session.commit()
         except sa.orm.exc.NoResultFound:
@@ -135,7 +136,6 @@ class Connection(object):
             if not os.path.isfile(filepath):
                 #Not a file
                 continue
-            print os.path.splitext(filepath)
             if os.path.splitext(filepath)[1].lower() != '.sql':
                 #Not a sql file
                 continue
