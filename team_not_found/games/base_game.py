@@ -74,7 +74,7 @@ class BaseGame(object):
     def run(self, match_flo):
         """
         Run this game until it ends
-        @return: A summary of the match in this format:
+        A summary of the match in the folling format is written the match_flo:
             {
                 'status': 'State of the game',
                 'winners': ['team_1', 'team_2'],
@@ -89,6 +89,7 @@ class BaseGame(object):
                     ...
                 ]
             }
+        @return: Match winners
         """
         #Initialise the return structure
         match = {
@@ -148,6 +149,8 @@ class BaseGame(object):
         match_flo.write(match_json)
 
         #Yay, hacky JSON streaming is complete!
+
+        return match['winners']
 
 
     ##########################################################################

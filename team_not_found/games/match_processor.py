@@ -82,11 +82,13 @@ class MatchProcessor(threading.Thread):
         #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))
         game_obj = game([team_1_class, team_2_class])
         with match.get_flo_writer() as match_flo:
-            game_obj.run(match_flo)
+            winners = game_obj.run(match_flo)
 
         #Mark the match as PLAYED
         #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))
         match.state = 'PLAYED'
+        match.team_1_won = 'team_1' in winners
+        match.team_2_won = 'team_2' in winners
         db.Session.commit()
 
     def stop(self):

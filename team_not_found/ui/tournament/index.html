@@ -1,0 +1,41 @@
+{%extends 'base.html'%}
+
+{%block title%}
+    {{super()}} - {{game.name}} - Tournament Summary
+{%endblock%}
+
+{%block head%}
+    {{super()}}
+    <script type="text/javascript">
+        //Save some constants for the JS to use
+        var DATA_URL = '{{data_url}}',
+            GAME_INFO_URL = '{{game_info_url}}';
+    </script>
+    <script type="text/javascript" src="/static/js/tournament.js"></script>
+{%endblock%}
+
+{%block content%}
+    <section class="flex_container" style="width: 100%; height: 100%;">
+        <article id="progress_container" class="frame">
+            Progress goes here
+        </article>
+        <section class="flex_cell flex_row">
+            <article id="scoreboard_container" class="flex_container flex_cell">
+                <section class="frame small_header">
+                    Scoreboard
+                </section>
+                <section class="frame flex_cell">
+                    Scoreboard goes here
+                </section>
+            </article>
+            <article id="match_container" class="flex_container flex_cell">
+                <section class="frame small_header">
+                    Matches
+                </section>
+                <section class="frame flex_cell">
+                    Matches goes here
+                </section>
+            </article>
+        </section>
+    </section>
+{%endblock%}

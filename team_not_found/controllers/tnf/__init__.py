@@ -31,6 +31,7 @@ class Tree(object):
                 'game': games.GAME_DICT[team_info[2]].name,
             })
 
+
         # Now get matches for the current user
         team_1 = db.sa_orm.aliased(db.Team)
         team_2 = db.sa_orm.aliased(db.Team)
@@ -61,10 +62,28 @@ class Tree(object):
             })
         #matches.reverse()
 
+
+        # Now get tournaments for the current user
+        tournament_infos = db.Session.query(
+            db.Tournament.uuid,
+            db.Tournament.game,
+        ).filter(
+            db.Tournament.creator == cherrypy.request.user,
+        )
+
+        # Process them into a usable format
+        tournaments = []
+        for tournament_info in tournament_infos:
+            tournaments.append({
+                'uuid': tournament_info[0],
+                'game': games.GAME_DICT[tournament_info[1]].name,
+            })
+
         return {
             'games': games.GAME_LIST,
             'teams': teams,
             'matches': matches,
+            'tournaments': tournaments
         }
 
 
