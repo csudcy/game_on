@@ -41,6 +41,16 @@ class Connection(object):
         self.Session = sa_orm.scoped_session(sa_orm.sessionmaker(bind = self.engine))
         self.Base = base
 
+        #Deal with versioning
+        class Version(
+                UuidMixin,
+                TableNameMixin,
+                self.Base
+            ):
+            version = sa.Column(sa.Integer, nullable=False)
+        self.Version = Version
+
+
     def get_engine(self):
         return sa.create_engine(
             self.conn_str,
@@ -93,12 +103,68 @@ class Connection(object):
             except:
                 logging.warning('Error dropping database %s' % self.conn_str, exc_info=True)
                 raise
-        self.Base.metadata.create_all(self.engine)
 
-    def clear_data(self):
-        for table in reversed(self.Base.metadata.sorted_tables):
-            if not getattr(table, 'static_data', False):
-                self.engine.execute(table.delete())
+        #Get the current version
+        version_obj = None
+        try:
+            version_obj = self.Session.query(
+                self.Version
+            ).one()
+        except sa.exc.ProgrammingError:
+            #Table doesn't exist, create it
+            self.Version.__table__.create(bind = self.engine)
+            self.Session.commit()
+        except sa.orm.exc.NoResultFound:
+            #Table exists but there are no rows; we will add it shortly
+            pass
+
+        if version_obj is None:
+            #Assume the DB is at version 0
+            version_obj = self.Version(
+                version = 0
+            )
+            self.Session.add(version_obj)
+            self.Session.commit()
+
+        #Get list of version from the file system
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        db_folder = os.path.join(current_directory, 'db')
+        upgrade_scripts = {}
+        for filename in os.listdir(db_folder):
+            filepath = os.path.join(db_folder, filename)
+            if not os.path.isfile(filepath):
+                #Not a file
+                continue
+            print os.path.splitext(filepath)
+            if os.path.splitext(filepath)[1].lower() != '.sql':
+                #Not a sql file
+                continue
+            index = int(filename.split('.')[0])
+            if index in upgrade_scripts:
+                raise Exception('Duplicate upgrade scripts: "%s" and "%s"' % (upgrade_scripts[index], filename))
+            upgrade_scripts[index] = filename
+
+        #Check versions are contiguous and start at 0
+        if 0 not in upgrade_scripts:
+            raise Exception('Upgrade scripts dont start at 0!')
+        max_version = max(upgrade_scripts.keys()) + 1
+        if len(upgrade_scripts) != max_version:
+            raise Exception('Upgrade scripts are not contiguous!')
+
+        #Upgrade the database to the latest version
+        while version_obj.version < max_version:
+            #Run the script
+            filename = upgrade_scripts[version_obj.version]
+            path = os.path.join(db_folder, filename)
+            with open(path, 'r') as f:
+                sql = f.read()
+            with self.engine.begin() as connection:
+                connection.execute(sql)
+
+            #Update the version
+            version_obj.version += 1
+            self.Session.commit()
+
 
 
 class TableNameMixin(object):

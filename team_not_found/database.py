@@ -109,8 +109,10 @@ class Match(ModelBase, Base):
     state = sa.Column(sa.String(10), nullable=False) #WAITING, PLAYING, PLAYED
     team_1_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     team_1 = sa_orm.relationship('Team', foreign_keys=[team_1_uuid], backref=backref('matches_1', passive_deletes=True, cascade="all"))
+    team_1_won = sa.Column(sa.Boolean(), nullable=True)
     team_2_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     team_2 = sa_orm.relationship('Team', foreign_keys=[team_2_uuid], backref=backref('matches_2', passive_deletes=True, cascade="all"))
+    team_2_won = sa.Column(sa.Boolean(), nullable=True)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     creator = sa_orm.relationship('User', backref=backref('matches', passive_deletes=True, cascade="all"))
 

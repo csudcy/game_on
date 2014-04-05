@@ -1,0 +1,4 @@
+BEGIN TRANSACTION;
+    ALTER TABLE match ADD team_1_won BOOLEAN;
+    ALTER TABLE match ADD team_2_won BOOLEAN;
+COMMIT;
