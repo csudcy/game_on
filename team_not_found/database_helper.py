@@ -141,7 +141,10 @@ class Connection(object):
                 continue
             index = int(filename.split('.')[0])
             if index in upgrade_scripts:
-                raise Exception('Duplicate upgrade scripts: "%s" and "%s"' % (upgrade_scripts[index], filename))
+                raise Exception('Duplicate upgrade scripts: "{s1}" and "{s2}"'.format(
+                    s1=upgrade_scripts[index],
+                    s2=filename,
+                ))
             upgrade_scripts[index] = filename
 
         #Check versions are contiguous and start at 0
@@ -158,6 +161,11 @@ class Connection(object):
             path = os.path.join(db_folder, filename)
             with open(path, 'r') as f:
                 sql = f.read()
+            logging.info('Upgrading {old_version} -> {new_version} ({filename})'.format(
+                old_version=version_obj.version,
+                new_version=version_obj.version+1,
+                filename=filename,
+            ))
             with self.engine.begin() as connection:
                 connection.execute(sql)
 
