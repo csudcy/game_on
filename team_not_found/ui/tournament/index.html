@@ -15,6 +15,12 @@
 {%endblock%}
 
 {%block content%}
+    <h3 style="margin: 5px;">
+        {{game.name}} - Tournament {{tournament_uuid}}
+        (<a href="/tnf/game/{{game.id}}/">
+            Return to game info
+        </a>)
+    </h3>
     <section class="flex_container" style="width: 100%; height: 100%;">
         <article id="progress_container" class="frame">
             Progress goes here

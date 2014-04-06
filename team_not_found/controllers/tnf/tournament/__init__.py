@@ -27,6 +27,7 @@ class Tree(object):
         #Render the tournament template
         return {
             'game': game,
+            'tournament_uuid': tournament_uuid,
             'data_url': '/tnf/tournament/results/%s/' % tournament_uuid,
             'game_info_url': '/tnf/game/%s/' % tournament.game,
         }
@@ -82,6 +83,7 @@ class Tree(object):
                 'uuid': uuid,
                 'team_1': t1_name,
                 'team_2': t2_name,
+                'state': state,
             })
 
             #Update some stats
@@ -114,10 +116,9 @@ class Tree(object):
         scoreboard = general.multikeysort(teams.values(), ('-score', 'name'))
 
         return {
+            'tournament_uuid': tournament_uuid,
             'matches': matches,
             'matches_played': matches_played,
-            'matches_total': len(matches),
-            'matches_played_percent': 100.0 * matches_played / len(matches),
             'scoreboard': scoreboard,
         }
 

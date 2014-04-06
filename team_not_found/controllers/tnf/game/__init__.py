@@ -13,7 +13,7 @@ class Tree(object):
     @cherrypy.tools.jinja2('game/index.html')
     def default(self, game_id):
         """
-        Display the list of matches for <game_id>
+        Display the game info for <game_id>
         """
         #Find the game
         game = games.GAME_DICT[game_id]
@@ -53,6 +53,23 @@ class Tree(object):
                 })
             return match_list
 
+
+        # Now get tournaments for the current user
+        tournament_infos = db.Session.query(
+            db.Tournament.uuid,
+        ).filter(
+            db.Tournament.game == game_id,
+            db.Tournament.creator == cherrypy.request.user,
+        )
+
+        # Process them into a usable format
+        tournaments = []
+        for tournament_info in tournament_infos:
+            tournaments.append({
+                'uuid': tournament_info[0],
+            })
+
+
         #Render
         return {
             'game_id': game_id,
@@ -67,6 +84,7 @@ class Tree(object):
                     'matches': get_matches_list(team_matches),
                 },
             ],
+            'tournaments': tournaments
         }
 
     @cherrypy.expose

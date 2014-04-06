@@ -20,7 +20,22 @@
                     Tournaments
                 </section>
                 <section class="frame flex_cell">
-                    Tournaments goes here
+                    <ul>
+                        {%if tournaments%}
+                            {%for tournament in tournaments%}
+                                <li style="clear: both;">
+                                    <a href="/tnf/tournament/{{tournament.uuid}}/" style="float: right;">
+                                        <span class="icon_small icon_play" title="Tournament Results"/>
+                                    </a>
+                                    Tournaments need names...
+                                </li>
+                            {%endfor%}
+                        {%else%}
+                            <li>
+                                You don't have any Tournaments yet...
+                            </li>
+                        {%endif%}
+                    </ul>
                 </section>
                 <section class="frame">
                     <a href="/tnf/game/setup/tournament/{{game.id}}/">
