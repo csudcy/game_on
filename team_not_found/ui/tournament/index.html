@@ -15,31 +15,56 @@
 {%endblock%}
 
 {%block content%}
-    <h3 style="margin: 5px;">
-        {{game.name}} - Tournament {{tournament_uuid}}
-        (<a href="/tnf/game/{{game.id}}/">
-            Return to game info
-        </a>)
-    </h3>
-    <section class="flex_container" style="width: 100%; height: 100%;">
+    <section class="flex_column" style="width: 100%; height: 100%;">
+        <article id="progress_container" class="frame small_header">
+            {{game.name}} - Tournament {{tournament_uuid}}
+            (<a href="/tnf/game/{{game.id}}/">
+                Return to game info
+            </a>)
+        </article>
         <article id="progress_container" class="frame">
-            Progress goes here
+            <span class="progress_outer">
+                <span class="progress_inner">
+                </span>
+            </span>
         </article>
         <section class="flex_cell flex_row">
-            <article id="scoreboard_container" class="flex_container flex_cell">
+            <article class="flex_cell flex_column">
                 <section class="frame small_header">
                     Scoreboard
                 </section>
-                <section class="frame flex_cell">
-                    Scoreboard goes here
+                <section style="min-height: 20px; display: none;" class="frame scoreboard_template">
+                    <span style="float: left;" class="team_name">
+                        Team name here
+                    </span>
+                    <span style="float: right;" class="team_score">
+                        99
+                    </span>
+                </section>
+                <section id="scoreboard_container" class="frame flex_cell flex_column" style="overflow: auto;">
+                    Loading...
                 </section>
             </article>
-            <article id="match_container" class="flex_container flex_cell">
+            <article class="flex_cell flex_column">
                 <section class="frame small_header">
-                    Matches
+                    Matches (Played <span id="matches_played">?</span> of <span id="matches_total">?</span>)
                 </section>
-                <section class="frame flex_cell">
-                    Matches goes here
+                <section style="min-height: 20px; text-align: center; display: none;" class="frame match_template">
+                    <span style="float: left;" class="team_1_name">
+                        Team name here
+                    </span>
+                    <span>
+                        vs.
+                    </span>
+                    <a href="/filled/in/later/" style="float: right;" class="match_link">
+                        <span class="icon_small icon_play" title="Replay match"/>
+                    </a>
+                    <span style="float: right;" class="team_2_name">
+                        Team name here
+                    </span>
+                </section>
+                <section id="match_container" class="frame flex_cell flex_column" style="overflow: auto;">
+                    Loading...
                 </section>
             </article>
         </section>

@@ -23,6 +23,9 @@ Cool stuff coming up:
     * Start the code as the example file from the game
     * http://ace.c9.io/ looks pretty sweet
   * Better error reporting
+    * Catch errors & store on matches
+    * Allow admins to replay
+    * Ensure match_processor never stops
   * User creation
 
 Stuff I really should do:

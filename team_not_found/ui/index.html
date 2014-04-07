@@ -5,14 +5,14 @@
 {%endblock%}
 
 {%block content%}
-    <section class="flex_container" style="width: 100%; height: 100%;">
-        <article id="games_container" class="flex_container flex_cell">
+    <section class="flex_column" style="width: 100%; height: 100%;">
+        <article id="games_container" class="flex_cell flex_column">
             <section class="frame small_header">
                 Games
             </section>
-            <section class="flex_row" style="overflow-x: scroll;">
+            <section class="flex_cell flex_row" style="overflow-x: scroll;">
                 {%for game in games%}
-                    <section class="flex_container">
+                    <section class="flex_column">
                         <section class="frame small_header">
                             {{game.name}}
                         </section>
@@ -45,8 +45,8 @@
                 {%endfor%}
             </section>
         </article>
-        <section class="flex_row">
-            <article id="players_container" class="flex_cell flex_container">
+        <section class="flex_cell flex_row">
+            <article id="players_container" class="flex_cell flex_column">
                 <section class="frame small_header">
                     Your Teams
                 </section>
@@ -75,7 +75,7 @@
                     </a>
                 </section>
             </article>
-            <article id="matches_container" class="flex_cell flex_container">
+            <article id="matches_container" class="flex_cell flex_column">
                 <section class="frame small_header">
                     Your Matches
                 </section>
@@ -103,7 +103,7 @@
                     To play a match, goto the game page using the links above.
                 </section>
             </article>
-            <article id="tournaments_container" class="flex_cell flex_container">
+            <article id="tournaments_container" class="flex_cell flex_column">
                 <section class="frame small_header">
                     Your Tournaments
                 </section>

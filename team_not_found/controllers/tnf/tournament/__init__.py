@@ -76,7 +76,6 @@ class Tree(object):
         matches = []
         matches_played = 0
         teams = {}
-        print len(match_infos)
         for uuid, state, t1_uuid, t1_name, t1_won, t2_uuid, t2_name, t2_won in match_infos:
             #Add it to the list of matches
             matches.append({

@@ -87,6 +87,7 @@ class MatchProcessor(threading.Thread):
         #Mark the match as PLAYED
         #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))
         match.state = 'PLAYED'
+        winners = winners or []
         match.team_1_won = 'team_1' in winners
         match.team_2_won = 'team_2' in winners
         db.Session.commit()
