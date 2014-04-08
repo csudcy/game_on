@@ -86,17 +86,86 @@ class Team(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
     name = sa.Column(sa.String(100), nullable=False)
     is_public = sa.Column(sa.Boolean(), default=False)
-    path = sa.Column(sa.String(200), nullable=False)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    creator = sa_orm.relationship('User', backref=backref('teams', passive_deletes=True, cascade="all"))
+    creator = sa_orm.relationship('User', backref=backref('teams', lazy='dynamic', passive_deletes=True, cascade="all"))
 
     #Add extra info because I cant work out how to get it through f**king SqlAlchemy!
     setattr(creator_uuid, 'related_name', 'creator')
     setattr(creator_uuid, 'related_model', User)
 
+    def get_team_file(self, version=None):
+        """
+        Get the team_file <version or latest>
+        """
+        if version is None:
+            return self.team_files.order_by(
+                TeamFile.version.desc()
+            ).first()
+        return self.team_files.filter(
+            db.TeamFile.version == version
+        ).one()
+
+    def load_class(self, version=None):
+        """
+        Load the team_file <version or latest>
+        """
+        return self.get_team_file(version).load_class()
+
+    def read_file(self, version=None):
+        """
+        Return the contents of the team_file <version or latest>
+        """
+        return self.get_team_file(version).read_file()
+
+    def add_file(self, new_contents):
+        """
+        Create a new team_file & save contents to it.
+        If new_contents is the same as the latest contents, don't create a new team_file.
+        """
+        #Get the current_team_file
+        current_team_file = self.get_team_file()
+
+        if current_team_file:
+            #Check the current_contents & new_contents are different
+            current_contents = current_team_file.read_file()
+            if current_contents == new_contents:
+                #The file hasn't changed, return the current_team_file
+                return current_team_file
+
+        #Create the new_team_file
+        version = 0
+        if current_team_file:
+            version = current_team_file.version + 1
+        path = os.path.join(
+            config['team']['folder'],
+            '%s-%s.py' % (self.uuid, version),
+        )
+        new_team_file = TeamFile(
+            team=self,
+            version=version,
+            path=path,
+        )
+
+        #Write new_contents to the new_team_file
+        new_team_file.write_file(new_contents)
+
+        #Save the new new_team_file
+        Session.add(new_team_file)
+        Session.commit()
+
+        #Let the caller know which new_team_file we added
+        return new_team_file
+
+
+class TeamFile(ModelBase, Base):
+    team_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    team = sa_orm.relationship('Team', backref=backref('team_files', lazy='dynamic', passive_deletes=True, cascade="all"))
+    path = sa.Column(sa.String(200), nullable=False)
+    version = sa.Column(sa.Integer, nullable=False)
+
     def load_class(self):
         """
-        Load the class referenced by self.path
+        Load this team_file
         """
         import imp
         module_name = 'team_not_found.games.%s.external.%s' % (self.game, self.uuid)
@@ -105,27 +174,27 @@ class Team(ModelBase, Base):
 
     def read_file(self):
         """
-        Return the contents of this teams file.
+        Return the contents of this team_file.
         """
         with self.get_flo_reader() as f:
             return f.read()
 
     def get_flo_reader(self):
         """
-        Return a FLO for reading this teams file.
+        Return a FLO for reading this team_file.
         """
         return open(self.path, 'rb')
 
     def write_file(self, contents):
         """
-        Write contents to this teams file.
+        Write contents to this team_file.
         """
         with self.get_flo_writer() as f:
             f.write(contents)
 
     def get_flo_writer(self):
         """
-        Return a FLO for writing this teams file.
+        Return a FLO for writing this team_file.
         """
         return open(self.path, 'wb')
 
@@ -134,16 +203,16 @@ class Match(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
     state = sa.Column(sa.String(10), nullable=False) #WAITING, PLAYING, PLAYED
     team_1_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    team_1 = sa_orm.relationship('Team', foreign_keys=[team_1_uuid], backref=backref('matches_1', passive_deletes=True, cascade="all"))
+    team_1 = sa_orm.relationship('Team', foreign_keys=[team_1_uuid], backref=backref('matches_1', lazy='dynamic', passive_deletes=True, cascade="all"))
     team_1_won = sa.Column(sa.Boolean(), nullable=True)
     team_2_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    team_2 = sa_orm.relationship('Team', foreign_keys=[team_2_uuid], backref=backref('matches_2', passive_deletes=True, cascade="all"))
+    team_2 = sa_orm.relationship('Team', foreign_keys=[team_2_uuid], backref=backref('matches_2', lazy='dynamic', passive_deletes=True, cascade="all"))
     team_2_won = sa.Column(sa.Boolean(), nullable=True)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    creator = sa_orm.relationship('User', backref=backref('matches', passive_deletes=True, cascade="all"))
+    creator = sa_orm.relationship('User', backref=backref('matches', lazy='dynamic', passive_deletes=True, cascade="all"))
 
     tournament_uuid = sa.Column(sa.String(36), sa.ForeignKey('tournament.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=True)
-    tournament = sa_orm.relationship('Tournament', backref=backref('matches', passive_deletes=True, cascade="all"))
+    tournament = sa_orm.relationship('Tournament', backref=backref('matches', lazy='dynamic', passive_deletes=True, cascade="all"))
 
     def _get_path(self):
         filename = '%s-%s.json.gz' % (self.game, self.uuid)
@@ -174,13 +243,13 @@ class Tournament(ModelBase, Base):
     tournament_type = sa.Column(sa.String(100), nullable=False)
     best_of = sa.Column(sa.Integer, nullable=False)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    creator = sa_orm.relationship('User', backref=backref('tournaments', passive_deletes=True, cascade="all"))
+    creator = sa_orm.relationship('User', backref=backref('tournaments', lazy='dynamic', passive_deletes=True, cascade="all"))
 
     teams = sa_orm.relationship('Team', secondary='tournamentteam', backref='tournaments')
 
 
 class TournamentTeam(ModelBase, Base):
     tournament_uuid = sa.Column(sa.String(36), sa.ForeignKey('tournament.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    tournament = sa_orm.relationship('Tournament', backref=backref('tournament_teams', passive_deletes=True, cascade="all"))
+    tournament = sa_orm.relationship('Tournament', backref=backref('tournament_teams', lazy='dynamic', passive_deletes=True, cascade="all"))
     team_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    team = sa_orm.relationship('Team', backref=backref('tournament_teams', passive_deletes=True, cascade="all"))
+    team = sa_orm.relationship('Team', backref=backref('tournament_teams', lazy='dynamic', passive_deletes=True, cascade="all"))

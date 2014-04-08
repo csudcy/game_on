@@ -22,11 +22,33 @@ $(document).ready(function() {
     $('#save').click(save);
     $('#save_execute').click(save_execute);
 
+    function load_versions() {
+        console.log('TODO: load_versions');
+        //VERSIONS_URL
+    }
+    load_versions();
+
+    function load_code(version) {
+        $.get(CODE_URL, {'version': version}).success(
+            function(body, result, jqxhr) {
+                //Show the code in the editor
+                editor.setValue(body.code);
+                editor.gotoLine(0);
+            }
+        ).error(
+            function() {
+                alert('Error loading replay file!');
+                window.location = GAME_INFO_URL;
+            }
+        );
+    }
+    load_code();
+
     function save() {
-        alert('save');
+        console.log('TODO: save');
     }
 
     function save_execute() {
-        alert('save_execute');
+        console.log('TODO: save_execute');
     }
 });

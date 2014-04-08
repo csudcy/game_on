@@ -39,17 +39,25 @@ def initialise_games(admin_user):
             existing_teams = db.Session.query(
                 db.Team
             ).filter(
-                db.Team.path == example_team['path']
+                db.Team.name == example_team['name']
             )
             if existing_teams.count() == 0:
+                #Create the team
                 team = db.Team(
                     game = game.id,
                     name = example_team['name'],
                     is_public = example_team.get('is_public', True),
-                    path = example_team['path'],
                     creator = admin_user,
                 )
                 db.Session.add(team)
+
+                #Read the example team file
+                with open(example_team['path'], 'r') as f:
+                    contents = f.read()
+
+                #Add the file to the team
+                team.add_file(contents)
+
     db.Session.commit()
 
 
