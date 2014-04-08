@@ -103,6 +103,32 @@ class Team(ModelBase, Base):
         module = imp.load_source(module_name, self.path)
         return module.Team
 
+    def read_file(self):
+        """
+        Return the contents of this teams file.
+        """
+        with self.get_flo_reader() as f:
+            return f.read()
+
+    def get_flo_reader(self):
+        """
+        Return a FLO for reading this teams file.
+        """
+        return open(self.path, 'rb')
+
+    def write_file(self, contents):
+        """
+        Write contents to this teams file.
+        """
+        with self.get_flo_writer() as f:
+            f.write(contents)
+
+    def get_flo_writer(self):
+        """
+        Return a FLO for writing this teams file.
+        """
+        return open(self.path, 'wb')
+
 
 class Match(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
@@ -126,19 +152,19 @@ class Match(ModelBase, Base):
 
     def get_flo_reader_compressed(self):
         """
-        Return a FLO for this (still GZipped) matches results file.
+        Return a FLO for reading this (still GZipped) matches results file.
         """
         return open(self._get_path(), 'rb')
 
     def get_flo_reader(self):
         """
-        Return a FLO for this matches results file.
+        Return a FLO for reading this matches results file.
         """
         return GzipFile(self._get_path(), 'rb')
 
     def get_flo_writer(self):
         """
-        Return a FLO for this matches results file.
+        Return a FLO for writing this matches results file.
         """
         return GzipFile(self._get_path(), 'wb')
 
