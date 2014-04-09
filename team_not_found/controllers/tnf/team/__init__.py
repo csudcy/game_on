@@ -47,7 +47,17 @@ class Tree(object):
         """
         Return a list of all the available versions of the given team
         """
-        return []
+        #Get the team_files
+        team_files = db.Session.query(
+            db.TeamFile.version
+        ).filter(
+            db.TeamFile.team_uuid == team_uuid
+        ).order_by(
+            db.TeamFile.version
+        )
+
+        #Return the list
+        return [tf[0] for tf in team_files]
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -55,6 +65,10 @@ class Tree(object):
         """
         Get the contents of an existing version of code or create a new version.
         """
+        #Cast version to be usable
+        if version != None:
+            version = int(version)
+
         #Get the team
         team = db.Session.query(
             db.Team
@@ -64,8 +78,14 @@ class Tree(object):
 
         #Save a new file?
         if cherrypy.request.method == 'POST':
-            if version:
-                raise Exception('You cannot POST to a specific version!')
+            #Check the user is editing the latest version of the code
+            if version is None:
+                raise Exception('You must include version when POSTing to avoid conflicts!')
+            team_file = team.get_team_file()
+            if team_file.version != version:
+                raise Exception('You are not editing the latest version of the code (%s < %s)!' % (version, team_file.version))
+
+            #Save the code to a (probably) new file
             team_file = team.add_file(code)
             return {
                 'uuid': team_file.uuid,
@@ -73,8 +93,10 @@ class Tree(object):
             }
 
         #Read an existing file
+        team_file = team.get_team_file(version)
         return {
-            'code': team.read_file(version)
+            'code': team_file.read_file(),
+            'version': team_file.version,
         }
 
 

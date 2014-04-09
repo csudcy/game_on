@@ -102,7 +102,7 @@ class Team(ModelBase, Base):
                 TeamFile.version.desc()
             ).first()
         return self.team_files.filter(
-            db.TeamFile.version == version
+            TeamFile.version == version
         ).one()
 
     def load_class(self, version=None):
