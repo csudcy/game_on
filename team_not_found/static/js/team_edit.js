@@ -15,10 +15,10 @@ $(document).ready(function() {
         }
     });
     editor.commands.addCommand({
-        name: 'save_execute',
+        name: 'execute',
         bindKey: {win: 'F5',  mac: 'F5'},
         exec: function(editor) {
-            save(execute);
+            execute();
         }
     });
 
@@ -26,8 +26,8 @@ $(document).ready(function() {
     $('#save').click(function() {
         save();
     });
-    $('#save_execute').click(function() {
-        save(execute);
+    $('#execute').click(function() {
+        execute();
     });
     $('#versions').change(function() {
         if (save_is_enabled()) {
@@ -106,7 +106,7 @@ $(document).ready(function() {
         $('#current_version').text(current_version);
 
         //Check we are still editing the latest version
-        if (current_version !== versions[versions.length - 1]) {
+        if (!EDITABLE || current_version !== versions[versions.length - 1]) {
             //Switch to readonly mode
             editor.setReadOnly(true);
             $('#read_only').show();
@@ -172,7 +172,12 @@ $(document).ready(function() {
         );
     }
 
-    function execute(version) {
+    function execute() {
+        if (save_is_enabled()) {
+            if (confirm('Save changes before executing?')) {
+                return save(execute);
+            }
+        }
         console.log('TODO: execute');
     }
 

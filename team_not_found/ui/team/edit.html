@@ -11,7 +11,8 @@
     <script type="text/javascript" src="/static/js/lib/ace/theme-solarized_dark.js"></script>
     <script type="text/javascript">
         //Save some constants for the game to use
-        var VERSIONS_URL = '{{versions_url}}',
+        var EDITABLE = {%if editable%}true{%else%}false{%endif%},
+            VERSIONS_URL = '{{versions_url}}',
             CODE_URL = '{{code_url}}',
             GAME_INFO_URL = '{{game_info_url}}';
     </script>
@@ -65,8 +66,8 @@
                 </label>
                 <input id="max_ticks" type="number" min="1000" max="10000" step="1000" value="1000"/>
 
-                <button id="save_execute">
-                    Save & Execute (F5)
+                <button id="execute">
+                    Execute (F5)
                 </button>
             </span>
         </article>

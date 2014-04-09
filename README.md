@@ -15,10 +15,6 @@ Features:
   * Online team editing using http://ace.c9.io/
 
 Cool stuff coming up:
-  * Tournaments
-    * Best of 3
-    * ? Bracketed?
-    * ? All v all/matrix?
   * Team creation
     * Jump straight to online editor after team creation
     * Allow the code to be edited & immediately played
@@ -28,6 +24,10 @@ Cool stuff coming up:
     * Allow admins to replay
     * Ensure match_processor never stops
   * User creation
+  * Tournaments
+    * Best of 3
+    * ? Bracketed?
+    * ? All v all/matrix?
 
 Stuff I really should do:
   * Improve index page

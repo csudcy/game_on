@@ -36,6 +36,7 @@ class Tree(object):
         return {
             'game': game,
             'team': team,
+            'editable': cherrypy.request.user == team.creator,
             'versions_url': '/tnf/team/versions/%s/' % team.uuid,
             'code_url': '/tnf/team/code/%s/' % team.uuid,
             'game_info_url': '/tnf/game/%s/' % team.game,
@@ -78,6 +79,10 @@ class Tree(object):
 
         #Save a new file?
         if cherrypy.request.method == 'POST':
+            #Check the creator is the editor
+            if cherrypy.request.user != team.creator:
+                raise Exception('Only a teams creator may edit the team!')
+
             #Check the user is editing the latest version of the code
             if version is None:
                 raise Exception('You must include version when POSTing to avoid conflicts!')
