@@ -11,6 +11,8 @@ Features:
   * Matches are played asynchronously
   * Don't un-GZip results files before returning to client
   * Stream match results to the GZipFile to avoid memory issues
+  * Tournaments
+  * Online team editing using http://ace.c9.io/
 
 Cool stuff coming up:
   * Tournaments
@@ -21,7 +23,6 @@ Cool stuff coming up:
     * Jump straight to online editor after team creation
     * Allow the code to be edited & immediately played
     * Start the code as the example file from the game
-    * http://ace.c9.io/ looks pretty sweet
   * Better error reporting
     * Catch errors & store on matches
     * Allow admins to replay

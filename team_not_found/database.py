@@ -168,7 +168,7 @@ class TeamFile(ModelBase, Base):
         Load this team_file
         """
         import imp
-        module_name = 'team_not_found.games.%s.external.%s' % (self.game, self.uuid)
+        module_name = 'team_not_found.games.%s.external.%s' % (self.team.game, self.uuid)
         module = imp.load_source(module_name, self.path)
         return module.Team
 
