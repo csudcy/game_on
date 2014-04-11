@@ -111,12 +111,6 @@ class Team(ModelBase, Base):
         """
         return self.get_team_file(version).load_class()
 
-    def read_file(self, version=None):
-        """
-        Return the contents of the team_file <version or latest>
-        """
-        return self.get_team_file(version).read_file()
-
     def add_file(self, new_contents):
         """
         Create a new team_file & save contents to it.
