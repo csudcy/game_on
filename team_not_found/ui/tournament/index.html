@@ -16,7 +16,7 @@
 
 {%block content%}
     <section class="flex_column" style="width: 100%; height: 100%;">
-        <article id="progress_container" class="frame small_header">
+        <article id="progress_container" class="frame medium_header">
             {{game.name}} - Tournament {{tournament_uuid}}
             (<a href="/tnf/game/{{game.id}}/">
                 Return to game info
@@ -30,7 +30,7 @@
         </article>
         <section class="flex_cell flex_row">
             <article class="flex_cell flex_column">
-                <section class="frame small_header">
+                <section class="frame medium_header">
                     Scoreboard
                 </section>
                 <section style="min-height: 20px; display: none;" class="frame flex_row scoreboard_template">
@@ -54,7 +54,7 @@
                 </section>
             </article>
             <article class="flex_cell flex_column">
-                <section class="frame small_header">
+                <section class="frame medium_header">
                     Matches (Played <span id="matches_played">?</span> of <span id="matches_total">?</span>)
                 </section>
                 <section style="min-height: 20px; display: none;" class="flex_row frame match_template">

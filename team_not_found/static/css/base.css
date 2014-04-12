@@ -51,6 +51,11 @@ header .icon_logout {
 }
 
 .small_header {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.medium_header {
     font-size: 18pt;
     font-weight: bold;
 }

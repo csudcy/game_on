@@ -7,13 +7,13 @@
 {%block content%}
     <div id="center_container">
         <span id="center_inner" class="">
-            <section class="frame small_header">
+            <section class="frame medium_header">
                 Setup a tournament of {{game.name}}
             </section>
             <form method="post">
                 <section class="flex_cell flex_row">
                     <section class="flex_cell">
-                        <section class="frame small_header">
+                        <section class="frame medium_header">
                             Teams:
                         </section>
                         <section class="frame flex_cell">
@@ -41,7 +41,7 @@
                         </section>
                     </section>
                     <section class="flex_cell">
-                        <section class="frame small_header">
+                        <section class="frame medium_header">
                             Tournament Type:
                         </section>
                         <section class="frame flex_cell">
@@ -58,7 +58,7 @@
                                 <br/>
                             {%endfor%}
                         </section>
-                        <section class="frame small_header">
+                        <section class="frame medium_header">
                             Best of:
                         </section>
                         <section class="frame flex_cell">
@@ -84,7 +84,7 @@
                     </section>
                 </section>
             </form>
-            <section class="frame small_header">
+            <section class="frame medium_header">
                 <a href="/tnf/game/{{game.id}}/">
                     Return to game info
                 </a>

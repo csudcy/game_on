@@ -7,13 +7,13 @@
 {%block content%}
     <section class="flex_column" style="width: 100%; height: 100%;">
         <article id="games_container" class="flex_cell flex_column">
-            <section class="frame small_header">
+            <section class="frame medium_header">
                 Games
             </section>
             <section class="flex_cell flex_row" style="overflow-x: scroll;">
                 {%for game in games%}
                     <section class="flex_column">
-                        <section class="frame small_header">
+                        <section class="frame medium_header">
                             {{game.name}}
                         </section>
                         <section class="frame flex_cell">
@@ -47,7 +47,7 @@
         </article>
         <section class="flex_cell flex_row">
             <article id="players_container" class="flex_cell flex_column">
-                <section class="frame small_header">
+                <section class="frame medium_header">
                     Your Teams
                 </section>
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
@@ -81,7 +81,7 @@
                 </section>
             </article>
             <article id="matches_container" class="flex_cell flex_column">
-                <section class="frame small_header">
+                <section class="frame medium_header">
                     Your Matches
                 </section>
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
@@ -124,15 +124,18 @@
                 </section>
             </article>
             <article id="tournaments_container" class="flex_cell flex_column">
-                <section class="frame small_header">
+                <section class="frame medium_header">
                     Your Tournaments
                 </section>
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
                     {%if tournaments%}
                         {%for tournament in tournaments%}
                             <section class="flex_row frame" style="min-height: 20px;">
-                                <span class="flex_cell" style="text-align: center;">
+                                <span>
                                     {{tournament.game}}
+                                </span>
+                                <span class="flex_cell" style="text-align: center;">
+                                    Tournaments need names...
                                 </span>
                                 <span>
                                     <a href="/tnf/tournament/{{tournament.uuid}}/">
