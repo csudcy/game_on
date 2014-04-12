@@ -31,6 +31,7 @@ Cool stuff coming up:
     * ? All v all/matrix?
 
 Stuff I really should do:
+  * Link to team edit from match replay
   * Improve index page
     * Latest matches
     * ? Use game thumbnails?

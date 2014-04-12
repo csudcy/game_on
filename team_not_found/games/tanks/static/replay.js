@@ -51,11 +51,11 @@ $(document).ready(function() {
     });
 
     //// Bind other interaction handlers
-    $('#interval').change(function() {
+    $('#interval').bind('input', function() {
         set_interval($(this).val());
     });
 
-    $('#tick').change(function() {
+    $('#tick').bind('input', function() {
         pause();
         set_tick($(this).val());
     });
