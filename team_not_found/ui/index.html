@@ -53,7 +53,7 @@
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
                     {%if your_teams%}
                         {%for team in your_teams%}
-                            <section class="flex_row frame" style="min-height: 20px;">
+                            <section class="flex_row" style="min-height: 20px;">
                                 <span>
                                     {{team.game}}
                                 </span>
@@ -87,7 +87,7 @@
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
                     {%if your_matches%}
                         {%for match in your_matches%}
-                            <section class="frame flex_row" style="min-height: 70px;">
+                            <section class="flex_row" style="min-height: 70px;">
                                 <span>
                                     {{match.game}}
                                 </span>
@@ -130,7 +130,7 @@
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
                     {%if your_tournaments%}
                         {%for tournament in your_tournaments%}
-                            <section class="flex_row frame" style="min-height: 20px;">
+                            <section class="flex_row" style="min-height: 20px;">
                                 <span>
                                     {{tournament.game}}
                                 </span>
