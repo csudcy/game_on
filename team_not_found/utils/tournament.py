@@ -1,6 +1,7 @@
 import cherrypy
 
 from team_not_found import database as db
+from team_not_found import games
 
 
 def get_tournaments(game_id=None):
@@ -51,6 +52,7 @@ def get_split_tournaments(tournaments):
     user_uuid = cherrypy.request.user.uuid
     for tournament in tournaments:
         tournament_dict = {
+            'game': games.GAME_DICT[tournament.game].name,
             'tournament_uuid': tournament.uuid,
         }
         if tournament.creator_uuid == user_uuid:

@@ -51,18 +51,18 @@
                     Your Teams
                 </section>
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
-                    {%if teams%}
-                        {%for team in teams%}
+                    {%if your_teams%}
+                        {%for team in your_teams%}
                             <section class="flex_row frame" style="min-height: 20px;">
                                 <span>
                                     {{team.game}}
                                 </span>
                                 <span class="flex_cell" style="text-align: center;">
-                                    {{team.name}}
+                                    {{team.team_name}} v{{team.team_file_version}}
                                 </span>
                                 <span>
-                                    <a href="/tnf/team/edit/{{team.uuid}}/">
-                                        <span class="icon_small icon_update" title="Edit {{team.name}}"/>
+                                    <a href="/tnf/team/edit/{{team.team_uuid}}/">
+                                        <span class="icon_small icon_update" title="Edit {{team.team_name}}"/>
                                     </a>
                                 </span>
                             </section>
@@ -85,8 +85,8 @@
                     Your Matches
                 </section>
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
-                    {%if matches%}
-                        {%for match in matches%}
+                    {%if your_matches%}
+                        {%for match in your_matches%}
                             <section class="frame flex_row" style="min-height: 70px;">
                                 <span>
                                     {{match.game}}
@@ -106,7 +106,7 @@
                                     </a>
                                 </span>
                                 <span>
-                                    <a href="/tnf/match/{{match.uuid}}/">
+                                    <a href="/tnf/match/{{match.match_uuid}}/">
                                         <span class="icon_small icon_play" title="Replay Match"/>
                                     </a>
                                 </span>
@@ -128,8 +128,8 @@
                     Your Tournaments
                 </section>
                 <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
-                    {%if tournaments%}
-                        {%for tournament in tournaments%}
+                    {%if your_tournaments%}
+                        {%for tournament in your_tournaments%}
                             <section class="flex_row frame" style="min-height: 20px;">
                                 <span>
                                     {{tournament.game}}
@@ -138,7 +138,7 @@
                                     Tournaments need names...
                                 </span>
                                 <span>
-                                    <a href="/tnf/tournament/{{tournament.uuid}}/">
+                                    <a href="/tnf/tournament/{{tournament.tournament_uuid}}/">
                                         <span class="icon_small icon_play" title="Tournament Results"/>
                                     </a>
                                 </span>

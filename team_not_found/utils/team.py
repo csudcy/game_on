@@ -1,6 +1,7 @@
 import cherrypy
 
 from team_not_found import database as db
+from team_not_found import games
 
 
 def get_teams(game_id=None):
@@ -47,6 +48,7 @@ def get_split_teams(teams):
         team_file = team.get_team_file()
         #Create the team lists
         team_dict = {
+            'game': games.GAME_DICT[team.game].name,
             'team_uuid': team.uuid,
             'team_name': team.name,
             'team_file_uuid': team_file.uuid,

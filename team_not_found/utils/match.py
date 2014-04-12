@@ -1,6 +1,7 @@
 import cherrypy
 
 from team_not_found import database as db
+from team_not_found import games
 
 
 def get_matches(game_id=None):
@@ -64,7 +65,8 @@ def get_split_matches(matches):
     user_uuid = cherrypy.request.user.uuid
     for match in matches:
         match_dict = {
-            'uuid': match.uuid,
+            'game': games.GAME_DICT[match.game].name,
+            'match_uuid': match.uuid,
             'team_1_uuid': match.team_file_1.team.uuid,
             'team_1_name': match.team_file_1.team.name,
             'team_file_1_version': match.team_file_1.version,

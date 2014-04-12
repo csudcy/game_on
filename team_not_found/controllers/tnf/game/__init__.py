@@ -18,22 +18,22 @@ class Tree(object):
         """
         Display the game info for <game_id>
         """
-        #Find the game
+        # Find the game
         game = games.GAME_DICT[game_id]
 
-        #Get teams/team_files for this game
+        # Get teams/team_files
         teams = team_utils.get_teams(game_id)
         team_sections = team_utils.get_team_sections(teams)
 
-        # Find your matches
+        # Get matches
         matches = match_utils.get_matches(game_id)
         match_sections = match_utils.get_match_sections(matches)
 
-        #Get tournaments for this game
+        # Get tournaments
         tournaments = tournament_utils.get_tournaments(game_id)
         tournament_sections = tournament_utils.get_tournament_sections(tournaments)
 
-        #Render
+        # Render
         return {
             'game_id': game_id,
             'game': game,
