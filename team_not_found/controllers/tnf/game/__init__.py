@@ -6,6 +6,7 @@ from sqlalchemy import or_
 from team_not_found import database as db
 from team_not_found import games
 from team_not_found.utils import mount as mount_utils
+from team_not_found.utils import team as team_utils
 
 
 class Tree(object):
@@ -18,73 +19,83 @@ class Tree(object):
         #Find the game
         game = games.GAME_DICT[game_id]
 
-        #Find your matches
-        your_matches = db.Session.query(
+        #Get team_files for this game
+        teams = team_utils.get_teams(game_id)
+        team_sections = team_utils.get_team_sections(teams)
+
+        # Find your matches
+        matches = db.Session.query(
             db.Match
         ).filter(
             db.Match.creator == cherrypy.request.user,
+            db.Match.game == game_id,
             db.Match.tournament == None,
+        ).order_by(
+            db.Match.create_date.desc()
         )
 
-        #Find matches your team has been used in (that aren't your matchs)
-        your_team_files = db.Session.query(
-            db.TeamFile
-        ).filter(
-            db.TeamFile.team.has(creator = cherrypy.request.user),
-        )
-        team_matches = db.Session.query(
-            db.Match
-        ).filter(
-            or_(
-                db.Match.team_file_1 in your_team_files,
-                db.Match.team_file_2 in your_team_files,
-            )
-        )
-
-        #Transform for rendering
-        def get_matches_list(matches):
-            matches = matches.order_by(db.Match.create_date.desc())
-            match_list = []
-            for match in matches:
-                match_list.append({
-                    'uuid': match.uuid,
-                    'team_1': match.team_file_1.team.name,
-                    'team_2': match.team_file_2.team.name,
-                })
-            return match_list
-
-
-        # Now get tournaments for the current user
-        tournament_infos = db.Session.query(
-            db.Tournament.uuid,
-        ).filter(
-            db.Tournament.game == game_id,
-            db.Tournament.creator == cherrypy.request.user,
-        )
-
-        # Process them into a usable format
-        tournaments = []
-        for tournament_info in tournament_infos:
-            tournaments.append({
-                'uuid': tournament_info[0],
+        # Transform for rendering
+        match_list = []
+        for match in matches:
+            match_list.append({
+                'uuid': match.uuid,
+                'team_1_uuid': match.team_file_1.team.uuid,
+                'team_1_name': match.team_file_1.team.name,
+                'team_file_1_version': match.team_file_1.version,
+                'team_2_uuid': match.team_file_2.team.uuid,
+                'team_2_name': match.team_file_2.team.name,
+                'team_file_2_version': match.team_file_2.version,
             })
 
+        # Find your tournaments or tournaments involving one of your teams
+        tournament_infos = db.Session.query(
+            db.Tournament.uuid,
+            db.Tournament.creator_uuid,
+        ).join(
+            db.TournamentTeamFile
+        ).join(
+            db.TeamFile
+        ).join(
+            db.Team
+        ).filter(
+            db.Tournament.game == game_id,
+            or_(
+                db.Tournament.creator == cherrypy.request.user,
+                db.Team.creator == cherrypy.request.user,
+            )
+        ).distinct()
+
+        # Process them into a usable format
+        tournament_sections = []
+        if tournament_infos:
+            your_tournaments = []
+            match_tournaments = []
+            for tournament_uuid, creator_uuid in tournament_infos:
+                tournament_dict = {
+                    'uuid': tournament_uuid,
+                }
+                if creator_uuid == cherrypy.request.user.uuid:
+                    your_tournaments.append(tournament_dict)
+                else:
+                    match_tournaments.append(tournament_dict)
+            tournament_sections = [
+                {
+                    'type': 'Your Tournaments',
+                    'tournaments': your_tournaments,
+                },
+                {
+                    'type': 'Your Team Tournaments',
+                    'tournaments': match_tournaments,
+                },
+            ]
 
         #Render
         return {
             'game_id': game_id,
             'game': game,
-            'match_sections': [
-                {
-                    'type': 'Your Matches',
-                    'matches': get_matches_list(your_matches),
-                },
-                {
-                    'type': 'Team Matches',
-                    'matches': get_matches_list(team_matches),
-                },
-            ],
-            'tournaments': tournaments
+            'team_sections': team_sections,
+            'matches': match_list,
+            'tournament_sections': tournament_sections,
         }
 
     @cherrypy.expose

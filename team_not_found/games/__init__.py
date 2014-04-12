@@ -132,8 +132,8 @@ def start_tournament(game_id, team_file_uuids, tournament_type, best_of, user):
     team_files = db.Session.query(
         db.TeamFile
     ).filter(
-        db.TeamFile.uuid in team_file_uuids
-    )
+        db.TeamFile.uuid.in_(team_file_uuids)
+    ).all()
     for team_file in team_files:
         tournament.team_files.append(team_file)
 

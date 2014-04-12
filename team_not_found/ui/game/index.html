@@ -9,7 +9,7 @@
         <section class="flex_cell flex_row">
             <article id="game_container" class="flex_cell flex_column">
                 <section class="frame small_header">
-                    Game
+                    Game Info
                 </section>
                 <section class="frame flex_cell">
                     Game goes here
@@ -19,23 +19,30 @@
                 <section class="frame small_header">
                     Tournaments
                 </section>
-                <section class="frame flex_cell">
-                    <ul>
-                        {%if tournaments%}
-                            {%for tournament in tournaments%}
-                                <li style="clear: both;">
-                                    <a href="/tnf/tournament/{{tournament.uuid}}/" style="float: right;">
-                                        <span class="icon_small icon_play" title="Tournament Results"/>
-                                    </a>
-                                    Tournaments need names...
-                                </li>
-                            {%endfor%}
-                        {%else%}
-                            <li>
-                                You don't have any Tournaments yet...
-                            </li>
-                        {%endif%}
-                    </ul>
+                <section class="frame flex_cell flex_column">
+                    {%if tournament_sections%}
+                        {%for tournament_section in tournament_sections%}
+                            {%if tournament_section['tournaments']%}
+                                <span>
+                                    {{tournament_section.type}}:
+                                </span>
+                                {%for tournament in tournament_section['tournaments']%}
+                                    <section class="flex_row frame">
+                                        <span class="flex_cell">
+                                            Tournaments need names...
+                                        </span>
+                                        <span>
+                                            <a href="/tnf/tournament/{{tournament.uuid}}/" style="float: right;">
+                                                <span class="icon_small icon_play" title="Tournament Results"/>
+                                            </a>
+                                        </span>
+                                    </section>
+                                {%endfor%}
+                            {%endif%}
+                        {%endfor%}
+                    {%else%}
+                        You don't have any Tournaments yet...
+                    {%endif%}
                 </section>
                 <section class="frame">
                     <a href="/tnf/game/setup/tournament/{{game.id}}/">
@@ -50,9 +57,33 @@
                 <section class="frame small_header">
                     Teams
                 </section>
-                <section class="frame flex_cell">
-                    Teams goes here
+                <section class="frame flex_cell" style="overflow-y: scroll;">
+                    {%if team_sections%}
+                        {%for team_section in team_sections%}
+                            {%if team_section['teams']%}
+                                {{team_section.type}}
+                                {%for team in team_section['teams']%}
+                                    <section class="frame flex_row">
+                                        <span class="flex_cell">
+                                            {{team.team_name}} v{{team.team_file_version}}
+                                        </span>
+                                        <span>
+                                            <a href="/tnf/team/edit/{{team.team_uuid}}/{{team.team_file_version}}/">
+                                                <span class="icon_small icon_update" title="Edit {{team.team_name}} v{{team.team_file_version}}"/>
+                                            </a>
+                                        </span>
+                                    </section>
+                                {%endfor%}
+                            {%endif%}
+                        {%endfor%}
+                    {%else%}
+                        There are no teams!
+                    {%endif%}
                 </section>
+
+
+
+
                 <section class="frame">
                     <a href="/tnf/team/create/{{game.id}}/">
                         <span class="icon_small icon_create" title="Create a team for {{game.name}}"></span>
@@ -68,25 +99,47 @@
                     {%if match_sections%}
                         {%for match_section in match_sections%}
                             {%if match_section['matches']%}
-                                <h4>
-                                    {{match_section.type}}:
-                                </h4>
-                                <ul>
-                                    {%for match in match_section['matches']%}
-                                        <li style="clear: both; text-align: center;">
-                                            <a href="/tnf/match/{{match.uuid}}/" style="float: right;">
-                                                <span class="icon_small icon_play"/>
+                                <span class="small_header">
+                                    {{match_section.type}}
+                                </span>
+                                {%for match in match_section['matches']%}
+                                    <section class="frame flex_row" style="min-height: 20px;">
+                                        <span>
+                                            {{match.game}}
+                                        </span>
+                                        <span class="flex_cell" style="text-align: left;">
+                                            <a href="/tnf/team/edit/{{match.team_1_uuid}}/{{match.team_file_1_version}}/">
+                                                <span class="icon_small icon_update" title="Edit {{match.team_1_name}}"/>
                                             </a>
+                                            {{match.team_1_name}} v{{match.team_file_1_version}}
+                                        </span>
+                                        <span>
+                                            vs.
+                                        </span>
+                                        <span class="flex_cell" style="text-align: right;">
+                                            {{match.team_2_name}} v{{match.team_file_2_version}}
+                                            <a href="/tnf/team/edit/{{match.team_2_uuid}}/{{match.team_file_2_version}}/">
+                                                <span class="icon_small icon_update" title="Edit {{match.team_2_name}}"/>
+                                            </a>
+                                        </span>
+                                        <span>
+                                            <a href="/tnf/match/{{match.uuid}}/">
+                                                <span class="icon_small icon_play" title="Replay Match"/>
+                                            </a>
+                                        </span>
+                                    </section>
+
+                                        <li style="clear: both; text-align: center;">
                                             <span class="match_team">{{match.team_1}}</span>
                                             vs.
                                             <span class="match_team">{{match.team_2}}</span>
                                         </li>
-                                    {%endfor%}
-                                </ul>
+
+                                {%endfor%}
                             {%endif%}
                         {%endfor%}
                     {%else%}
-                        You have no matches...
+                        There are no matches!
                     {%endif%}
                 </section>
                 <section class="frame">
