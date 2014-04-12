@@ -25,10 +25,16 @@ class BaseGame(object):
     example_team_file = None
 
     #The folder where static files for this game can be found (optional)
-    #The static folder must have at least:
-    #  replay_match.html
-    #  replay_team_edit.html
-    #  thumbnail.png
+    """
+    The static folder must have at least:
+      replay_match.html
+      replay_team_edit.html
+      thumbnail.png
+    Both html pages are provided with {{static_url}} so tehy can load any other
+    files (js, css, images) they want to from their static folder.
+    Both html pages must provide a javascript function used to initiate
+    match replay: load_data(data_url, redirect_url (optional))
+    """
     static_folder = None
 
     #The jinja2 environment used for rendering UIs for this game

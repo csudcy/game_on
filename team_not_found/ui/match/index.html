@@ -1,17 +1,28 @@
 {%extends 'base.html'%}
 
+{%block head%}
+    {{super()}}
+    <script type="text/javascript">
+        //Kickoff the load
+        $(document).ready(function() {
+            load_data(
+                '/tnf/match/json/{{match_uuid}}/',
+                '/tnf/game/{{game.id}}/'
+            );
+        });
+    </script>
+{%endblock%}
+
 {%block title%}
     {{super()}} - {{game.name}} - Match Replay
 {%endblock%}
 
 {%block content%}
-    <h3 style="margin: 5px;">
+    <section class="frame medium_header">
         {{game.name}} - Match {{match_id}}
         (<a href="/tnf/game/{{game.id}}/">
             Return to game info
         </a>)
-    </h3>
-    {%block game_replay%}
-        Insert replay here!
-    {%endblock%}
+    </section>
+    {%include 'replay_match.html'%}
 {%endblock%}

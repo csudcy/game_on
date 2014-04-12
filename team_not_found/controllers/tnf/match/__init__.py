@@ -23,14 +23,12 @@ class Tree(object):
         game = games.GAME_DICT[match.game]
 
         #Render the replay match template
-        template = game.jinja2_env.get_template('replay_match.html')
+        template = game.jinja2_env.get_template('match/index.html')
         return template.render({
             'current_user': cherrypy.request.user,
             'game': game,
             'match_uuid': match_uuid,
             'static_url': '/tnf/game/static/%s' % match.game,
-            'data_url': '/tnf/match/json/%s/' % match_uuid,
-            'game_info_url': '/tnf/game/%s/' % match.game,
         })
 
 
