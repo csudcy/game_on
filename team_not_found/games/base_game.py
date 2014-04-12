@@ -26,7 +26,8 @@ class BaseGame(object):
 
     #The folder where static files for this game can be found (optional)
     #The static folder must have at least:
-    #  replay.html
+    #  replay_match.html
+    #  replay_edit.html
     #  thumbnail.png
     static_folder = None
 

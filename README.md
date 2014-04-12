@@ -13,12 +13,14 @@ Features:
   * Stream match results to the GZipFile to avoid memory issues
   * Tournaments
   * Online team editing using http://ace.c9.io/
+  * Team files are versioned
 
 Cool stuff coming up:
+  * Run matches from team edit
+    * Hide from normal match lists?
   * Team creation
-    * Jump straight to online editor after team creation
-    * Allow the code to be edited & immediately played
     * Start the code as the example file from the game
+    * Jump straight to online editor after team creation
   * Better error reporting
     * Catch errors & store on matches
     * Allow admins to replay
@@ -32,24 +34,17 @@ Cool stuff coming up:
 
 Stuff I really should do:
   * Link to team edit from match replay
-  * Improve index page
-    * Latest matches
-    * ? Use game thumbnails?
+  * Show game details on game info page
   * Time bound on ticks
   * ? Sandboxing?
     * Looks really difficult in Python
     * Maybe run teams in a seperate process & communicate via sockets?
-  * ? File versioning?
   * Remove inline styles
   * Match/team table/dir cleanup
     * Dont do this automatically
     * Allow admins to replay matches where the file doesnt exist
     * Dont show them to non-admins?
       * Could lead to much file checking?
-
-Stuff which probably isnt needed anymore:
-  * File uploads
-  * Download example team file
 
 
 TeamNotFound.Tanks

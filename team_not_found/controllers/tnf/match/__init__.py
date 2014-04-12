@@ -22,8 +22,8 @@ class Tree(object):
         #Get the game
         game = games.GAME_DICT[match.game]
 
-        #Render the replay template
-        template = game.jinja2_env.get_template('replay.html')
+        #Render the replay match template
+        template = game.jinja2_env.get_template('replay_match.html')
         return template.render({
             'current_user': cherrypy.request.user,
             'game': game,
