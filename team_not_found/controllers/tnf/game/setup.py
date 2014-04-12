@@ -2,51 +2,7 @@ import cherrypy
 
 from team_not_found import database as db
 from team_not_found import games
-
-def get_teams(game_id):
-    teams = db.Session.query(
-        db.Team
-    ).filter(
-        db.Team.game == game_id
-    ).order_by(
-        db.Team.name
-    )
-    if not cherrypy.request.user.is_admin:
-        #Current user is not an admin so they only see public teams and their own teams
-        teams = teams.filter(
-            db.sa.or_(
-                db.Team.is_public == True,
-                db.Team.creator == cherrypy.request.user
-            )
-        )
-    return teams
-
-def split_teams(teams):
-    #Split teams into your, public, others
-    your_team_files = []
-    public_team_files = []
-    other_team_files = []
-    for team in teams:
-        #Get the latest team_file
-        team_file = team.get_team_file()
-        #Create the team lists
-        team_dict = {
-            'id': team_file.uuid,
-            'version': team_file.version,
-            'team_name': team.name,
-        }
-        if team.is_public:
-            public_team_files.append(team_dict)
-        elif team.creator == cherrypy.request.user:
-            your_team_files.append(team_dict)
-        else:
-            other_team_files.append(team_dict)
-
-    return {
-        'your_team_files': your_team_files,
-        'public_team_files': public_team_files,
-        'other_team_files': other_team_files,
-    }
+from team_not_found.utils import team as team_utils
 
 class Tree(object):
 
@@ -72,15 +28,15 @@ class Tree(object):
         game = games.GAME_DICT[game_id]
 
         #Get team_files for this game
-        teams = get_teams(game_id)
-        context = split_teams(teams)
+        teams = team_utils.get_teams(game_id)
+        team_sections = team_utils.get_team_sections(teams)
 
         #Render the setup template
-        context.update({
+        return {
             'game': game,
+            'team_sections': team_sections,
             'static_url': '/tnf/game/static/%s' % game_id,
-        })
-        return context
+        }
 
     @cherrypy.expose
     @cherrypy.tools.jinja2('game/setup_tournament.html')
@@ -105,12 +61,13 @@ class Tree(object):
         game = games.GAME_DICT[game_id]
 
         #Get teams for this game
-        teams = get_teams(game_id)
-        context = split_teams(teams)
+        teams = team_utils.get_teams(game_id)
+        team_sections = team_utils.get_team_sections(teams)
 
         #Render the setup template
-        context.update({
+        return {
             'game': game,
+            'team_sections': team_sections,
             'tournament_types': [
                 {
                     'type': 'bracket',
@@ -123,8 +80,7 @@ class Tree(object):
             ],
             'best_ofs': (1, 3, 5),
             'static_url': '/tnf/game/static/%s' % game_id,
-        })
-        return context
+        }
 
 
 def mount_tree():

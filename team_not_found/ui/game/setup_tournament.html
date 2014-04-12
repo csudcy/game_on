@@ -17,50 +17,26 @@
                             Tournament Type:
                         </section>
                         <section class="frame flex_cell">
-                            {%if your_team_files%}
-                                <h3>Your Teams</h3>
-                                {%for team_file in your_team_files%}
-                                    <input
-                                        type="checkbox"
-                                        id="team_file_{{team_file.id}}"
-                                        name="team_file_uuids"
-                                        value="{{team_file.id}}"
-                                        style="float: right;"/>
-                                    <label for="team_file_{{team_file.id}}">
-                                        {{team_file.team_name}} v{{team_file.version}}
-                                    </label>
-                                    <br/>
+                            {%if team_sections%}
+                                {%for team_section in team_sections%}
+                                    {%if team_section['teams']%}
+                                        <h3>{{team_section.type}}</h3>
+                                        {%for team in team_section['teams']%}
+                                            <input
+                                                type="checkbox"
+                                                id="team_{{team.team_file_uuid}}"
+                                                name="team_file_uuids"
+                                                value="{{team.team_file_uuid}}"
+                                                style="float: right;"/>
+                                            <label for="team_{{team.team_file_uuid}}">
+                                                {{team.team_name}} v{{team.team_file_version}}
+                                            </label>
+                                            <br/>
+                                        {%endfor%}
+                                    {%endif%}
                                 {%endfor%}
-                            {%endif%}
-                            {%if other_team_files%}
-                                <h3>Other Teams</h3>
-                                {%for team_file in other_team_files%}
-                                    <input
-                                        type="checkbox"
-                                        id="team_file_{{team_file.id}}"
-                                        name="team_file_uuids"
-                                        value="{{team_file.id}}"
-                                        style="float: right;"/>
-                                    <label for="team_file_{{team_file.id}}">
-                                        {{team_file.team_name}} v{{team_file.version}}
-                                    </label>
-                                    <br/>
-                                {%endfor%}
-                            {%endif%}
-                            {%if public_team_files%}
-                                <h3>Public Teams</h3>
-                                {%for team_file in public_team_files%}
-                                    <input
-                                        type="checkbox"
-                                        id="team_file_{{team_file.id}}"
-                                        name="team_file_uuids"
-                                        value="{{team_file.id}}"
-                                        style="float: right;"/>
-                                    <label for="team_file_{{team_file.id}}">
-                                        {{team_file.team_name}} v{{team_file.version}}
-                                    </label>
-                                    <br/>
-                                {%endfor%}
+                            {%else%}
+                                There are no teams!
                             {%endif%}
                         </section>
                     </section>
