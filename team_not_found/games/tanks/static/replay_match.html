@@ -3,13 +3,14 @@
 {%block head%}
     {{super()}}
     <link rel="stylesheet" type="text/css" href="{{static_url}}/replay.css" media="all" />
-    <script type="text/javascript">
-        //Save some constants for the game to use
-        var DATA_URL = '{{data_url}}',
-            GAME_INFO_URL = '{{game_info_url}}';
-    </script>
     <script type="text/javascript" src="{{static_url}}/replay.js"></script>
     <script type="text/javascript" src="{{static_url}}/replay_draw.js"></script>
+    <script type="text/javascript">
+        //Kickoff the load
+        $(document).ready(function() {
+            load_data('{{data_url}}', '{{game_info_url}}');
+        });
+    </script>
 {%endblock%}
 
 {%block game_replay%}
@@ -39,7 +40,7 @@
     <div id="loading">
         <div id="loading_spinner"></div>
         <div id="loading_text">
-            Loading...
+            No match loaded!
         </div>
     </div>
 {%endblock%}
