@@ -15,8 +15,12 @@ $(document).ready(function() {
                 match_container.empty();
                 data.matches.forEach(function(match) {
                     var jqe = match_template.clone();
-                    jqe.find('.team_1_name').text(match.team_1);
-                    jqe.find('.team_2_name').text(match.team_2);
+                    jqe.find('.team_1_name').text(match.team_1_name);
+                    jqe.find('.team_1_version').text(match.team_1_version);
+                    jqe.find('.team_1_edit').attr('href', match.team_1_edit);
+                    jqe.find('.team_2_name').text(match.team_2_name);
+                    jqe.find('.team_2_version').text(match.team_2_version);
+                    jqe.find('.team_2_edit').attr('href', match.team_2_edit);
                     jqe.find('.match_link').attr('href', '/tnf/match/'+match.uuid+'/');
                     if (match.state == 'WAITING') {
                         jqe.css('background-color', '#faa');
@@ -35,6 +39,8 @@ $(document).ready(function() {
                 data.scoreboard.forEach(function(team) {
                     var jqe = scoreboard_template.clone();
                     jqe.find('.team_name').text(team.name);
+                    jqe.find('.team_version').text(team.version);
+                    jqe.find('.team_edit').attr('href', team.edit);
                     jqe.find('.team_score').text(team.score);
                     jqe.appendTo(scoreboard_container)
                         .removeClass('scoreboard_template')

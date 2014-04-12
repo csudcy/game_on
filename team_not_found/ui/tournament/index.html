@@ -33,11 +33,19 @@
                 <section class="frame small_header">
                     Scoreboard
                 </section>
-                <section style="min-height: 20px; display: none;" class="frame scoreboard_template">
-                    <span style="float: left;" class="team_name">
-                        Team name here
+                <section style="min-height: 20px; display: none;" class="frame flex_row scoreboard_template">
+                    <span>
+                        <a class="team_edit" href="/set/in/javascript/">
+                            <span class="icon_small icon_update" title="Edit Team"/>
+                        </a>
                     </span>
-                    <span style="float: right;" class="team_score">
+                    <span class="flex_cell">
+                        <span class="team_name">
+                            Team name here
+                        </span>
+                        v<span class="team_version">99</span>
+                    </span>
+                    <span class="team_score">
                         99
                     </span>
                 </section>
@@ -49,18 +57,32 @@
                 <section class="frame small_header">
                     Matches (Played <span id="matches_played">?</span> of <span id="matches_total">?</span>)
                 </section>
-                <section style="min-height: 20px; text-align: center; display: none;" class="frame match_template">
-                    <span style="float: left;" class="team_1_name">
-                        Team name here
+                <section style="min-height: 20px; display: none;" class="flex_row frame match_template">
+                    <span class="flex_cell">
+                        <a class="team_1_edit" href="/set/in/javascript/">
+                            <span class="icon_small icon_update" title="Edit Team"/>
+                        </a>
+                        <span class="team_1_name">
+                            Team name here
+                        </span>
+                        v<span class="team_1_version">99</span>
                     </span>
                     <span>
                         vs.
                     </span>
-                    <a href="/filled/in/later/" style="float: right;" class="match_link">
-                        <span class="icon_small icon_play" title="Replay match"/>
-                    </a>
-                    <span style="float: right;" class="team_2_name">
-                        Team name here
+                    <span class="flex_cell" style="text-align: right;">
+                        <span class="team_2_name">
+                            Team name here
+                        </span>
+                        v<span class="team_2_version">99</span>
+                        <a class="team_2_edit" href="/set/in/javascript/">
+                            <span class="icon_small icon_update" title="Edit Team"/>
+                        </a>
+                    </span>
+                    <span>
+                        <a href="/filled/in/later/" style="float: right;" class="match_link">
+                            <span class="icon_small icon_play" title="Replay match"/>
+                        </a>
                     </span>
                 </section>
                 <section id="match_container" class="frame flex_cell flex_column" style="overflow: auto;">
