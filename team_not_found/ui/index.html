@@ -54,13 +54,11 @@
                     {%if teams%}
                         {%for team in teams%}
                             <section class="flex_row frame" style="min-height: 20px;">
-                                <section class="flex_cell flex_row">
-                                    <section>
-                                        {{team.game}}
-                                    </section>
-                                    <section class="flex_cell" style="text-align: center;">
-                                        {{team.name}}
-                                    </section>
+                                <section>
+                                    {{team.game}}
+                                </section>
+                                <section class="flex_cell" style="text-align: center;">
+                                    {{team.name}}
                                 </section>
                                 <section>
                                     <a href="/tnf/team/edit/{{team.uuid}}/">
