@@ -79,24 +79,39 @@
                 <section class="frame small_header">
                     Your Matches
                 </section>
-                <section class="flex_cell frame" style="overflow-y: scroll;">
-                    <ul>
-                        {%if matches%}
-                            {%for match in matches%}
-                                <li style="clear: both;">
-                                    <a href="/tnf/match/{{match.uuid}}/" style="float: right;">
+                <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
+                    {%if matches%}
+                        {%for match in matches%}
+                            <section class="frame flex_row" style="min-height: 70px;">
+                                <section>
+                                    {{match.game}}
+                                </section>
+                                <section class="flex_cell" style="text-align: center;">
+                                    {{match.team_1_name}} v{{match.team_file_1_version}}
+                                    <a href="/tnf/team/edit/{{match.team_1_uuid}}/{{match.team_file_1_version}}/">
+                                        <span class="icon_small icon_update" title="Edit {{match.team_1_name}}"/>
+                                    </a>
+                                    <br/>
+
+                                    vs.<br/>
+
+                                    {{match.team_2_name}} v{{match.team_file_2_version}}
+                                    <a href="/tnf/team/edit/{{match.team_2_uuid}}/{{match.team_file_2_version}}/">
+                                        <span class="icon_small icon_update" title="Edit {{match.team_2_name}}"/>
+                                    </a>
+                                </section>
+                                <section>
+                                    <a href="/tnf/match/{{match.uuid}}/">
                                         <span class="icon_small icon_play" title="Replay Match"/>
                                     </a>
-                                    {{match.game}}: {{match.team_1}} <br/>
-                                    vs. {{match.team_2}}
-                                </li>
-                            {%endfor%}
-                        {%else%}
-                            <li>
-                                You don't have any Matches yet...
-                            </li>
-                        {%endif%}
-                    </ul>
+                                </section>
+                            </section>
+                        {%endfor%}
+                    {%else%}
+                        <section>
+                            You don't have any Matches yet...
+                        </section>
+                    {%endif%}
                 </section>
                 <section>
                     <span class="icon_small icon_create" title="Create Match"></span>

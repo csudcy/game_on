@@ -11,7 +11,8 @@
     <script type="text/javascript" src="/static/js/lib/ace/theme-solarized_dark.js"></script>
     <script type="text/javascript">
         //Save some constants for the game to use
-        var EDITABLE = {%if editable%}true{%else%}false{%endif%},
+        var VERSION = {{version}},
+            EDITABLE = {%if editable%}true{%else%}false{%endif%},
             VERSIONS_URL = '{{versions_url}}',
             CODE_URL = '{{code_url}}',
             GAME_INFO_URL = '{{game_info_url}}';

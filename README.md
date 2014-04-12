@@ -25,6 +25,7 @@ Cool stuff coming up:
     * Ensure match_processor never stops
   * User creation
   * Tournaments
+    * NAMES!
     * Best of 3
     * ? Bracketed?
     * ? All v all/matrix?

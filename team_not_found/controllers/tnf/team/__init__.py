@@ -18,7 +18,7 @@ class Tree(object):
 
     @cherrypy.expose
     @cherrypy.tools.jinja2(template='team/edit.html')
-    def edit(self, team_uuid):
+    def edit(self, team_uuid, version=None):
         """
         Edit the given team
         """
@@ -32,10 +32,15 @@ class Tree(object):
         #Get the game
         game = games.GAME_DICT[team.game]
 
+        #Make version nice for JS
+        if version is None:
+            version = 'undefined'
+
         #Render the tournament template
         return {
             'game': game,
             'team': team,
+            'version': version,
             'editable': cherrypy.request.user == team.creator,
             'versions_url': '/tnf/team/versions/%s/' % team.uuid,
             'code_url': '/tnf/team/code/%s/' % team.uuid,

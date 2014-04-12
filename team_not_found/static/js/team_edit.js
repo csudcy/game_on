@@ -81,12 +81,13 @@ $(document).ready(function() {
                 }
                 $('#versions').html(html);
 
-                if (current_version) {
+                if (current_version !== undefined) {
                     //Update the UI
                     check_version();
                 } else {
-                    //Load the latest version
-                    load_code();
+                    //This is the first time we've loaded anything
+                    //Load the (probably) latest version of the code
+                    load_code(VERSION);
                 }
             }
         ).error(

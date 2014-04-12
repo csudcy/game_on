@@ -51,8 +51,12 @@ class Tree(object):
         team_file_2 = db.sa_orm.aliased(db.TeamFile)
         match_infos = db.Session.query(
             db.Match.uuid,
+            team_1.uuid,
             team_1.name,
+            team_file_1.version,
+            team_2.uuid,
             team_2.name,
+            team_file_2.version,
             db.Match.game,
         ).join(
             team_file_1,
@@ -73,12 +77,16 @@ class Tree(object):
 
         # Process them into a usable format
         matches = []
-        for match_info in match_infos:
+        for uuid, t1_uuid, t1_name, tf1_version, t2_uuid, t2_name, tf2_version, game in match_infos:
             matches.append({
-                'uuid': match_info[0],
-                'team_1': match_info[1],
-                'team_2': match_info[2],
-                'game': games.GAME_DICT[match_info[3]].name,
+                'uuid': uuid,
+                'team_1_uuid': t1_uuid,
+                'team_1_name': t1_name,
+                'team_file_1_version': tf1_version,
+                'team_2_uuid': t2_uuid,
+                'team_2_name': t2_name,
+                'team_file_2_version': tf2_version,
+                'game': games.GAME_DICT[game].name,
             })
         #matches.reverse()
 
