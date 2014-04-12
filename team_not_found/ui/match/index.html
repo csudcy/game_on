@@ -18,11 +18,13 @@
 {%endblock%}
 
 {%block content%}
-    <section class="frame medium_header">
-        {{game.name}} - Match {{match_id}}
-        (<a href="/tnf/game/{{game.id}}/">
-            Return to game info
-        </a>)
-    </section>
-    {%include 'replay_match.html'%}
+    <article class="flex_column" style="height: 100%;">
+        <section class="frame medium_header">
+            {{game.name}} - Match {{match_id}}
+            (<a href="/tnf/game/{{game.id}}/">
+                Return to game info
+            </a>)
+        </section>
+        {%include 'replay_match.html'%}
+    </article>
 {%endblock%}

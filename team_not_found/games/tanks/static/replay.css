@@ -1,39 +1,8 @@
-#loading {
-    background-color: rgba(200, 200, 200, 0.5);
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-}
-
-#loading_text {
-}
-
-#loading_spinner {
-    background-image: url('loading.gif');
-    background-repeat: no-repeat;
-    background-position: 50%;
-    height: 78px;
-    margin-top: 20%;
-}
-
-#main {
-    float: left;
-}
-
-#setup, #field {
-    border: 1px solid black;
-}
-
-#setup {
-    width: 300px;
-}
-
-#setup input {
+.setup input {
     width: 98%;
 }
 
-#setup .teams, #setup .winners {
+.teams, .winners {
     display: inline-block;
     width: 100%;
     padding: 10px 0px;
@@ -41,7 +10,7 @@
     text-align: center;
 }
 
-#setup .winners span {
+.winners span {
     font-size: 24px;
 }
 
@@ -49,15 +18,10 @@
     display: none;
 }
 
-#setup .controls {
+.controls {
     display: inline-block;
     width: 100%;
-    padding: 10px 0px;
     text-align: center;
-}
-
-#field {
-    width: 100%;;
 }
 
 .team_stats .team_health {

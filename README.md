@@ -57,7 +57,7 @@ Features:
   * Team stats
   * TODO: Fill this in...
   * Play games until all projectiles finish exploding
+  * Canvas resizes with window
 
 Coming up:
-  * Resize canvas with window
   * Max proofing

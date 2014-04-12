@@ -46,13 +46,19 @@ function set_tick(tick) {
     if (tick === 0 || tick === max_ticks) {
         pause();
     }
-    var tick_state = match.tick_state[tick];
 
     //Update tick UI
     $('#tick_display').text(tick);
     $('#tick').val(tick);
 
+    //Show the winner yet?
+    if (tick === max_ticks) {
+        $('#winner_wait').hide();
+        $('#winner_show').show();
+    }
+
     //Show team stats
+    var tick_state = match.tick_state[tick];
     function show_team_stats(team) {
         var player_states = tick_state[team].players,
             team_health = 0,
@@ -90,11 +96,45 @@ function set_tick(tick) {
         $('#winner_show').show();
     }
 
+    //Draw ze tick
+    draw_current_tick();
+}
+
+function draw_current_tick() {
+    if (match === undefined) {
+        return;
+    }
+    //Make the canvas the right size/aspect
+    var field = $('#field'),
+        field_screen_w = field.width(),
+        field_screen_h = field.height(),
+        field_screen_r = field_screen_w / field_screen_h,
+        board_w = match.constant_state.board.width,
+        board_h = match.constant_state.board.height,
+        board_ratio = board_w / board_h,
+        field_pixel_h,
+        field_pixel_w;
+
+    if (field_screen_r < board_ratio) {
+        //Field is talller/thinner than board
+        //Use full width
+        field_pixel_w = board_w;
+        field_pixel_h = board_w / field_screen_r;
+    } else {
+        //Board is talller/thinner than field
+        //Use full height
+        field_pixel_w = board_h * field_screen_r;
+        field_pixel_h = board_h;
+    }
+
+    $('#field').attr('width', field_pixel_w);
+    $('#field').attr('height', field_pixel_h);
+
     //Draw everything!
     draw_board(
         $('#field')[0].getContext('2d'),
         match.constant_state,
-        tick_state
+        match.tick_state[get_tick()]
     );
 }
 
@@ -150,7 +190,7 @@ function clear_loading() {
     /*
     Enable controls, assume something else will draw on the field
     */
-    $('.controls button, #interval, #tick').attr('disabled', undefined);
+    $('.controls button, #interval, #tick').attr('disabled', null);
 }
 
 //Load the data
@@ -187,8 +227,6 @@ function load_data(data_url, redirect_url) {
                 //Show some info from the match
                 $('#tick').attr('max', get_max_tick());
                 $('#tick_max_display').text(get_max_tick());
-                $('#field').attr('width', match.constant_state.board.width);
-                $('#field').attr('height', match.constant_state.board.height);
                 $('.team_1_name').text(match.constant_state.team_1.name);
                 $('.team_2_name').text(match.constant_state.team_2.name);
                 $('.team_1 .team_name').text(match.constant_state.team_1.name);
@@ -282,4 +320,8 @@ $(document).ready(function() {
     set_interval(25);
 
     show_loading('No match loaded!');
+
+    $(window).resize(function() {
+        draw_current_tick();
+    });
 });

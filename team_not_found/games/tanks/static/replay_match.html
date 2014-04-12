@@ -2,33 +2,22 @@
 <script type="text/javascript" src="{{static_url}}/replay.js"></script>
 <script type="text/javascript" src="{{static_url}}/replay_draw.js"></script>
 
-<div id="main">
-    <div id="setup">
-        {%include 'replay_teams.html'%}
-        <hr/>
-        {%include 'replay_winners.html'%}
-        <hr/>
-        {%include 'replay_interval.html'%}
-        <hr/>
-        {%include 'replay_time.html'%}
-        <hr/>
-        {%set team_number=1%}
-        {%include 'replay_teamstats.html'%}
-        <hr/>
-        {%set team_number=2%}
-        {%include 'replay_teamstats.html'%}
-        <hr/>
-    </div>
-    <canvas id="field" width="1000" height="700">
+<section class="flex_cell flex_row">
+    <section style="overflow-y: scroll; overflow-x: hidden;">
+        <section class="setup flex_column">
+            {%include 'replay_teams.html'%}
+            {%include 'replay_winners.html'%}
+            {%include 'replay_interval.html'%}
+            {%include 'replay_time.html'%}
+            {%set team_number=1%}
+            {%include 'replay_teamstats.html'%}
+            {%set team_number=2%}
+            {%include 'replay_teamstats.html'%}
+        </section>
+    </section>
+    <canvas id="field" width="1000" height="700" class="flex_cell frame">
     </canvas>
-    <div id="attribution">
-        Icons are mostly from <a href="https://www.iconfinder.com/search/?q=iconset:cc_mono_icon_set">Wireframe mono icons</a> used under <a href="http://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0</a>.
-    </div>
-</div>
-
-<div id="loading">
-    <div id="loading_spinner"></div>
-    <div id="loading_text">
-        No match loaded!
-    </div>
-</div>
+</section>
+<section id="attribution">
+    Icons are mostly from <a href="https://www.iconfinder.com/search/?q=iconset:cc_mono_icon_set">Wireframe mono icons</a> used under <a href="http://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0</a>.
+</section>
