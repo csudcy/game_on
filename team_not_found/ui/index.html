@@ -127,23 +127,25 @@
                 <section class="frame small_header">
                     Your Tournaments
                 </section>
-                <section class="flex_cell frame" style="overflow-y: scroll;">
-                    <ul>
-                        {%if tournaments%}
-                            {%for tournament in tournaments%}
-                                <li style="clear: both;">
-                                    <a href="/tnf/tournament/{{tournament.uuid}}/" style="float: right;">
+                <section class="flex_cell frame flex_column" style="overflow-y: scroll;">
+                    {%if tournaments%}
+                        {%for tournament in tournaments%}
+                            <section class="flex_row frame" style="min-height: 20px;">
+                                <section class="flex_cell" style="text-align: center;">
+                                    {{tournament.game}}
+                                </section>
+                                <section>
+                                    <a href="/tnf/tournament/{{tournament.uuid}}/">
                                         <span class="icon_small icon_play" title="Tournament Results"/>
                                     </a>
-                                    {{tournament.game}}
-                                </li>
-                            {%endfor%}
-                        {%else%}
-                            <li>
-                                You don't have any Tournaments yet...
-                            </li>
-                        {%endif%}
-                    </ul>
+                                </section>
+                            </section>
+                        {%endfor%}
+                    {%else%}
+                        <section>
+                            You don't have any Tournaments yet...
+                        </section>
+                    {%endif%}
                 </section>
                 <section>
                     <span class="icon_small icon_create" title="Create Tournament"></span>
