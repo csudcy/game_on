@@ -19,7 +19,7 @@ def get_teams(game_id=None):
 
     # Apply necessary filtering
     if not cherrypy.request.user.is_admin:
-        #Current user is not an admin so they only see public teams and their own teams
+        #Current user is not an admin so they only see yours & public
         teams = teams.filter(
             db.sa.or_(
                 db.Team.is_public == True,
@@ -36,7 +36,7 @@ def get_teams(game_id=None):
 
 def get_split_teams(teams):
     """
-    Split teams into your, public, others
+    Split teams into yours, public & others
     """
     your_teams = []
     public_teams = []

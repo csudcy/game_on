@@ -7,6 +7,7 @@ from team_not_found import database as db
 from team_not_found import games
 from team_not_found.utils import mount as mount_utils
 from team_not_found.utils import team as team_utils
+from team_not_found.utils import tournament as tournament_utils
 
 
 class Tree(object):
@@ -19,7 +20,7 @@ class Tree(object):
         #Find the game
         game = games.GAME_DICT[game_id]
 
-        #Get team_files for this game
+        #Get teams/team_files for this game
         teams = team_utils.get_teams(game_id)
         team_sections = team_utils.get_team_sections(teams)
 
@@ -47,47 +48,9 @@ class Tree(object):
                 'team_file_2_version': match.team_file_2.version,
             })
 
-        # Find your tournaments or tournaments involving one of your teams
-        tournament_infos = db.Session.query(
-            db.Tournament.uuid,
-            db.Tournament.creator_uuid,
-        ).join(
-            db.TournamentTeamFile
-        ).join(
-            db.TeamFile
-        ).join(
-            db.Team
-        ).filter(
-            db.Tournament.game == game_id,
-            or_(
-                db.Tournament.creator == cherrypy.request.user,
-                db.Team.creator == cherrypy.request.user,
-            )
-        ).distinct()
-
-        # Process them into a usable format
-        tournament_sections = []
-        if tournament_infos:
-            your_tournaments = []
-            match_tournaments = []
-            for tournament_uuid, creator_uuid in tournament_infos:
-                tournament_dict = {
-                    'uuid': tournament_uuid,
-                }
-                if creator_uuid == cherrypy.request.user.uuid:
-                    your_tournaments.append(tournament_dict)
-                else:
-                    match_tournaments.append(tournament_dict)
-            tournament_sections = [
-                {
-                    'type': 'Your Tournaments',
-                    'tournaments': your_tournaments,
-                },
-                {
-                    'type': 'Your Team Tournaments',
-                    'tournaments': match_tournaments,
-                },
-            ]
+        #Get tournaments for this game
+        tournaments = tournament_utils.get_tournaments(game_id)
+        tournament_sections = tournament_utils.get_tournament_sections(tournaments)
 
         #Render
         return {

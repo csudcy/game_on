@@ -19,20 +19,18 @@
                 <section class="frame small_header">
                     Tournaments
                 </section>
-                <section class="frame flex_cell flex_column">
+                <section class="frame flex_cell" style="overflow-y: scroll;">
                     {%if tournament_sections%}
                         {%for tournament_section in tournament_sections%}
                             {%if tournament_section['tournaments']%}
-                                <span>
-                                    {{tournament_section.type}}:
-                                </span>
+                                {{tournament_section.type}}:
                                 {%for tournament in tournament_section['tournaments']%}
-                                    <section class="flex_row frame">
+                                    <section class="frame flex_row">
                                         <span class="flex_cell">
                                             Tournaments need names...
                                         </span>
                                         <span>
-                                            <a href="/tnf/tournament/{{tournament.uuid}}/" style="float: right;">
+                                            <a href="/tnf/tournament/{{tournament.tournament_uuid}}/">
                                                 <span class="icon_small icon_play" title="Tournament Results"/>
                                             </a>
                                         </span>
@@ -61,7 +59,7 @@
                     {%if team_sections%}
                         {%for team_section in team_sections%}
                             {%if team_section['teams']%}
-                                {{team_section.type}}
+                                {{team_section.type}}:
                                 {%for team in team_section['teams']%}
                                     <section class="frame flex_row">
                                         <span class="flex_cell">
@@ -80,10 +78,6 @@
                         There are no teams!
                     {%endif%}
                 </section>
-
-
-
-
                 <section class="frame">
                     <a href="/tnf/team/create/{{game.id}}/">
                         <span class="icon_small icon_create" title="Create a team for {{game.name}}"></span>
