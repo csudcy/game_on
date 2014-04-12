@@ -37,6 +37,9 @@ function get_max_tick() {
     return match.tick_state.length - 1;
 }
 function set_tick(tick) {
+    if (match === undefined) {
+        return;
+    }
     //Validate the requested tick
     var max_ticks = get_max_tick();
     tick = Math.min(Math.max(tick, 0), max_ticks);
@@ -112,6 +115,44 @@ function start_timer() {
     setInterval(timer, 1);
 }
 
+function show_loading(txt) {
+    /*
+    Disable all controls and show the given message on the field
+    */
+    //Make sure we're not trying to do anything
+    pause();
+
+    //Disable the controls
+    $('.controls button, #interval, #tick').attr('disabled', 'disabled');
+    $('#interval').bind('input', function() {
+        set_interval($(this).val());
+    });
+
+    var field = $('#field'),
+        g = field[0].getContext('2d'),
+        w = field.attr('width'),
+        h = field.attr('height');
+
+    //Gray the field
+    g.fillStyle = 'gray';
+    g.fillRect(0, 0, w, h);
+
+    //Show the message
+    if (txt) {
+        g.font = '30px sans-serif';
+        g.fillStyle = 'black';
+        var text_w = g.measureText(txt).width;
+        g.fillText(txt, (w-text_w)/2, h/2);
+    }
+}
+
+function clear_loading() {
+    /*
+    Enable controls, assume something else will draw on the field
+    */
+    $('.controls button, #interval, #tick').attr('disabled', undefined);
+}
+
 //Load the data
 function load_data(data_url, redirect_url) {
     //Easiest way to save the passed in params...
@@ -133,7 +174,7 @@ function load_data(data_url, redirect_url) {
                 if (data.state !== undefined) {
                     //The match is not finished yet
                     //Let the user know
-                    $('#loading_text').text('Match is ' + data.state + '...');
+                    show_loading('Match is ' + data.state + '...');
 
                     //Then try again in a second
                     setTimeout(load_data, 1000);
@@ -171,7 +212,7 @@ function load_data(data_url, redirect_url) {
                 )
 
                 //Hide the loading div
-                $('#loading').hide();
+                clear_loading();
 
                 //Show the first frame!
                 set_tick(0);
@@ -188,8 +229,7 @@ function load_data(data_url, redirect_url) {
     }
 
     //Show that we are loading
-    $('#loading_text').text('Loading...');
-    $('#loading').show();
+    show_loading('Loading...');
 
     //Do it, do it nao!
     _load();
@@ -240,4 +280,6 @@ $(document).ready(function() {
     });
 
     set_interval(25);
+
+    show_loading('No match loaded!');
 });

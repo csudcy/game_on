@@ -147,6 +147,7 @@ function draw_player(g, constant_info_team, constant_info_player, tick_info_play
         g.fillRect(-1, -1, 2, 2);
         //Id
         g.fillStyle = constant_info_team.effect_colour.replace('{alpha}', '1.0');
+        g.font = '10px sans-serif';
         g.fillText(constant_info_player.id, 0, -20);
     g.restore();
     //Draw target

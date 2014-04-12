@@ -23,8 +23,6 @@
 
 #setup, #field {
     border: 1px solid black;
-    float: left;
-    height: 800px;
 }
 
 #setup {
@@ -59,7 +57,7 @@
 }
 
 #field {
-    width: 1000px;
+    width: 100%;;
 }
 
 .team_stats .team_health {
