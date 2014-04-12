@@ -4,7 +4,6 @@
 
 .teams, .winners {
     display: inline-block;
-    width: 100%;
     padding: 10px 0px;
     font-weight: bold;
     text-align: center;
