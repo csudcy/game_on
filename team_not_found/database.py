@@ -105,12 +105,6 @@ class Team(ModelBase, Base):
             TeamFile.version == version
         ).one()
 
-    def load_class(self, version=None):
-        """
-        Load the team_file <version or latest>
-        """
-        return self.get_team_file(version).load_class()
-
     def add_file(self, new_contents):
         """
         Create a new team_file & save contents to it.
@@ -196,11 +190,11 @@ class TeamFile(ModelBase, Base):
 class Match(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
     state = sa.Column(sa.String(10), nullable=False) #WAITING, PLAYING, PLAYED
-    team_1_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    team_1 = sa_orm.relationship('Team', foreign_keys=[team_1_uuid], backref=backref('matches_1', lazy='dynamic', passive_deletes=True, cascade="all"))
+    team_file_1_uuid = sa.Column(sa.String(36), sa.ForeignKey('teamfile.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    team_file_1 = sa_orm.relationship('TeamFile', foreign_keys=[team_file_1_uuid], backref=backref('matches_1', lazy='dynamic', passive_deletes=True, cascade="all"))
     team_1_won = sa.Column(sa.Boolean(), nullable=True)
-    team_2_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    team_2 = sa_orm.relationship('Team', foreign_keys=[team_2_uuid], backref=backref('matches_2', lazy='dynamic', passive_deletes=True, cascade="all"))
+    team_file_2_uuid = sa.Column(sa.String(36), sa.ForeignKey('teamfile.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    team_file_2 = sa_orm.relationship('TeamFile', foreign_keys=[team_file_2_uuid], backref=backref('matches_2', lazy='dynamic', passive_deletes=True, cascade="all"))
     team_2_won = sa.Column(sa.Boolean(), nullable=True)
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     creator = sa_orm.relationship('User', backref=backref('matches', lazy='dynamic', passive_deletes=True, cascade="all"))
@@ -239,11 +233,11 @@ class Tournament(ModelBase, Base):
     creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     creator = sa_orm.relationship('User', backref=backref('tournaments', lazy='dynamic', passive_deletes=True, cascade="all"))
 
-    teams = sa_orm.relationship('Team', secondary='tournamentteam', backref='tournaments')
+    team_files = sa_orm.relationship('TeamFile', secondary='tournamentteamfile', backref='tournaments')
 
 
-class TournamentTeam(ModelBase, Base):
+class TournamentTeamFile(ModelBase, Base):
     tournament_uuid = sa.Column(sa.String(36), sa.ForeignKey('tournament.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    tournament = sa_orm.relationship('Tournament', backref=backref('tournament_teams', lazy='dynamic', passive_deletes=True, cascade="all"))
-    team_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    team = sa_orm.relationship('Team', backref=backref('tournament_teams', lazy='dynamic', passive_deletes=True, cascade="all"))
+    tournament = sa_orm.relationship('Tournament', backref=backref('tournament_team_files', lazy='dynamic', passive_deletes=True, cascade="all"))
+    team_file_uuid = sa.Column(sa.String(36), sa.ForeignKey('teamfile.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    team_file = sa_orm.relationship('TeamFile', backref=backref('tournament_team_files', lazy='dynamic', passive_deletes=True, cascade="all"))

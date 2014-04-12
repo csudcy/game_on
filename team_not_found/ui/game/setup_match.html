@@ -12,52 +12,64 @@
             </section>
             <section class="frame">
                 <form method="post">
-                    <label for="team_1">Team 1:</label>
-                    <select id="team_1" name="team_1">
-                        {%if your_teams%}
+                    <label for="team_file_1_uuid">Team 1:</label>
+                    <select id="team_file_1_uuid" name="team_file_1_uuid">
+                        {%if your_team_files%}
                             <optgroup label="Your Teams">
-                                {%for team in your_teams%}
-                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%for team_file in your_team_files%}
+                                    <option value="{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
+                                    </option>
                                 {%endfor%}
                             </optgroup>
                         {%endif%}
-                        {%if other_teams%}
+                        {%if other_team_files%}
                             <optgroup label="Other Teams">
-                                {%for team in other_teams%}
-                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%for team_file in other_team_files%}
+                                    <option value="{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
+                                    </option>
                                 {%endfor%}
                             </optgroup>
                         {%endif%}
-                        {%if public_teams%}
+                        {%if public_team_files%}
                             <optgroup label="Public Teams">
-                                {%for team in public_teams%}
-                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%for team_file in public_team_files%}
+                                    <option value="{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
+                                    </option>
                                 {%endfor%}
                             </optgroup>
                         {%endif%}
                     </select>
                     <br/>
 
-                    <label for="team_2">Team 2:</label>
-                    <select id="team_2" name="team_2">
-                        {%if your_teams%}
+                    <label for="team_file_2_uuid">Team 2:</label>
+                    <select id="team_file_2_uuid" name="team_file_2_uuid">
+                        {%if your_team_files%}
                             <optgroup label="Your Teams">
-                                {%for team in your_teams%}
-                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%for team_file in your_team_files%}
+                                    <option value="{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
+                                    </option>
                                 {%endfor%}
                             </optgroup>
                         {%endif%}
-                        {%if other_teams%}
+                        {%if other_team_files%}
                             <optgroup label="Other Teams">
-                                {%for team in other_teams%}
-                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%for team_file in other_team_files%}
+                                    <option value="{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
+                                    </option>
                                 {%endfor%}
                             </optgroup>
                         {%endif%}
-                        {%if public_teams%}
+                        {%if public_team_files%}
                             <optgroup label="Public Teams">
-                                {%for team in public_teams%}
-                                    <option value="{{team.id}}">{{team.name}}</option>
+                                {%for team_file in public_team_files%}
+                                    <option value="{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
+                                    </option>
                                 {%endfor%}
                             </optgroup>
                         {%endif%}

@@ -89,15 +89,15 @@ def initialise_manager():
     match_manager.add_matches(unplayed_match_uuids)
 
 
-def start_match(game_id, team_1_uuid, team_2_uuid, user, tournament=None):
+def start_match(game_id, team_file_1_uuid, team_file_2_uuid, user, tournament=None):
     """
     Create the match & add it to the manager
     """
     #Create the match
     match = db.Match(
         game = game_id,
-        team_1_uuid = team_1_uuid,
-        team_2_uuid = team_2_uuid,
+        team_file_1_uuid = team_file_1_uuid,
+        team_file_2_uuid = team_file_2_uuid,
         creator = user,
         state = 'WAITING',
         tournament = tournament,
@@ -115,7 +115,7 @@ def start_match(game_id, team_1_uuid, team_2_uuid, user, tournament=None):
 
 
 
-def start_tournament(game_id, teams, tournament_type, best_of, user):
+def start_tournament(game_id, team_file_uuids, tournament_type, best_of, user):
     """
     Create the match & add it to the manager
     """
@@ -129,13 +129,13 @@ def start_tournament(game_id, teams, tournament_type, best_of, user):
     db.Session.add(tournament)
 
     #Add teams to the tournament
-    team_objs = db.Session.query(
-        db.Team
+    team_files = db.Session.query(
+        db.TeamFile
     ).filter(
-        db.Team.uuid in teams
+        db.TeamFile.uuid in team_file_uuids
     )
-    for team in team_objs:
-        tournament.teams.append(team)
+    for team_file in team_files:
+        tournament.team_files.append(team_file)
 
     #Save to db
     db.Session.commit()
@@ -143,30 +143,14 @@ def start_tournament(game_id, teams, tournament_type, best_of, user):
     #Start the matches
     if tournament_type == 'matrix':
         #Matrix tournament - All v. all
-        for t1 in teams:
-            for t2 in teams:
-                if t1 == t2:
+        for tf1u in team_file_uuids:
+            for tf2u in team_file_uuids:
+                if tf1u == tf2u:
                     continue
                 for i in xrange(best_of):
-                    start_match(game_id, t1, t2, user, tournament=tournament)
+                    start_match(game_id, tf1u, tf2u, user, tournament=tournament)
     else:
         raise Exception('Unknown tournament type "%s"!' % tournament_type)
 
     #Return the tournament so the callee knows what was created
     return tournament
-
-"""
-class Tournament(ModelBase, Base):
-    creator_uuid = sa.Column(sa.String(36), sa.ForeignKey('user.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    creator = sa_orm.relationship('User', backref=backref('tournaments', passive_deletes=True, cascade="all"))
-
-    teams = sa_orm.relationship('Team', secondary='tournamentteam', backref='tournaments')
-
-
-class TournamentTeam(ModelBase, Base):
-    tournament_uuid = sa.Column(sa.String(36), sa.ForeignKey('tournament.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    tournament = sa_orm.relationship('Tournament', backref=backref('tournament_teams', passive_deletes=True, cascade="all"))
-    team_uuid = sa.Column(sa.String(36), sa.ForeignKey('team.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    team = sa_orm.relationship('Team', backref=backref('tournament_teams', passive_deletes=True, cascade="all"))
-
-"""

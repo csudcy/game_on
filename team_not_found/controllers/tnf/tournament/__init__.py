@@ -49,21 +49,29 @@ class Tree(object):
         #Get the matches for this tournament
         team_1 = db.sa_orm.aliased(db.Team)
         team_2 = db.sa_orm.aliased(db.Team)
+        team_file_1 = db.sa_orm.aliased(db.TeamFile)
+        team_file_2 = db.sa_orm.aliased(db.TeamFile)
         match_infos = db.Session.query(
             db.Match.uuid,
             db.Match.state,
-            team_1.uuid,
+            team_file_1.uuid,
             team_1.name,
             db.Match.team_1_won,
-            team_2.uuid,
+            team_file_2.uuid,
             team_2.name,
             db.Match.team_2_won,
         ).join(
+            team_file_1,
+            db.Match.team_file_1
+        ).join(
+            team_file_2,
+            db.Match.team_file_2
+        ).join(
             team_1,
-            db.Match.team_1
+            team_file_1.team
         ).join(
             team_2,
-            db.Match.team_2
+            team_file_2.team
         ).filter(
             db.Match.tournament == tournament
         ).order_by(
@@ -75,8 +83,8 @@ class Tree(object):
         #Process them
         matches = []
         matches_played = 0
-        teams = {}
-        for uuid, state, t1_uuid, t1_name, t1_won, t2_uuid, t2_name, t2_won in match_infos:
+        team_files = {}
+        for uuid, state, tf1_uuid, t1_name, t1_won, tf2_uuid, t2_name, t2_won in match_infos:
             #Add it to the list of matches
             matches.append({
                 'uuid': uuid,
@@ -88,31 +96,31 @@ class Tree(object):
             #Update some stats
             if state == 'PLAYED':
                 matches_played += 1
-            if t1_uuid not in teams:
-                teams[t1_uuid] = {
-                    'uuid': t1_uuid,
+            if tf1_uuid not in team_files:
+                team_files[tf1_uuid] = {
+                    'uuid': tf1_uuid,
                     'name': t1_name,
                     'score': 0,
                 }
-            if t2_uuid not in teams:
-                teams[t2_uuid] = {
-                    'uuid': t2_uuid,
+            if tf2_uuid not in team_files:
+                team_files[tf2_uuid] = {
+                    'uuid': tf2_uuid,
                     'name': t2_name,
                     'score': 0,
                 }
             if t1_won and t2_won:
                 #Draw
-                teams[t1_uuid]['score'] += 1
-                teams[t2_uuid]['score'] += 1
+                team_files[tf1_uuid]['score'] += 1
+                team_files[tf2_uuid]['score'] += 1
             elif t1_won:
                 #Team 1 won
-                teams[t1_uuid]['score'] += 3
+                team_files[tf1_uuid]['score'] += 3
             elif t2_won:
                 #Team 2 won
-                teams[t2_uuid]['score'] += 3
+                team_files[tf2_uuid]['score'] += 3
             #else noone won
 
-        scoreboard = general.multikeysort(teams.values(), ('-score', 'name'))
+        scoreboard = general.multikeysort(team_files.values(), ('-score', 'name'))
 
         return {
             'tournament_uuid': tournament_uuid,

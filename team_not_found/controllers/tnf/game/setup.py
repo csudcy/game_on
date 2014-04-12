@@ -23,33 +23,36 @@ def get_teams(game_id):
 
 def split_teams(teams):
     #Split teams into your, public, others
-    your_teams = []
-    public_teams = []
-    other_teams = []
+    your_team_files = []
+    public_team_files = []
+    other_team_files = []
     for team in teams:
+        #Get the latest team_file
+        team_file = team.get_team_file()
         #Create the team lists
         team_dict = {
-            'id': team.uuid,
-            'name': team.name,
+            'id': team_file.uuid,
+            'version': team_file.version,
+            'team_name': team.name,
         }
         if team.is_public:
-            public_teams.append(team_dict)
+            public_team_files.append(team_dict)
         elif team.creator == cherrypy.request.user:
-            your_teams.append(team_dict)
+            your_team_files.append(team_dict)
         else:
-            other_teams.append(team_dict)
+            other_team_files.append(team_dict)
 
     return {
-        'your_teams': your_teams,
-        'public_teams': public_teams,
-        'other_teams': other_teams,
+        'your_team_files': your_team_files,
+        'public_team_files': public_team_files,
+        'other_team_files': other_team_files,
     }
 
 class Tree(object):
 
     @cherrypy.expose
     @cherrypy.tools.jinja2('game/setup_match.html')
-    def match(self, game_id, team_1=None, team_2=None):
+    def match(self, game_id, team_file_1_uuid=None, team_file_2_uuid=None):
         """
         Display the setup page for a match of <game_id>
         """
@@ -57,8 +60,8 @@ class Tree(object):
             #Create the match
             match = games.start_match(
                 game_id,
-                team_1,
-                team_2,
+                team_file_1_uuid,
+                team_file_2_uuid,
                 cherrypy.request.user,
             )
 
@@ -68,7 +71,7 @@ class Tree(object):
         #Find the game
         game = games.GAME_DICT[game_id]
 
-        #Get teams for this game
+        #Get team_files for this game
         teams = get_teams(game_id)
         context = split_teams(teams)
 
@@ -81,7 +84,7 @@ class Tree(object):
 
     @cherrypy.expose
     @cherrypy.tools.jinja2('game/setup_tournament.html')
-    def tournament(self, game_id, teams=None, tournament_type=None, best_of=None):
+    def tournament(self, game_id, team_file_uuids=None, tournament_type=None, best_of=None):
         """
         Display the setup page for a tournament of <game_id>
         """
@@ -89,7 +92,7 @@ class Tree(object):
             #Create the match
             tournament = games.start_tournament(
                 game_id,
-                teams,
+                team_file_uuids,
                 tournament_type,
                 int(best_of),
                 cherrypy.request.user,

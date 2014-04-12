@@ -17,47 +17,47 @@
                             Tournament Type:
                         </section>
                         <section class="frame flex_cell">
-                            {%if your_teams%}
+                            {%if your_team_files%}
                                 <h3>Your Teams</h3>
-                                {%for team in your_teams%}
+                                {%for team_file in your_team_files%}
                                     <input
                                         type="checkbox"
-                                        id="team_{{team.id}}"
-                                        name="teams"
-                                        value="{{team.id}}"
+                                        id="team_file_{{team_file.id}}"
+                                        name="team_file_uuids"
+                                        value="{{team_file.id}}"
                                         style="float: right;"/>
-                                    <label for="team_{{team.id}}">
-                                        {{team.name}}
+                                    <label for="team_file_{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
                                     </label>
                                     <br/>
                                 {%endfor%}
                             {%endif%}
-                            {%if other_teams%}
+                            {%if other_team_files%}
                                 <h3>Other Teams</h3>
-                                {%for team in other_teams%}
+                                {%for team_file in other_team_files%}
                                     <input
                                         type="checkbox"
-                                        id="team_{{team.id}}"
-                                        name="teams"
-                                        value="{{team.id}}"
+                                        id="team_file_{{team_file.id}}"
+                                        name="team_file_uuids"
+                                        value="{{team_file.id}}"
                                         style="float: right;"/>
-                                    <label for="team_{{team.id}}">
-                                        {{team.name}}
+                                    <label for="team_file_{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
                                     </label>
                                     <br/>
                                 {%endfor%}
                             {%endif%}
-                            {%if public_teams%}
+                            {%if public_team_files%}
                                 <h3>Public Teams</h3>
-                                {%for team in public_teams%}
+                                {%for team_file in public_team_files%}
                                     <input
                                         type="checkbox"
-                                        id="team_{{team.id}}"
-                                        name="teams"
-                                        value="{{team.id}}"
+                                        id="team_file_{{team_file.id}}"
+                                        name="team_file_uuids"
+                                        value="{{team_file.id}}"
                                         style="float: right;"/>
-                                    <label for="team_{{team.id}}">
-                                        {{team.name}}
+                                    <label for="team_file_{{team_file.id}}">
+                                        {{team_file.team_name}} v{{team_file.version}}
                                     </label>
                                     <br/>
                                 {%endfor%}

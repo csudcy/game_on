@@ -70,8 +70,8 @@ class MatchProcessor(threading.Thread):
 
         #Load the team classes
         #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))
-        team_1_class = match.team_1.load_class()
-        team_2_class = match.team_2.load_class()
+        team_1_class = match.team_file_1.load_class()
+        team_2_class = match.team_file_2.load_class()
 
         #Find the game
         #logging.debug('MatchProcessor %s. ...' % (self.index, match_uuid))

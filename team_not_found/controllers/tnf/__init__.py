@@ -33,19 +33,39 @@ class Tree(object):
 
 
         # Now get matches for the current user
+        """
+        match_infos = db.Session.query(
+            db.Match.uuid,
+            db.Match.team_file_1.team.name,
+            db.Match.team_file_2.team.name,
+            db.Match.game,
+        ).filter(
+            db.Match.creator == cherrypy.request.user,
+            db.Match.tournament == None,
+        ).all()
+        """
+
         team_1 = db.sa_orm.aliased(db.Team)
         team_2 = db.sa_orm.aliased(db.Team)
+        team_file_1 = db.sa_orm.aliased(db.TeamFile)
+        team_file_2 = db.sa_orm.aliased(db.TeamFile)
         match_infos = db.Session.query(
             db.Match.uuid,
             team_1.name,
             team_2.name,
             db.Match.game,
         ).join(
+            team_file_1,
+            db.Match.team_file_1
+        ).join(
+            team_file_2,
+            db.Match.team_file_2
+        ).join(
             team_1,
-            db.Match.team_1
+            team_file_1.team
         ).join(
             team_2,
-            db.Match.team_2
+            team_file_2.team
         ).filter(
             db.Match.creator == cherrypy.request.user,
             db.Match.tournament == None,

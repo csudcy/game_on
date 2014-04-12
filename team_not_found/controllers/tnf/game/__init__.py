@@ -27,17 +27,17 @@ class Tree(object):
         )
 
         #Find matches your team has been used in (that aren't your matchs)
-        your_teams = db.Session.query(
-            db.Team
+        your_team_files = db.Session.query(
+            db.TeamFile
         ).filter(
-            db.Team.creator == cherrypy.request.user,
+            db.TeamFile.team.has(creator = cherrypy.request.user),
         )
         team_matches = db.Session.query(
             db.Match
         ).filter(
             or_(
-                db.Match.team_1 in your_teams,
-                db.Match.team_2 in your_teams,
+                db.Match.team_file_1 in your_team_files,
+                db.Match.team_file_2 in your_team_files,
             )
         )
 
@@ -48,8 +48,8 @@ class Tree(object):
             for match in matches:
                 match_list.append({
                     'uuid': match.uuid,
-                    'team_1': match.team_1.name,
-                    'team_2': match.team_2.name,
+                    'team_1': match.team_file_1.team.name,
+                    'team_2': match.team_file_2.team.name,
                 })
             return match_list
 
