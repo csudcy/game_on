@@ -54,17 +54,17 @@
                     {%if teams%}
                         {%for team in teams%}
                             <section class="flex_row frame" style="min-height: 20px;">
-                                <section>
+                                <span>
                                     {{team.game}}
-                                </section>
-                                <section class="flex_cell" style="text-align: center;">
+                                </span>
+                                <span class="flex_cell" style="text-align: center;">
                                     {{team.name}}
-                                </section>
-                                <section>
+                                </span>
+                                <span>
                                     <a href="/tnf/team/edit/{{team.uuid}}/">
                                         <span class="icon_small icon_update" title="Edit {{team.name}}"/>
                                     </a>
-                                </section>
+                                </span>
                             </section>
                         {%endfor%}
                     {%else%}
@@ -88,10 +88,10 @@
                     {%if matches%}
                         {%for match in matches%}
                             <section class="frame flex_row" style="min-height: 70px;">
-                                <section>
+                                <span>
                                     {{match.game}}
-                                </section>
-                                <section class="flex_cell" style="text-align: center;">
+                                </span>
+                                <span class="flex_cell" style="text-align: center;">
                                     {{match.team_1_name}} v{{match.team_file_1_version}}
                                     <a href="/tnf/team/edit/{{match.team_1_uuid}}/{{match.team_file_1_version}}/">
                                         <span class="icon_small icon_update" title="Edit {{match.team_1_name}}"/>
@@ -104,12 +104,12 @@
                                     <a href="/tnf/team/edit/{{match.team_2_uuid}}/{{match.team_file_2_version}}/">
                                         <span class="icon_small icon_update" title="Edit {{match.team_2_name}}"/>
                                     </a>
-                                </section>
-                                <section>
+                                </span>
+                                <span>
                                     <a href="/tnf/match/{{match.uuid}}/">
                                         <span class="icon_small icon_play" title="Replay Match"/>
                                     </a>
-                                </section>
+                                </span>
                             </section>
                         {%endfor%}
                     {%else%}
@@ -131,14 +131,14 @@
                     {%if tournaments%}
                         {%for tournament in tournaments%}
                             <section class="flex_row frame" style="min-height: 20px;">
-                                <section class="flex_cell" style="text-align: center;">
+                                <span class="flex_cell" style="text-align: center;">
                                     {{tournament.game}}
-                                </section>
-                                <section>
+                                </span>
+                                <span>
                                     <a href="/tnf/tournament/{{tournament.uuid}}/">
                                         <span class="icon_small icon_play" title="Tournament Results"/>
                                     </a>
-                                </section>
+                                </span>
                             </section>
                         {%endfor%}
                     {%else%}
