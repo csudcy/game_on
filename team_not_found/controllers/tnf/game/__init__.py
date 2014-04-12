@@ -5,6 +5,7 @@ from sqlalchemy import or_
 
 from team_not_found import database as db
 from team_not_found import games
+from team_not_found.utils import match as match_utils
 from team_not_found.utils import mount as mount_utils
 from team_not_found.utils import team as team_utils
 from team_not_found.utils import tournament as tournament_utils
@@ -25,28 +26,8 @@ class Tree(object):
         team_sections = team_utils.get_team_sections(teams)
 
         # Find your matches
-        matches = db.Session.query(
-            db.Match
-        ).filter(
-            db.Match.creator == cherrypy.request.user,
-            db.Match.game == game_id,
-            db.Match.tournament == None,
-        ).order_by(
-            db.Match.create_date.desc()
-        )
-
-        # Transform for rendering
-        match_list = []
-        for match in matches:
-            match_list.append({
-                'uuid': match.uuid,
-                'team_1_uuid': match.team_file_1.team.uuid,
-                'team_1_name': match.team_file_1.team.name,
-                'team_file_1_version': match.team_file_1.version,
-                'team_2_uuid': match.team_file_2.team.uuid,
-                'team_2_name': match.team_file_2.team.name,
-                'team_file_2_version': match.team_file_2.version,
-            })
+        matches = match_utils.get_matches(game_id)
+        match_sections = match_utils.get_match_sections(matches)
 
         #Get tournaments for this game
         tournaments = tournament_utils.get_tournaments(game_id)
@@ -57,7 +38,7 @@ class Tree(object):
             'game_id': game_id,
             'game': game,
             'team_sections': team_sections,
-            'matches': match_list,
+            'match_sections': match_sections,
             'tournament_sections': tournament_sections,
         }
 

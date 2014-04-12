@@ -41,6 +41,7 @@ def get_split_teams(teams):
     your_teams = []
     public_teams = []
     other_teams = []
+    user_uuid = cherrypy.request.user.uuid
     for team in teams:
         #Get the latest team_file
         team_file = team.get_team_file()
@@ -53,7 +54,7 @@ def get_split_teams(teams):
         }
         if team.is_public:
             public_teams.append(team_dict)
-        elif team.creator == cherrypy.request.user:
+        elif team.creator == user_uuid:
             your_teams.append(team_dict)
         else:
             other_teams.append(team_dict)

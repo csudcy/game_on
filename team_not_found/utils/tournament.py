@@ -27,7 +27,7 @@ def get_tournaments(game_id=None):
         ).join(
             db.Team
         ).filter(
-            or_(
+            db.sa.or_(
                 db.Tournament.creator == cherrypy.request.user,
                 db.Team.creator == cherrypy.request.user,
             )
@@ -45,17 +45,17 @@ def get_split_tournaments(tournaments):
     """
     Split tournaments into yours, your teams & others
     """
-
     your_tournaments = []
     your_team_tournaments = []
     other_tournaments = []
+    user_uuid = cherrypy.request.user.uuid
     for tournament in tournaments:
         tournament_dict = {
             'tournament_uuid': tournament.uuid,
         }
-        if tournament.creator_uuid == cherrypy.request.user.uuid:
+        if tournament.creator_uuid == user_uuid:
             your_tournaments.append(tournament_dict)
-        elif tournament.team_files.has(creator_uuid == cherrypy.request.user.uuid):
+        elif tournament.team_files.has(creator_uuid == user_uuid):
             your_team_tournaments.append(tournament_dict)
         else:
             other_tournaments.append(tournament_dict)
