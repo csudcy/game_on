@@ -11,6 +11,7 @@ from sqlalchemy.orm import backref
 
 from team_not_found import database_helper
 from team_not_found.cfg import config
+from team_not_found.utils import email_utils
 
 Base = declarative_base()
 
@@ -44,6 +45,16 @@ class ModelBase(
         """
         return Session.query(self)
 
+
+CONFIRM_SUBJECT = 'Please confirm your TeamNotFound account'
+CONFIRM_BODY = """Hi {name},<br/>
+<br/>
+Please confirm your TeamNotFound account by
+<a href="{root_url}?email={email}&confirm_code={confirm_code}">clicking here</a>.<br/>
+<br/>
+Thanks,<br/>
+TeamNotFound
+"""
 
 class User(ModelBase, Base):
     email = sa.Column(sa.String(100), nullable=False)
@@ -86,7 +97,16 @@ class User(ModelBase, Base):
         return hashlib.md5('%s:%s:%s' % (config['secret'], self.uuid, self.email)).hexdigest()
 
     def send_confirmation_email(self):
-        pass
+        email_utils.send_mail(
+            to=self.email,
+            subject=CONFIRM_SUBJECT,
+            body=CONFIRM_BODY.format(
+                name = self.name,
+                root_url = config['root_url'],
+                email = self.email,
+                confirm_code = self.get_confirm_code(),
+            )
+        )
 
 
 class Team(ModelBase, Base):

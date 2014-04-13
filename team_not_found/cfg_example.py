@@ -33,10 +33,14 @@ config = {
         'folder': '/home/tnfuser/team_not_found/dynamic/matches/'
     },
     'email': {
-        'server': 'smtp.mailserver.com:1234',
+        'server': 'smtp.mailserver.com',
+        'port': 1234,
+        'from_name': 'TeamNotFound',
+        'from_email': 'from@email.address',
         'username': 'mail_username',
         'password': 'mail_password',
     },
+    'root_url': 'https://yourserver.com/path/to/splash_page/',
     'secret': 'TeamNotFoundIsTotallyAwesome!!1!'
 }
 

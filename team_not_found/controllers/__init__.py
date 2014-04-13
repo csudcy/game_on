@@ -66,6 +66,10 @@ class Tree(object):
                     'class': 'info',
                     'text': 'Thank you for confirming your email',
                 })
+                messages.append({
+                    'class': 'info',
+                    'text': 'You may now login',
+                })
             else:
                 # Tell the user they failed!
                 messages.append({
