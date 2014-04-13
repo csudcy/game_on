@@ -16,8 +16,6 @@ Features:
   * Team files are versioned
 
 Cool stuff coming up:
-  * Run matches from team edit
-    * Hide from normal match lists?
   * Team creation
     * Start the code as the example file from the game
     * Jump straight to online editor after team creation
@@ -35,6 +33,7 @@ Cool stuff coming up:
 Stuff I really should do:
   * Link to team edit from match replay
   * Show game details on game info page
+  * ? Hide team edit matches from normal match lists?
   * Time bound on ticks
   * ? Sandboxing?
     * Looks really difficult in Python
@@ -60,4 +59,5 @@ Features:
   * Canvas resizes with window
 
 Coming up:
+  * Don't show projectiles over the field edge (but track them )
   * Max proofing

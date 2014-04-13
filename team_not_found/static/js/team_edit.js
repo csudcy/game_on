@@ -211,12 +211,11 @@ $(document).ready(function() {
         }
         var post_data = {
             'team_file_1_uuid': current_info.team_file_uuid,
-            'team_file_2_uuid': $('#opponent').val(),
+            'team_file_2_uuid': $('#opponent').val()
         };
         $.post(MATCH_URL, post_data).success(
             function(body, result, jqxhr) {
                 //Start the replay
-                console.log(body.replay_data_url);
                 load_replay(body.replay_data_url);
             }
         ).error(
