@@ -24,20 +24,25 @@ class Tree(object):
         ).filter(
             db.User.email == email
         )
+        error = 'Email or password incorrect'
         if users.count() == 1:
-            #User found!
+            # User found!
             user = users[0]
-            #Check the password
+            # Check the password
             if user.check_password(password):
-                #Everything is good
-                cherrypy.session['user_uuid'] = user.uuid
-                cherrypy.session.save()
-                raise cherrypy.HTTPRedirect(redirect or '/tnf/')
+                # Password is good, check they are confirmed
+                if user.is_confirmed:
+                    #All is good!
+                    cherrypy.session['user_uuid'] = user.uuid
+                    cherrypy.session.save()
+                    raise cherrypy.HTTPRedirect(redirect or '/tnf/')
+                #If we're here, user & pass is good but they're not confirmed
+                error = 'You have not confirmed your email address!'
 
         #If we get here, something's wrong :(
-        url = '/?login_error=Email or password incorrect'
+        url = '/?error=%s' % error
         if redirect:
-            url += '&redirect=' + redirect
+            url += '&redirect=%s' % redirect
         raise cherrypy.HTTPRedirect(url)
 
     @cherrypy.expose

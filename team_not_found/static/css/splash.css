@@ -7,3 +7,10 @@
     position: relative;
     margin-top: 100px;
 }
+
+.error {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #f66;
+    margin: 2px 0px 10px 2px;
+}

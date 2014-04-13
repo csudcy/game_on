@@ -7,6 +7,11 @@
 {%block content%}
     <div id="center_container">
         <span id="center_inner" class="frame">
+            {%if error%}
+                <div class="error">
+                    {{error}}
+                </div>
+            {%endif%}
             <form action='/login' method="post">
                 <input
                     type="hidden"
@@ -26,9 +31,6 @@
                     type="submit"
                     value="Login">
             </form>
-            {%if error%}
-                <div class="error">{{error}}</div>
-            {%endif%}
             <a href="/create_user/">Create a new user</a>
         </span>
     </div>
