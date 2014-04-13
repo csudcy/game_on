@@ -35,8 +35,9 @@ $(document).ready(function() {
     });
     $('#versions').change(function() {
         /*
+        Listen for the version dropdown being changed & load the selected version
         */
-        if (save_is_enabled()) {
+        if (save_is_required()) {
             //There are unsaved changes
             if (!confirm('You have unsaved changes; really load old version?')) {
                 //Reset selected version
@@ -48,38 +49,42 @@ $(document).ready(function() {
     });
 
     //Functions to help save state
-    function save_enable() {
-        $('#save').removeAttr('disabled');
-        $('#changed').show();
-    }
-    function save_disable() {
-        $('#save').attr('disabled', 'disabled');
-        $('#changed').hide();
-    }
     function save_set_enabled() {
         /*
+        Check if the current editor code is the same as the last loaded/saved code
         */
+        if (save_is_required()) {
+            //Code has not changed, disable save button
+            $('#save').attr('disabled', 'disabled');
+            $('#changed').hide();
+        } else {
+            //Code has changed, enable save button
+            $('#save').removeAttr('disabled');
+            $('#changed').show();
+        }
     }
-    function save_is_enabled() {
+    function save_is_required() {
         /*
+        Check if a save is currently necessary
         */
-        return !$('#save').attr('disabled');
+        return editor.getValue() !== current_info.code;
     }
 
     //Enable the save button when editor contents is changed
     editor.getSession().on('change', function(e) {
-        save_enable();
+        save_set_enabled();
     });
 
     //Alert the user if they try to leave when they have unsaved changes
     $(window).bind('beforeunload', function(){
-        if (save_is_enabled()) {
+        if (save_is_required()) {
             return 'You have unsaved changes; really leave?';
         }
     });
 
     function load_versions() {
         /*
+        Populate the list of versions available for this team from the server.
         */
         $.get(VERSIONS_URL).success(
             function(body, result, jqxhr) {
@@ -133,6 +138,7 @@ $(document).ready(function() {
 
     function load_code(team_file_uuid) {
         /*
+        Load the given version of code for the current team.
         */
         var get_data = {
             'team_file_uuid': team_file_uuid
@@ -142,12 +148,9 @@ $(document).ready(function() {
                 //Record what we are working on
                 current_info = body;
 
-                //Show the code in the editor
+                //Show the code in the editor (this also updates save state)
                 editor.setValue(body.code);
                 editor.gotoLine(0);
-
-                //Update save state
-                save_disable();
 
                 //Update the UI
                 check_version();
@@ -164,6 +167,10 @@ $(document).ready(function() {
         /*
         Save the latest code to the server
         */
+        if (!save_is_required()) {
+            //We don't need to save right now
+            return;
+        }
         var post_data = {
             'team_file_uuid': current_info.team_file_uuid,
             'code': editor.getValue()
@@ -171,11 +178,9 @@ $(document).ready(function() {
         $.post(CODE_SAVE_URL, post_data).success(
             function(body, result, jqxhr) {
                 //Record success
-                save_disable();
                 current_info = body;
-
-                //Put this here so we have a record of what was saved
                 current_info.code = post_data.code;
+                save_set_enabled();
 
                 //Reload the versions list
                 load_versions();
@@ -195,8 +200,9 @@ $(document).ready(function() {
 
     function execute() {
         /*
+        Execute the current version of the code
         */
-        if (save_is_enabled()) {
+        if (save_is_required()) {
             if (confirm('Save changes before executing?')) {
                 return save(execute);
             }
