@@ -29,7 +29,7 @@
         <section class="flex_cell flex_column">
             <section class="frame medium_header">
                 {{team.name}}
-                v<span id="current_version">?</span>
+                v<select id="versions"></select>
                 <span id="read_only" style="display: none;">(readonly)</span>
                 <span id="changed" style="display: none;">(changed)</span>
                 - {{game.name}}
@@ -41,14 +41,6 @@
                 <article id="editor" class="frame flex_cell"></article>
             </article>
             <article class="frame">
-                <span style="margin-left: 15px;">
-                    <label for="versions">
-                        Review old version:
-                    </label>
-                    <select id="versions">
-                    </select>
-                </span>
-
                 <span style="margin-left: 35px;">
                     <button id="save" disabled="disabled">
                         Save (ctrl+s)

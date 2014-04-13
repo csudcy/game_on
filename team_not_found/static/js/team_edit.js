@@ -120,7 +120,6 @@ $(document).ready(function() {
         */
         //Show the current version on the UI
         $('#versions').val(current_info.team_file_uuid);
-        $('#current_version').text(current_info.team_file_version);
 
         //Check we are still editing the latest version
         var latest_version = versions[versions.length - 1];
