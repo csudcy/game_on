@@ -194,7 +194,7 @@ function clear_loading() {
 }
 
 //Load the data
-function load_data(data_url, redirect_url) {
+function load_replay(data_url, redirect_url) {
     //Easiest way to save the passed in params...
     function _load() {
         $.get(data_url).success(
@@ -217,7 +217,7 @@ function load_data(data_url, redirect_url) {
                     show_loading('Match is ' + data.state + '...');
 
                     //Then try again in a second
-                    setTimeout(load_data, 1000);
+                    setTimeout(_load, 1000);
                     return;
                 }
 

@@ -13,80 +13,85 @@
         //Save some constants for the game to use
         var INITIAL_TEAM_FILE_UUID = {%if initial_team_file_uuid%}'{{initial_team_file_uuid}}'{%else%}undefined{%endif%},
             EDITABLE = {%if editable%}true{%else%}false{%endif%},
+            TEAM_EDIT_ROOT = '/tnf/team/edit/{{team.uuid}}/',
             VERSIONS_URL = '/tnf/team/versions/{{team.uuid}}/',
             CODE_LOAD_URL = '/tnf/team/code_load/{{team.uuid}}/',
             CODE_SAVE_URL = '/tnf/team/code_save/{{team.uuid}}/',
-            GAME_INFO_URL = '/tnf/game/{{team.game}}/';
+            GAME_INFO_URL = '/tnf/game/{{team.game}}/',
+            MATCH_URL = '/tnf/game/setup/match_create/{{team.game}}/';
     </script>
     <script type="text/javascript" src="/static/js/team_edit.js"></script>
 {%endblock%}
 
 {%block content%}
-    <section class="flex_column" style="height: 100%;">
-        <section class="frame medium_header">
-            {{team.name}}
-            v<span id="current_version">?</span>
-            <span id="read_only" style="display: none;">(readonly)</span>
-            <span id="changed" style="display: none;">(changed)</span>
-            - {{game.name}}
-            (<a href="/tnf/game/{{game.id}}/">
-                Return to game info
-            </a>)
-        </section>
-        <section class="flex_cell flex_row" style="height: 100%;">
+    <section class="flex_row" style="height: 100%;">
+
+        <section class="flex_cell flex_column">
+            <section class="frame medium_header">
+                {{team.name}}
+                v<span id="current_version">?</span>
+                <span id="read_only" style="display: none;">(readonly)</span>
+                <span id="changed" style="display: none;">(changed)</span>
+                - {{game.name}}
+                (<a href="/tnf/game/{{game.id}}/">
+                    Return to game info
+                </a>)
+            </section>
             <article class="flex_cell flex_column">
                 <article id="editor" class="frame flex_cell"></article>
             </article>
-            <article class="frame flex_cell flex_column">
-                {%include 'replay_team_edit.html'%}
+            <article class="frame">
+                <span style="margin-left: 15px;">
+                    <label for="versions">
+                        Review old version:
+                    </label>
+                    <select id="versions">
+                    </select>
+                </span>
+
+                <span style="margin-left: 35px;">
+                    <button id="save" disabled="disabled">
+                        Save (ctrl+s)
+                    </button>
+                </span>
+
+                <span style="margin-left: 35px;">
+                    <label for="opponent">
+                        Opponent:
+                    </label>
+                    {%if team_sections%}
+                        <select id="opponent">
+                            {%for team_section in team_sections%}
+                                {%if team_section['teams']%}
+                                    <optgroup label="{{team_section.type}}">
+                                        {%for team in team_section['teams']%}
+                                            <option value="{{team.team_file_uuid}}">
+                                                {{team.team_name}} v{{team.team_file_version}}
+                                            </option>
+                                        {%endfor%}
+                                    </optgroup>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    {%else%}
+                        There are no other teams!
+                    {%endif%}
+
+                    <!--
+                    <label for="max_ticks">
+                        Max Ticks:
+                    </label>
+                    <input id="max_ticks" type="number" min="1000" max="10000" step="1000" value="1000"/>
+                    -->
+
+                    <button id="execute">
+                        Execute (F5)
+                    </button>
+                </span>
             </article>
         </section>
-        <article class="frame">
-            <span style="margin-left: 15px;">
-                <label for="versions">
-                    Review old version:
-                </label>
-                <select id="versions">
-                </select>
-            </span>
-
-            <span style="margin-left: 35px;">
-                <button id="save" disabled="disabled">
-                    Save (ctrl+s)
-                </button>
-            </span>
-
-            <span style="margin-left: 35px;">
-                <label for="opponent">
-                    Opponent:
-                </label>
-                {%if team_sections%}
-                    <select id="opponent">
-                        {%for team_section in team_sections%}
-                            {%if team_section['teams']%}
-                                <optgroup label="{{team_section.type}}">
-                                    {%for team in team_section['teams']%}
-                                        <option value="{{team.team_file_uuid}}">
-                                            {{team.team_name}} v{{team.team_file_version}}
-                                        </option>
-                                    {%endfor%}
-                                </optgroup>
-                            {%endif%}
-                        {%endfor%}
-                    </select>
-                {%else%}
-                    There are no other teams!
-                {%endif%}
-
-                <label for="max_ticks">
-                    Max Ticks:
-                </label>
-                <input id="max_ticks" type="number" min="1000" max="10000" step="1000" value="1000"/>
-
-                <button id="execute">
-                    Execute (F5)
-                </button>
-            </span>
+        <article class="frame flex_cell flex_column">
+            {%include 'replay_team_edit.html'%}
         </article>
     </section>
 {%endblock%}

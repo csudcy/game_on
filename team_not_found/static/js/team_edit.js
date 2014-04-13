@@ -54,13 +54,13 @@ $(document).ready(function() {
         Check if the current editor code is the same as the last loaded/saved code
         */
         if (save_is_required()) {
-            //Code has not changed, disable save button
-            $('#save').attr('disabled', 'disabled');
-            $('#changed').hide();
-        } else {
             //Code has changed, enable save button
             $('#save').removeAttr('disabled');
             $('#changed').show();
+        } else {
+            //Code has not changed, disable save button
+            $('#save').attr('disabled', 'disabled');
+            $('#changed').hide();
         }
     }
     function save_is_required() {
@@ -110,7 +110,6 @@ $(document).ready(function() {
         ).error(
             function() {
                 alert('Error loading versions!');
-                //window.location = GAME_INFO_URL;
             }
         );
     }
@@ -133,6 +132,12 @@ $(document).ready(function() {
             //We are editing the latest version of the code
             editor.setReadOnly(false);
             $('#read_only').hide();
+        }
+
+        //Check the URL is correct
+        var path = TEAM_EDIT_ROOT + current_info.team_file_uuid + '/';
+        if (window.location.pathname !== path) {
+            window.history.replaceState(undefined, undefined, path);
         }
     }
 
@@ -158,7 +163,6 @@ $(document).ready(function() {
         ).error(
             function() {
                 alert('Error loading code!');
-                //window.location = GAME_INFO_URL;
             }
         );
     }
@@ -193,7 +197,6 @@ $(document).ready(function() {
         ).error(
             function() {
                 alert('Error saving code!');
-                //window.location = GAME_INFO_URL;
             }
         );
     }
@@ -207,7 +210,21 @@ $(document).ready(function() {
                 return save(execute);
             }
         }
-        console.log('TODO: execute');
+        var post_data = {
+            'team_file_1_uuid': current_info.team_file_uuid,
+            'team_file_2_uuid': $('#opponent').val(),
+        };
+        $.post(MATCH_URL, post_data).success(
+            function(body, result, jqxhr) {
+                //Start the replay
+                console.log(body.replay_data_url);
+                load_replay(body.replay_data_url);
+            }
+        ).error(
+            function() {
+                alert('Error starting match!');
+            }
+        );
     }
 
     //Kick everything off

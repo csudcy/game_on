@@ -7,23 +7,12 @@ from team_not_found.utils import team as team_utils
 class Tree(object):
 
     @cherrypy.expose
+    @cherrypy.tools.allow(methods=['GET'])
     @cherrypy.tools.jinja2('game/setup_match.html')
-    def match(self, game_id, team_file_1_uuid=None, team_file_2_uuid=None):
+    def match(self, game_id):
         """
         Display the setup page for a match of <game_id>
         """
-        if cherrypy.request.method == 'POST':
-            #Create the match
-            match = games.start_match(
-                game_id,
-                team_file_1_uuid,
-                team_file_2_uuid,
-                cherrypy.request.user,
-            )
-
-            #Go wait for/replay the match!
-            raise cherrypy.HTTPRedirect('/tnf/match/%s/' % match.uuid)
-
         #Find the game
         game = games.GAME_DICT[game_id]
 
@@ -36,6 +25,27 @@ class Tree(object):
             'game': game,
             'team_sections': team_sections,
             'static_url': '/tnf/game/static/%s' % game_id,
+        }
+
+    @cherrypy.expose
+    @cherrypy.tools.allow(methods=['POST'])
+    @cherrypy.tools.json_out()
+    def match_create(self, game_id, team_file_1_uuid, team_file_2_uuid):
+        """
+        Display the setup page for a match of <game_id>
+        """
+        #Create the match
+        match = games.start_match(
+            game_id,
+            team_file_1_uuid,
+            team_file_2_uuid,
+            cherrypy.request.user,
+        )
+
+        #Let the frontend know where to go to replay the match
+        return {
+            'replay_url': '/tnf/match/%s/' % match.uuid,
+            'replay_data_url': '/tnf/match/json/%s/' % match.uuid,
         }
 
     @cherrypy.expose
