@@ -82,6 +82,9 @@ class User(ModelBase, Base):
         #Check if this matches the existing hash
         return self.password_hash == check_password_hash
 
+    def get_confirm_code(self):
+        return hashlib.md5('%s:%s:%s' % (config['secret'], self.uuid, self.email)).hexdigest()
+
 
 class Team(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)

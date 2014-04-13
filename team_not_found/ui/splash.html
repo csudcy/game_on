@@ -7,21 +7,21 @@
 {%block content%}
     <div id="center_container">
         <span id="center_inner" class="frame">
-            {%if error%}
-                <div class="error">
-                    {{error}}
+            {%for msg in messages%}
+                <div class="{{msg.class}}">
+                    {{msg.text}}
                 </div>
-            {%endif%}
-            <form action='/login' method="post">
+            {%endfor%}
+            <form action='.' method="post">
                 <input
                     type="hidden"
                     name="redirect"
-                    value="{{redirect}}">
+                    value="{{redirect or ''}}">
                 <input
                     type="text"
                     name="email"
                     placeholder="Email"
-                    value="{{email}}"
+                    value="{{email or ''}}"
                     autofocus><br/>
                 <input
                     type="password"

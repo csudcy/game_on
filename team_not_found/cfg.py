@@ -32,6 +32,7 @@ config = {
     'match': {
         'folder': '/home/wikimomo/github/team_not_found/dynamic/matches/'
     },
+    'secret': 'TeamNotFoundIsTotallyAwesome!!1!'
 }
 
 if platform_helper.WIN32:
