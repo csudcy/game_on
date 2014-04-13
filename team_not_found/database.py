@@ -85,6 +85,9 @@ class User(ModelBase, Base):
     def get_confirm_code(self):
         return hashlib.md5('%s:%s:%s' % (config['secret'], self.uuid, self.email)).hexdigest()
 
+    def send_confirmation_email(self):
+        pass
+
 
 class Team(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)

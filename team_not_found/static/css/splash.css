@@ -8,9 +8,16 @@
     margin-top: 100px;
 }
 
-.error {
+.error, .info {
     font-size: 16pt;
     font-weight: bold;
-    color: #f66;
     margin: 2px 0px 10px 2px;
+}
+
+.error {
+    color: #f66;
+}
+
+.info {
+    color: #0a0;
 }

@@ -42,6 +42,11 @@ class Tree(object):
                     'class': 'error',
                     'text': 'You have not confirmed your email address',
                 })
+                messages.append({
+                    'class': 'info',
+                    'text': 'The confirmation email has been resent',
+                })
+                user.send_confirmation_email()
             else:
                 messages.append({
                     'class': 'error',
