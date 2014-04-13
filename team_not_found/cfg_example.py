@@ -14,7 +14,7 @@ config = {
     'cherrypy': {
         'host': '127.0.0.1',
         'port': 8080,
-        'sock': '/home/wikimomo/github/team_not_found/dynamic/socks/tnf.{pid}.sock',
+        'sock': '/home/tnfuser/team_not_found/dynamic/socks/tnf.{pid}.sock',
         'static_timeout_hours': 0,
     },
     'logging': {
@@ -22,15 +22,20 @@ config = {
         'log_level': 'DEBUG',
         'access_logging_enabled': False,
         'disabled_loggers': [],
-        'log_folder': '/home/wikimomo/github/team_not_found/dynamic/logs/',
+        'log_folder': '/home/tnfuser/team_not_found/dynamic/logs/',
         'log_file': 'output.log',
         'log_file_size': 10,
     },
     'team': {
-        'folder': '/home/wikimomo/github/team_not_found/dynamic/teams/'
+        'folder': '/home/tnfuser/team_not_found/dynamic/teams/'
     },
     'match': {
-        'folder': '/home/wikimomo/github/team_not_found/dynamic/matches/'
+        'folder': '/home/tnfuser/team_not_found/dynamic/matches/'
+    },
+    'email': {
+        'server': 'smtp.mailserver.com:1234',
+        'username': 'mail_username',
+        'password': 'mail_password',
     },
     'secret': 'TeamNotFoundIsTotallyAwesome!!1!'
 }

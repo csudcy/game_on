@@ -39,11 +39,11 @@ def initialise_db():
     )
     if admin_users.count() == 0:
         db.Session.add(db.User(
-            email = 'admin',
-            name = 'Admin',
-            confirmed=True,
-            password_hash = db.User.hash_password('password1!'),
-            is_admin = True,
+            email='admin',
+            name='Admin',
+            is_confirmed=True,
+            password_hash=db.User.hash_password('password1!'),
+            is_admin=True,
         ))
         db.Session.commit()
 
@@ -57,7 +57,7 @@ def initialise_db():
         db.Session.add(db.User(
             email='player',
             name='Player',
-            confirmed=True,
+            is_confirmed=True,
             password_hash=db.User.hash_password('Pl4y3r'),
             is_admin=False,
         ))

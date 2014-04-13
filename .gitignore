@@ -1,5 +1,6 @@
 AISmart.js
 *.pyc
+cfg.py
 
 dynamic/logs/*.log
 dynamic/matches/*.gz

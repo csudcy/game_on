@@ -42,11 +42,13 @@ class Tree(object):
                     'class': 'error',
                     'text': 'You have not confirmed your email address',
                 })
+
+                #Resend confirmation email just in case...
+                user.send_confirmation_email()
                 messages.append({
                     'class': 'info',
                     'text': 'The confirmation email has been resent',
                 })
-                user.send_confirmation_email()
             else:
                 messages.append({
                     'class': 'error',
@@ -84,8 +86,63 @@ class Tree(object):
 
     @cherrypy.expose
     @cherrypy.tools.jinja2(template='create_user.html')
-    def create_user(self, email=None, password=None):
-        return {}
+    def create_user(self, email=None, name=None, password=None):
+        messages = []
+        show_form = True
+        if cherrypy.request.method == 'POST':
+            #Trying to create a new user...
+            if not (email and name and password):
+                messages.append({
+                    'class': 'error',
+                    'text': 'All fields must be filled in',
+                })
+            else:
+                #Check a user doesnt exist with that email already
+                existing_user_count = db.Session.query(
+                    db.User
+                ).filter(
+                    db.User.email == email
+                ).count()
+
+                if existing_user_count != 0:
+                    messages.append({
+                        'class': 'error',
+                        'text': 'That email address is already taken',
+                    })
+                else:
+                    #Create the user now!
+                    user = db.User(
+                        email=email,
+                        name=name,
+                        is_confirmed=False,
+                        password_hash=db.User.hash_password(password),
+                        is_admin=False,
+                    )
+                    db.Session.add(user)
+                    db.Session.commit()
+
+                    #Tell the user
+                    messages.append({
+                        'class': 'info',
+                        'text': 'Thanks for registering',
+                    })
+
+                    #Send confirmation email
+                    user.send_confirmation_email()
+                    messages.append({
+                        'class': 'info',
+                        'text': 'Please confirm your email before logging in',
+                    })
+
+                    #Don't show the form again
+                    show_form = False
+
+        return {
+            'messages': messages,
+            'show_form': show_form,
+            'email': email,
+            'name': name,
+        }
 
 
 def mount_tree():
