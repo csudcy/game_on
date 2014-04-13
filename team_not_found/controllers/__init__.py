@@ -17,12 +17,12 @@ class Tree(object):
         }
 
     @cherrypy.expose
-    def login(self, username, password, redirect=None):
+    def login(self, email, password, redirect=None):
         #Find the user
         users = db.Session.query(
             db.User
         ).filter(
-            db.User.username == username
+            db.User.email == email
         )
         if users.count() == 1:
             #User found!
@@ -35,7 +35,7 @@ class Tree(object):
                 raise cherrypy.HTTPRedirect(redirect or '/tnf/')
 
         #If we get here, something's wrong :(
-        url = '/?error=Username or password incorrect'
+        url = '/?login_error=Email or password incorrect'
         if redirect:
             url += '&redirect=' + redirect
         raise cherrypy.HTTPRedirect(url)
@@ -44,6 +44,11 @@ class Tree(object):
     def logout(self):
         cherrypy.session.delete()
         raise cherrypy.HTTPRedirect('/')
+
+    @cherrypy.expose
+    @cherrypy.tools.jinja2(template='create_user.html')
+    def create_user(self, email=None, password=None):
+        return {}
 
 
 def mount_tree():

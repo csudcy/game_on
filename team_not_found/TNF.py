@@ -39,25 +39,27 @@ def initialise_db():
     )
     if admin_users.count() == 0:
         db.Session.add(db.User(
-            username = 'admin',
+            email = 'admin',
             name = 'Admin',
+            confirmed=True,
             password_hash = db.User.hash_password('password1!'),
             is_admin = True,
         ))
         db.Session.commit()
 
     #Ensure a non-admin user exists
-    admin_users = db.Session.query(
+    non_admin_users = db.Session.query(
         db.User
     ).filter(
         db.User.is_admin == False
     )
-    if admin_users.count() == 0:
+    if non_admin_users.count() == 0:
         db.Session.add(db.User(
-            username = 'player',
-            name = 'Player',
-            password_hash = db.User.hash_password('Pl4y3r'),
-            is_admin = False,
+            email='player',
+            name='Player',
+            confirmed=True,
+            password_hash=db.User.hash_password('Pl4y3r'),
+            is_admin=False,
         ))
         db.Session.commit()
 

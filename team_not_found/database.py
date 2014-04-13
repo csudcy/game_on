@@ -46,8 +46,9 @@ class ModelBase(
 
 
 class User(ModelBase, Base):
-    username = sa.Column(sa.String(100), nullable=False)
+    email = sa.Column(sa.String(100), nullable=False)
     name = sa.Column(sa.String(100), nullable=False)
+    is_confirmed = sa.Column(sa.Boolean(), default=False)
     password_hash = sa.Column(sa.String(200), nullable=False)
     is_admin = sa.Column(sa.Boolean(), default=False)
 

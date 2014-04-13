@@ -16,6 +16,8 @@ Features:
   * Team files are versioned
 
 Cool stuff coming up:
+  * User creation
+    * Email confirmation
   * Team creation
     * Start the code as the example file from the game
     * Jump straight to online editor after team creation
@@ -23,7 +25,6 @@ Cool stuff coming up:
     * Catch errors & store on matches
     * Allow admins to replay
     * Ensure match_processor never stops
-  * User creation
   * Tournaments
     * NAMES!
     * Best of 3

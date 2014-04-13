@@ -1,17 +1,13 @@
 {%extends 'base.html'%}
 
 {%block title%}
-    {{super()}} - Login
+    {{super()}} - Create User
 {%endblock%}
 
 {%block content%}
     <div id="center_container">
         <span id="center_inner" class="frame">
-            <form action='/login' method="post">
-                <input
-                    type="hidden"
-                    name="redirect"
-                    value="{{redirect}}">
+            <form action='.' method="post">
                 <input
                     type="text"
                     name="email"
@@ -23,13 +19,16 @@
                     name="password"
                     placeholder="Password"><br/>
                 <input
+                    type="password"
+                    name="password_confirm"
+                    placeholder="Password"><br/>
+                <input
                     type="submit"
-                    value="Login">
+                    value="Create User">
             </form>
             {%if error%}
                 <div class="error">{{error}}</div>
             {%endif%}
-            <a href="/create_user/">Create a new user</a>
         </span>
     </div>
 {%endblock%}
