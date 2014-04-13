@@ -6,6 +6,10 @@ $(document).ready(function() {
     editor.setHighlightActiveLine(false);
     editor.setShowInvisibles(true);
 
+    //State variables
+    var versions = [],
+        current_info;
+
     //Bind some shortcut handlers
     editor.commands.addCommand({
         name: 'save',
@@ -30,6 +34,8 @@ $(document).ready(function() {
         execute();
     });
     $('#versions').change(function() {
+        /*
+        */
         if (save_is_enabled()) {
             //There are unsaved changes
             if (!confirm('You have unsaved changes; really load old version?')) {
@@ -50,7 +56,13 @@ $(document).ready(function() {
         $('#save').attr('disabled', 'disabled');
         $('#changed').hide();
     }
+    function save_set_enabled() {
+        /*
+        */
+    }
     function save_is_enabled() {
+        /*
+        */
         return !$('#save').attr('disabled');
     }
 
@@ -66,9 +78,9 @@ $(document).ready(function() {
         }
     });
 
-    var versions = [],
-        current_version;
     function load_versions() {
+        /*
+        */
         $.get(VERSIONS_URL).success(
             function(body, result, jqxhr) {
                 //Save the list of versions
@@ -76,18 +88,18 @@ $(document).ready(function() {
 
                 //Populate the version select
                 var html = '';
-                for (var version in versions) {
-                    html += '<option value="'+version+'">'+version+'</option>';
-                }
+                versions.forEach(function(version) {
+                    html += '<option value="'+version.team_file_uuid+'">'+version.team_file_version+'</option>';
+                });
                 $('#versions').html(html);
 
-                if (current_version !== undefined) {
+                if (current_info !== undefined) {
                     //Update the UI
                     check_version();
                 } else {
                     //This is the first time we've loaded anything
                     //Load the (probably) latest version of the code
-                    load_code(VERSION);
+                    load_code(INITIAL_TEAM_FILE_UUID);
                 }
             }
         ).error(
@@ -100,14 +112,15 @@ $(document).ready(function() {
 
     function check_version() {
         /*
-        Update the UI depending on the current_version
+        Update the UI depending on the current_info
         */
         //Show the current version on the UI
-        $('#versions').val(current_version);
-        $('#current_version').text(current_version);
+        $('#versions').val(current_info.team_file_uuid);
+        $('#current_version').text(current_info.team_file_version);
 
         //Check we are still editing the latest version
-        if (!EDITABLE || current_version !== versions[versions.length - 1]) {
+        var latest_version = versions[versions.length - 1];
+        if (!EDITABLE || current_info.team_file_uuid !== latest_version.team_file_uuid) {
             //Switch to readonly mode
             editor.setReadOnly(true);
             $('#read_only').show();
@@ -118,14 +131,16 @@ $(document).ready(function() {
         }
     }
 
-    function load_code(version) {
+    function load_code(team_file_uuid) {
+        /*
+        */
         var get_data = {
-            'version': version
+            'team_file_uuid': team_file_uuid
         };
-        $.get(CODE_URL, get_data).success(
+        $.get(CODE_LOAD_URL, get_data).success(
             function(body, result, jqxhr) {
-                //Record what version we are working on
-                current_version = body.version;
+                //Record what we are working on
+                current_info = body;
 
                 //Show the code in the editor
                 editor.setValue(body.code);
@@ -150,17 +165,22 @@ $(document).ready(function() {
         Save the latest code to the server
         */
         var post_data = {
-            'version': current_version,
+            'team_file_uuid': current_info.team_file_uuid,
             'code': editor.getValue()
         };
-        $.post(CODE_URL, post_data).success(
+        $.post(CODE_SAVE_URL, post_data).success(
             function(body, result, jqxhr) {
                 //Record success
                 save_disable();
-                current_version = body.version;
+                current_info = body;
+
+                //Put this here so we have a record of what was saved
+                current_info.code = post_data.code;
+
+                //Reload the versions list
                 load_versions();
 
-                //Call cb
+                //Call cb (if there is one)
                 if (cb) {
                     cb();
                 }
@@ -174,6 +194,8 @@ $(document).ready(function() {
     }
 
     function execute() {
+        /*
+        */
         if (save_is_enabled()) {
             if (confirm('Save changes before executing?')) {
                 return save(execute);

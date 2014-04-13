@@ -69,9 +69,11 @@ def get_split_matches(matches):
             'match_uuid': match.uuid,
             'team_1_uuid': match.team_file_1.team.uuid,
             'team_1_name': match.team_file_1.team.name,
+            'team_file_1_uuid': match.team_file_1.uuid,
             'team_file_1_version': match.team_file_1.version,
             'team_2_uuid': match.team_file_2.team.uuid,
             'team_2_name': match.team_file_2.team.name,
+            'team_file_2_uuid': match.team_file_2.uuid,
             'team_file_2_version': match.team_file_2.version,
         }
         t1c_uuid = match.team_file_1.team.creator_uuid

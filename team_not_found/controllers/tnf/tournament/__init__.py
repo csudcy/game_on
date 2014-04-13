@@ -56,10 +56,12 @@ class Tree(object):
             db.Match.state,
             team_1.uuid,
             team_1.name,
+            team_file_1.uuid,
             team_file_1.version,
             db.Match.team_1_won,
             team_2.uuid,
             team_2.name,
+            team_file_2.uuid,
             team_file_2.version,
             db.Match.team_2_won,
         ).join(
@@ -86,24 +88,27 @@ class Tree(object):
         matches = []
         matches_played = 0
         teams = {}
-        def check_team(uuid, name, version):
-            if uuid not in teams:
-                teams[uuid] = {
-                    'edit': '/tnf/team/edit/%s/%s/' % (uuid, version),
-                    'name': name,
-                    'version': version,
+        def check_team(team_uuid, team_name, team_file_uuid, team_file_version):
+            if team_uuid not in teams:
+                teams[team_uuid] = {
+                    'team_uuid': team_uuid,
+                    'team_name': team_name,
+                    'team_file_uuid': team_file_uuid,
+                    'team_file_version': team_file_version,
                     'score': 0,
                 }
-        for uuid, state, t1_uuid, t1_name, tf1_version, t1_won, t2_uuid, t2_name, tf2_version, t2_won in match_infos:
+        for uuid, state, t1_uuid, t1_name, tf1_uuid, tf1_version, t1_won, t2_uuid, t2_name, tf2_uuid, tf2_version, t2_won in match_infos:
             #Add it to the list of matches
             matches.append({
                 'uuid': uuid,
+                'team_1_uuid': t1_uuid,
                 'team_1_name': t1_name,
-                'team_1_version': tf1_version,
-                'team_1_edit': '/tnf/team/edit/%s/%s/' % (t1_uuid, tf1_version),
+                'team_file_1_uuid': tf1_uuid,
+                'team_file_1_version': tf1_version,
+                'team_2_uuid': t2_uuid,
                 'team_2_name': t2_name,
-                'team_2_version': tf2_version,
-                'team_2_edit': '/tnf/team/edit/%s/%s/' % (t2_uuid, tf2_version),
+                'team_file_2_uuid': tf2_uuid,
+                'team_file_2_version': tf2_version,
                 'state': state,
             })
 
@@ -113,12 +118,14 @@ class Tree(object):
             check_team(
                 t1_uuid,
                 t1_name,
-                tf1_version
+                tf1_uuid,
+                tf1_version,
             )
             check_team(
                 t2_uuid,
                 t2_name,
-                tf2_version
+                tf2_uuid,
+                tf2_version,
             )
 
             if t1_won and t2_won:
@@ -134,7 +141,7 @@ class Tree(object):
             #else noone won
 
         #Sort it out...
-        scoreboard = general.multikeysort(teams.values(), ('-score', 'name'))
+        scoreboard = general.multikeysort(teams.values(), ('-score', 'team_name'))
 
         return {
             'tournament_uuid': tournament_uuid,

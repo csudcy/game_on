@@ -73,3 +73,7 @@
     display: inline-block;
     position: relative;
 }
+
+.pg_horz_outer, .pg_horz_inner, .pg_vert_outer, .pg_vert_inner {
+    border-radius: 6px;
+}

@@ -11,11 +11,12 @@
     <script type="text/javascript" src="/static/js/lib/ace/theme-solarized_dark.js"></script>
     <script type="text/javascript">
         //Save some constants for the game to use
-        var VERSION = {{version}},
+        var INITIAL_TEAM_FILE_UUID = {%if initial_team_file_uuid%}'{{initial_team_file_uuid}}'{%else%}undefined{%endif%},
             EDITABLE = {%if editable%}true{%else%}false{%endif%},
-            VERSIONS_URL = '{{versions_url}}',
-            CODE_URL = '{{code_url}}',
-            GAME_INFO_URL = '{{game_info_url}}';
+            VERSIONS_URL = '/tnf/team/versions/{{team.uuid}}/',
+            CODE_LOAD_URL = '/tnf/team/code_load/{{team.uuid}}/',
+            CODE_SAVE_URL = '/tnf/team/code_save/{{team.uuid}}/',
+            GAME_INFO_URL = '/tnf/game/{{team.game}}/';
     </script>
     <script type="text/javascript" src="/static/js/team_edit.js"></script>
 {%endblock%}
@@ -59,11 +60,23 @@
                 <label for="opponent">
                     Opponent:
                 </label>
-                <select id="opponent">
-                    <option value="uuid">
-                        Team Name
-                    </option>
-                </select>
+                {%if team_sections%}
+                    <select id="opponent">
+                        {%for team_section in team_sections%}
+                            {%if team_section['teams']%}
+                                <optgroup label="{{team_section.type}}">
+                                    {%for team in team_section['teams']%}
+                                        <option value="{{team.team_file_uuid}}">
+                                            {{team.team_name}} v{{team.team_file_version}}
+                                        </option>
+                                    {%endfor%}
+                                </optgroup>
+                            {%endif%}
+                        {%endfor%}
+                    </select>
+                {%else%}
+                    There are no other teams!
+                {%endif%}
 
                 <label for="max_ticks">
                     Max Ticks:

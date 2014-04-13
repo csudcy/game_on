@@ -56,7 +56,7 @@ def get_split_teams(teams):
         }
         if team.is_public:
             public_teams.append(team_dict)
-        elif team.creator == user_uuid:
+        elif team.creator_uuid == user_uuid:
             your_teams.append(team_dict)
         else:
             other_teams.append(team_dict)

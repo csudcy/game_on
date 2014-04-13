@@ -93,16 +93,16 @@ class Team(ModelBase, Base):
     setattr(creator_uuid, 'related_name', 'creator')
     setattr(creator_uuid, 'related_model', User)
 
-    def get_team_file(self, version=None):
+    def get_team_file(self, team_file_uuid=None):
         """
-        Get the team_file <version or latest>
+        Get the team_file <team_file_uuid or latest>
         """
-        if version is None:
+        if team_file_uuid is None or team_file_uuid == '':
             return self.team_files.order_by(
                 TeamFile.version.desc()
             ).first()
         return self.team_files.filter(
-            TeamFile.version == version
+            TeamFile.uuid == team_file_uuid
         ).one()
 
     def add_file(self, new_contents):

@@ -16,11 +16,11 @@ $(document).ready(function() {
                 data.matches.forEach(function(match) {
                     var jqe = match_template.clone();
                     jqe.find('.team_1_name').text(match.team_1_name);
-                    jqe.find('.team_1_version').text(match.team_1_version);
-                    jqe.find('.team_1_edit').attr('href', match.team_1_edit);
+                    jqe.find('.team_file_1_version').text(match.team_file_1_version);
+                    jqe.find('.team_file_1_edit').attr('href', '/tnf/team/edit/'+match.team_1_uuid+'/'+match.team_file_1_uuid+'/');
                     jqe.find('.team_2_name').text(match.team_2_name);
-                    jqe.find('.team_2_version').text(match.team_2_version);
-                    jqe.find('.team_2_edit').attr('href', match.team_2_edit);
+                    jqe.find('.team_file_2_version').text(match.team_file_2_version);
+                    jqe.find('.team_file_2_edit').attr('href', '/tnf/team/edit/'+match.team_2_uuid+'/'+match.team_file_2_uuid+'/');
                     jqe.find('.match_link').attr('href', '/tnf/match/'+match.uuid+'/');
                     if (match.state == 'WAITING') {
                         jqe.css('background-color', '#faa');
@@ -38,9 +38,9 @@ $(document).ready(function() {
                 scoreboard_container.empty();
                 data.scoreboard.forEach(function(team) {
                     var jqe = scoreboard_template.clone();
-                    jqe.find('.team_name').text(team.name);
-                    jqe.find('.team_version').text(team.version);
-                    jqe.find('.team_edit').attr('href', team.edit);
+                    jqe.find('.team_name').text(team.team_name);
+                    jqe.find('.team_version').text(team.team_file_version);
+                    jqe.find('.team_edit').attr('href', '/tnf/team/edit/'+team.team_uuid+'/'+team.team_file_uuid+'/');
                     jqe.find('.team_score').text(team.score);
                     jqe.appendTo(scoreboard_container)
                         .removeClass('scoreboard_template')

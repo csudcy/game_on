@@ -70,7 +70,7 @@
                                             {{team.team_name}} v{{team.team_file_version}}
                                         </span>
                                         <span>
-                                            <a href="/tnf/team/edit/{{team.team_uuid}}/{{team.team_file_version}}/">
+                                            <a href="/tnf/team/edit/{{team.team_uuid}}/{{team.team_file_uuid}}/">
                                                 <span class="icon_small icon_update" title="Edit {{team.team_name}} v{{team.team_file_version}}"/>
                                             </a>
                                         </span>
@@ -103,7 +103,7 @@
                                 {%for match in match_section['matches']%}
                                     <section class="flex_row" style="min-height: 20px;">
                                         <span class="flex_cell" style="text-align: left;">
-                                            <a href="/tnf/team/edit/{{match.team_1_uuid}}/{{match.team_file_1_version}}/">
+                                            <a href="/tnf/team/edit/{{match.team_1_uuid}}/{{match.team_file_1_uuid}}/">
                                                 <span class="icon_small icon_update" title="Edit {{match.team_1_name}}"/>
                                             </a>
                                             {{match.team_1_name}} v{{match.team_file_1_version}}
@@ -113,7 +113,7 @@
                                         </span>
                                         <span class="flex_cell" style="text-align: right;">
                                             {{match.team_2_name}} v{{match.team_file_2_version}}
-                                            <a href="/tnf/team/edit/{{match.team_2_uuid}}/{{match.team_file_2_version}}/">
+                                            <a href="/tnf/team/edit/{{match.team_2_uuid}}/{{match.team_file_2_uuid}}/">
                                                 <span class="icon_small icon_update" title="Edit {{match.team_2_name}}"/>
                                             </a>
                                         </span>
