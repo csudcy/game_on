@@ -18,7 +18,6 @@ class TankGame(base_game.BaseGame):
     name = 'TNF.Tanks'
     description = 'A (fairly basic) 5-a-side tanks game'
     base_team = external.ExternalTeam
-    example_team_file = 'example_team.py'
 
     cwd = os.path.dirname(os.path.abspath(__file__))
     static_folder = os.path.join(cwd, 'static')
@@ -33,6 +32,17 @@ class TankGame(base_game.BaseGame):
     #################################################
     #       Setup
     #################################################
+
+    @classmethod
+    def get_example_team_file(self):
+        """
+        Get the example team file used as the basis for all new teams
+        @return: The contents of the example team file
+        """
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        example_team_file = os.path.join(current_directory, 'example_team.py')
+        with open(example_team_file, 'r') as f:
+            return f.read()
 
     @classmethod
     def get_example_teams(self):

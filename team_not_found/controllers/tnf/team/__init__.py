@@ -10,11 +10,64 @@ from team_not_found.utils import team as team_utils
 class Tree(object):
     @cherrypy.expose
     @cherrypy.tools.jinja2(template='team/index.html')
-    def default(self):
+    def default(self, game_id=None, name=None, is_public=None):
         """
         Create a new team
         """
-        return {}
+        messages = []
+        if cherrypy.request.method == 'POST':
+            # Create a new team
+            if not game_id:
+                messages.append({
+                    'class': 'error',
+                    'text': 'You must select a game for your team',
+                })
+            if not name:
+                messages.append({
+                    'class': 'error',
+                    'text': 'You must enter a name for your team',
+                })
+            else:
+                # Check the name is unique
+                existing_team_count = db.Session.query(
+                    db.Team
+                ).filter(
+                    db.Team.name == name
+                ).count()
+                if existing_team_count > 0:
+                    messages.append({
+                        'class': 'error',
+                        'text': 'Team names must be unique',
+                    })
+            if not messages:
+                # All fields validate correctly
+                game = games.GAME_DICT[game_id]
+
+                # create the team
+                team = db.Team(
+                    game=game_id,
+                    name=name,
+                    is_public=is_public,
+                    creator=cherrypy.request.user,
+                )
+                db.Session.add(team)
+
+                #Read the example team file
+                example_team_file = game.get_example_team_file()
+
+                #Create the initial file for the team & save
+                team_file = team.add_file(example_team_file)
+
+                #Done, goto the team edit page
+                raise cherrypy.HTTPRedirect('/tnf/team/edit/%s/' % team.uuid)
+
+        return {
+            'messages': messages,
+            'games': games.GAME_LIST,
+            'game_id': game_id,
+            'name': name,
+            'is_public': is_public,
+        }
 
     @cherrypy.expose
     def edit(self, team_uuid, initial_team_file_uuid=None):

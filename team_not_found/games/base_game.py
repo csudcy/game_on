@@ -21,9 +21,6 @@ class BaseGame(object):
     #The class which all teams must extend from
     base_team = None
 
-    #Example team file which users download to show them how to make a team
-    example_team_file = None
-
     #The folder where static files for this game can be found (optional)
     """
     The static folder must have at least:
@@ -49,11 +46,6 @@ class BaseGame(object):
         if self.base_team is None:
             raise Exception(
                 'You must define a base_team attribute on the game "{name}"!'.format(
-                    name = self.name,
-                ))
-        if self.example_team_file is None:
-            raise Exception(
-                'You must define an example_team_file attribute on the game "{name}"!'.format(
                     name = self.name,
                 ))
         if self.jinja2_env is None:
@@ -165,6 +157,14 @@ class BaseGame(object):
     #   Everything under this line must be overridden by real game classes
     ##########################################################################
     ##########################################################################
+
+    @classmethod
+    def get_example_team_file(self):
+        """
+        Get the example team file used as the basis for all new teams
+        @return: The contents of the example team file
+        """
+        raise Exception('Games must override the get_example_team_file method!')
 
     @classmethod
     def get_example_teams(self):

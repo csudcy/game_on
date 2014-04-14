@@ -124,13 +124,13 @@ class Team(ModelBase, Base):
         """
         Get the team_file <team_file_uuid or latest>
         """
-        if team_file_uuid is None or team_file_uuid == '':
-            return self.team_files.order_by(
-                TeamFile.version.desc()
-            ).first()
-        return self.team_files.filter(
-            TeamFile.uuid == team_file_uuid
-        ).one()
+        if team_file_uuid:
+            return self.team_files.filter(
+                TeamFile.uuid == team_file_uuid
+            ).one()
+        return self.team_files.order_by(
+            TeamFile.version.desc()
+        ).first()
 
     def add_file(self, new_contents):
         """

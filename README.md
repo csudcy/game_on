@@ -14,13 +14,10 @@ Features:
   * Tournaments
   * Online team editing using http://ace.c9.io/
   * Team files are versioned
+  * Users can signup & get sent email confirmations
+  * Users can create teams
 
 Cool stuff coming up:
-  * User creation
-    * Email confirmation
-  * Team creation
-    * Start the code as the example file from the game
-    * Jump straight to online editor after team creation
   * Better error reporting
     * Catch errors & store on matches
     * Allow admins to replay
@@ -34,6 +31,8 @@ Cool stuff coming up:
 Stuff I really should do:
   * Link to team edit from match replay
   * Show game details on game info page
+  * Limit email confirmation send times
+  * Allow team name & is_public to be edited
   * ? Hide team edit matches from normal match lists?
   * Time bound on ticks
   * ? Sandboxing?
@@ -60,5 +59,6 @@ Features:
   * Canvas resizes with window
 
 Coming up:
+  * Fix thread bug - I think tanks.player.Player.STATS is shared
   * Don't show projectiles over the field edge (but track them )
   * Max proofing

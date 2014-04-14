@@ -1,9 +1,79 @@
 {%extends 'base.html'%}
 
+{%block head%}
+    {{super()}}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#submit').click(function() {
+                //Check the fields are filled out
+                if (!$('#name').val()) {
+                    alert('Teams must have a name!');
+                    return false;
+                }
+                //Let the normal submit take over
+            });
+        });
+    </script>
+{%endblock%}
+
 {%block title%}
-    {{super()}} - {{game.name}} - Team Create
+    {{super()}} - Team Create
 {%endblock%}
 
 {%block content%}
-    Team create goes here!
+    <div id="center_container">
+        <span id="center_inner" class="">
+            <section class="frame medium_header">
+                Create a Team
+            </section>
+            <section class="frame">
+                {%for msg in messages%}
+                    <div class="{{msg.class}}">
+                        {{msg.text}}
+                    </div>
+                {%endfor%}
+                <form method="post" action="/tnf/team/">
+                    <label for="game_id">Game:</label>
+                    {%if games%}
+                        <select id="game_id" name="game_id">
+                            {%for game in games%}
+                                <option value="{{game.id}}" {%if game_id == game.id%}selected{%endif%}>
+                                    {{game.name}}
+                                </option>
+                            {%endfor%}
+                        </select>
+                    {%else%}
+                        There are no games!
+                    {%endif%}
+                    <br/>
+
+                    <label for="name">Team Name:</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{name or ''}}"/>
+                    <br/>
+
+                    <label for="is_public">Is Public?</label>
+                    <input
+                        type="checkbox"
+                        id="is_public"
+                        name="is_public"
+                        value="{{is_public or ''}}"/>
+                    <br/>
+
+                    <button id="submit" style="font-size: 22px;">
+                        <span class="icon_large icon_create"></span>
+                        Create the team!
+                    </button>
+                </form>
+            </section>
+            <section class="frame medium_header">
+                <a href="/tnf/">
+                    Return to front page
+                </a>
+            </section>
+        </span>
+    </div>
 {%endblock%}
