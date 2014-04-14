@@ -24,52 +24,52 @@ class Team(external.ExternalTeam):
             PlayerClass(
                 x=x,
                 y=min_y + 3.0/16*h,
-                speed=0.2,
-                sight=0.8,
-                health=0,
-                blast_radius=0,
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
+                speed=20,
+                sight=80,
+                health=0,
+                blast_radius=0,
             ),
             PlayerClass(
                 x=x,
                 y=min_y + 4.0/16*h,
-                speed=0.1,
-                sight=0,
-                health=0.4,
-                blast_radius=0.5,
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
+                speed=10,
+                sight=0,
+                health=40,
+                blast_radius=50,
             ),
             PlayerClass(
                 x=x,
                 y=min_y + 8.0/16*h,
+                direction=enemy_direction,
+                turret_direction=enemy_direction,
                 speed=0,
                 sight=0,
                 health=0,
                 blast_radius=1,
-                direction=enemy_direction,
-                turret_direction=enemy_direction,
             ),
             PlayerClass(
                 x=x,
                 y=min_y + 12.0/16*h,
-                speed=0.1,
-                sight=0,
-                health=0.4,
-                blast_radius=0.5,
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
+                speed=10,
+                sight=0,
+                health=40,
+                blast_radius=50,
             ),
             PlayerClass(
                 x=x,
                 y=min_y + 13.0/16*h,
-                speed=0.2,
-                sight=0.8,
-                health=0,
-                blast_radius=0,
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
+                speed=20,
+                sight=80,
+                health=0,
+                blast_radius=0,
             ),
         ]
 
@@ -105,7 +105,7 @@ class Team(external.ExternalTeam):
             #We're not very nice, try to kill people!
             if fire_at:
                 #Yes - make sure our turret is pointing the correct direction
-                player.turret_direction.target = player.angle_to(fire_at.x, fire_at.y)
+                player.set_turret_direction(player.angle_to(fire_at.x, fire_at.y))
                 #Also, make sure we're not moving
                 player.set_speed(0)
                 #Can we fire now?
@@ -114,18 +114,3 @@ class Team(external.ExternalTeam):
                     distance = player.distance_to(fire_at.x, fire_at.y)
                     angle = player.calculate_firing_angle(distance)
                     player.fire(angle)
-
-"""
-AISmartRandom = AISmart.extend({
-    set_target: function(player) {
-        self=this
-        player.set_target(
-            Math.random()*self.board.width,
-            Math.random()*self.board.height
-        )
-    }
-})
-AISmartRandom.description = 'Smart - Random'
-
-AIs.push(AISmart, AISmartRandom)
-"""

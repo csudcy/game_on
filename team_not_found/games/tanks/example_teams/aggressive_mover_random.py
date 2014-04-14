@@ -17,14 +17,12 @@ class Team(external.ExternalTeam):
             player = PlayerClass(
                 x=x,
                 y=min_y + i * y_step,
-
+                direction=enemy_direction,
+                turret_direction=enemy_direction,
                 speed=0,
                 sight=0,
                 health=0,
-                blast_radius=1,
-
-                direction=enemy_direction,
-                turret_direction=enemy_direction,
+                blast_radius=100,
             )
             player.set_target(
                 0.5*board_width,

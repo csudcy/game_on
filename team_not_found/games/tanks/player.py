@@ -67,14 +67,12 @@ class Player(object):
         player_info = {
             'x': num (range: min_x-max_x),
             'y': num (range: min_y-max_y),
-
+            'direction': num (range: 0-2*Pi),
+            'turret_direction': num (range: 0-2*Pi),
             'speed': num (range: 0-1),
             'sight': num (range: 0-1),
             'health': num (range: 0-1),
             'blast_radius': num (range: 0-1),
-
-            'direction': num (range: 0-2*Pi),
-            'turret_direction': num (range: 0-2*Pi),
         }
         """
         ########################################
@@ -86,12 +84,18 @@ class Player(object):
         total_stats += player_info['sight']
         total_stats += player_info['health']
         total_stats += player_info['blast_radius']
-        if total_stats > 1.0:
+        if total_stats > 100:
             raise Exception(
-                'Player stats out of bounds: total @ {val} > 1.0'.format(
+                'Player stats out of bounds: total @ {val} > 100'.format(
                     val = total_stats,
                 )
             )
+
+        #Make stats out of 1
+        player_info['speed'] /= 100.0
+        player_info['sight'] /= 100.0
+        player_info['health'] /= 100.0
+        player_info['blast_radius'] /= 100.0
 
         #Check individual stats
         for stat in self.STATS:

@@ -24,14 +24,12 @@ class Team(external.ExternalTeam):
             player = PlayerClass(
                 x=x,
                 y=min_y + i * y_step,
-
-                speed=0,
-                sight=1,
-                health=0,
-                blast_radius=0,
-
                 direction=enemy_direction,
                 turret_direction=enemy_direction,
+                speed=0,
+                sight=100,
+                health=0,
+                blast_radius=0,
             )
             players.append(player)
 
@@ -78,7 +76,7 @@ class Team(external.ExternalTeam):
             #We're not very nice, try to kill people!
             if fire_at:
                 #Yes - make sure our turret is pointing the correct direction
-                player.turret_direction.target = player.angle_to(fire_at.x, fire_at.y)
+                player.set_turret_direction(player.angle_to(fire_at.x, fire_at.y))
                 #Also, make sure we're not moving
                 player.set_speed(0)
                 #Can we fire now?

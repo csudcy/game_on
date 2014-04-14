@@ -17,11 +17,18 @@ Features:
   * Users can signup & get sent email confirmations
   * Users can create teams
 
+Bugs:
+  * Sort out constant data for team replays
+    * Team names shouldnt be stored in the file
+    * Link to team edit from match replay
+    * Team files shouldn't have names in (except for example teams)
+  * On team edit, cancel any waiting matches when executing a new match
+
 Cool stuff coming up:
   * Better error reporting
     * Catch errors & store on matches
     * Allow admins to replay
-    * Ensure match_processor never stops
+    * Ensure match_processor NEVER stops
   * Tournaments
     * NAMES!
     * Best of 3
@@ -29,7 +36,6 @@ Cool stuff coming up:
     * ? All v all/matrix?
 
 Stuff I really should do:
-  * Link to team edit from match replay
   * Show game details on game info page
   * Limit email confirmation send times
   * Allow team name & is_public to be edited
