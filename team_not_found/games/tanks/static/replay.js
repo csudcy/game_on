@@ -194,9 +194,16 @@ function clear_loading() {
 }
 
 //Load the data
+var latest_data_url;
 function load_replay(data_url, redirect_url) {
+    //Save this to ensure only the latest load actually happens
+    latest_data_url = data_url;
     //Easiest way to save the passed in params...
     function _load() {
+        //Check we are the latest load
+        if (latest_data_url !== data_url) {
+            return;
+        }
         $.get(data_url).success(
             function(body, result, jqxhr) {
                 //We now have the match data

@@ -22,7 +22,6 @@ Bugs:
     * Team names shouldnt be stored in the file
     * Link to team edit from match replay
     * Team files shouldn't have names in (except for example teams)
-  * On team edit, cancel any waiting matches when executing a new match
 
 Cool stuff coming up:
   * Better error reporting
