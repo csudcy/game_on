@@ -47,7 +47,8 @@ class Tree(object):
         #Check the match has been played
         if match.state != 'PLAYED':
             return json.dumps({
-                'state': match.state
+                'state': match.state,
+                'error': match.error,
             })
 
         #Return the result

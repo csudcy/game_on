@@ -71,22 +71,22 @@ def initialise_manager():
     #Initialise the manager
     match_manager = MatchManager()
 
-    #Deal with unplayed matches
-    unplayed_matches = db.Session.query(
+    #Deal with playing matches
+    playing_matches = db.Session.query(
         db.Match
     ).filter(
-        db.Match.state != 'PLAYED'
+        db.Match.state == 'PLAYING'
     )
 
-    #Reset the unplayed_matches to WAITING
-    unplayed_match_uuids = []
-    for unplayed_match in unplayed_matches:
-        unplayed_match.state = 'WAITING'
-        unplayed_match_uuids.append(unplayed_match.uuid)
+    #Reset the playing_matches to WAITING
+    playing_match_uuids = []
+    for playing_match in playing_matches:
+        playing_match.state = 'WAITING'
+        playing_match_uuids.append(playing_match.uuid)
     db.Session.commit()
 
-    #Populate the match_manager with unplayed_matches
-    match_manager.add_matches(unplayed_match_uuids)
+    #Populate the match_manager with playing_matches
+    match_manager.add_matches(playing_match_uuids)
 
 
 def start_match(game_id, team_file_1_uuid, team_file_2_uuid, user, tournament=None):

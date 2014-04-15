@@ -219,12 +219,18 @@ function load_replay(data_url, redirect_url) {
                 }
 
                 if (data.state !== undefined) {
-                    //The match is not finished yet
-                    //Let the user know
-                    show_loading('Match is ' + data.state + '...');
+                    // The match is not finished yet
+                    if (data.state === 'ERRORED') {
+                        show_loading('Match is ' + data.state + '!');
+                        //Let the user know what the error was
+                        console.log(data.error);
+                        alert(data.error);
+                    } else {
+                        show_loading('Match is ' + data.state + '...');
+                        // Try again in a second
+                        setTimeout(_load, 1000);
+                    }
 
-                    //Then try again in a second
-                    setTimeout(_load, 1000);
                     return;
                 }
 

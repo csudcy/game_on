@@ -25,9 +25,8 @@ Bugs:
 
 Cool stuff coming up:
   * Better error reporting
-    * Catch errors & store on matches
-    * Allow admins to replay
-    * Ensure match_processor NEVER stops
+    * ?Allow admins to replay ?
+    * Deal with ERRORED matches in tournaments
   * Tournaments
     * NAMES!
     * Best of 3

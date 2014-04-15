@@ -216,7 +216,8 @@ class TeamFile(ModelBase, Base):
 
 class Match(ModelBase, Base):
     game = sa.Column(sa.String(100), nullable=False)
-    state = sa.Column(sa.String(10), nullable=False) #WAITING, PLAYING, PLAYED
+    state = sa.Column(sa.String(10), nullable=False) #WAITING, PLAYING, PLAYED, ERRORED
+    error = sa.Column(sa.Text())
     team_file_1_uuid = sa.Column(sa.String(36), sa.ForeignKey('teamfile.uuid', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     team_file_1 = sa_orm.relationship('TeamFile', foreign_keys=[team_file_1_uuid], backref=backref('matches_1', lazy='dynamic', passive_deletes=True, cascade="all"))
     team_1_won = sa.Column(sa.Boolean(), nullable=True)
